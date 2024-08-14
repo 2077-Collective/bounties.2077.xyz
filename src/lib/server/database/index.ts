@@ -4,12 +4,13 @@ import { drizzle as drizzlePg } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import { DATABASE_CONNECTION_URL, NODE_ENV } from '$env/static/private';
 import postgres from 'postgres';
+import path from 'path';
 
 // Uses postgres-js in development and neon in production
 export const db = (() => {
-	if (NODE_ENV === 'development') {
+	if (NODE_ENV === 'development' || NODE_ENV === 'test') {
 		const migrationClient = postgres(DATABASE_CONNECTION_URL, { max: 1 });
-		migrate(drizzlePg(migrationClient), { migrationsFolder: './migrations' });
+		migrate(drizzlePg(migrationClient), { migrationsFolder: path.join(process.cwd(), 'drizzle') });
 
 		const queryClient = postgres(DATABASE_CONNECTION_URL);
 		return drizzlePg(queryClient);
