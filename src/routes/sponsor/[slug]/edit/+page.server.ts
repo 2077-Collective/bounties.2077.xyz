@@ -6,11 +6,12 @@ import { fail } from '@sveltejs/kit';
 export const actions: Actions = {
 	// TODO: must include authentication
 	async updateSponsor({ request, params }) {
-		const formData = Object.fromEntries(await request.formData());
 		const sponsorId = params.slug;
-		const sponsor = UpdateSponsorSchema.parse(formData);
 
 		if (!sponsorId) return fail(400, { message: 'No sponsor ID provided' });
+
+		const formData = Object.fromEntries(await request.formData());
+		const sponsor = UpdateSponsorSchema.parse(formData);
 
 		await updateSponsorById(parseInt(sponsorId), sponsor);
 

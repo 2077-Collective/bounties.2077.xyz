@@ -9,7 +9,7 @@ import { db } from '.';
 import { z } from 'zod';
 
 export function createNewSponsor(sponsor: InsertSponsor) {
-	return db.insert(sponsors).values(sponsor);
+	return db.insert(sponsors).values(sponsor).returning();
 }
 
 export function getSponsors() {

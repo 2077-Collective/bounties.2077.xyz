@@ -79,6 +79,7 @@ export const bountySkills = pgTable('bounty_skills', {
 
 export const rewards = pgTable('rewards', {
 	id: serial('id').primaryKey().unique(),
+	rank: integer('rank').notNull(),
 	bountyId: integer('bounty_id')
 		.references(() => bounties.id)
 		.notNull(),
@@ -127,3 +128,23 @@ export const UpdateBountySchema = InsertBountySchema.partial();
 export type SelectBounty = typeof bounties.$inferSelect;
 export type InsertBounty = typeof bounties.$inferInsert;
 export type UpdateBounty = z.infer<typeof UpdateBountySchema>;
+
+export const InsertRewardSchema = createInsertSchema(rewards);
+export type SelectReward = typeof rewards.$inferSelect;
+export type InsertReward = typeof rewards.$inferInsert;
+
+export const InsertUserSchema = createInsertSchema(users);
+export const UpdateUserSchema = InsertUserSchema.partial();
+export type SelectUser = typeof users.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
+export type UpdateUser = z.infer<typeof UpdateUserSchema>;
+
+export const InsetCommentSchema = createInsertSchema(comments);
+export type SelectComment = typeof comments.$inferSelect;
+export type InsertComment = typeof comments.$inferInsert;
+
+export const InsertSubmissionSchema = createInsertSchema(submissions);
+export const UpdateSubmissionSchema = InsertSubmissionSchema.partial();
+export type SelectSubmission = typeof submissions.$inferSelect;
+export type InsertSubmission = typeof submissions.$inferInsert;
+export type UpdateSubmission = z.infer<typeof UpdateSubmissionSchema>;
