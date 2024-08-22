@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
 		"test:unit": "vitest",
-        "pretest:unit": "npm run db:push",
+		"pretest:unit": "npm run db:push",
 		"db:push": "drizzle-kit push",
 		"db:migration": "drizzle-kit generate",
 		"db:drop": "drizzle-kit drop",
@@ -45,11 +45,13 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@2077Collective/persona": "../auth",
 		"@neondatabase/serverless": "^0.9.4",
 		"@types/node": "^22.2.0",
 		"drizzle-orm": "^0.33.0",
 		"drizzle-zod": "^0.5.1",
 		"postgres": "^3.4.4",
+		"test-sveltekit-web-auth": "0.0.1",
 		"zod": "^3.23.8"
 	}
 }

@@ -1,6 +1,6 @@
 import {
 	sponsors,
-	type SelectSponsor,
+	type Sponsor,
 	UpdateSponsorSchema,
 	type InsertSponsor
 } from '$lib/server/schema';
@@ -16,8 +16,8 @@ export function getSponsors() {
 	return db.select().from(sponsors).orderBy(asc(sponsors.displayName));
 }
 
-export async function getSponsorById(id: number): Promise<SelectSponsor | null> {
-	const sponsor: SelectSponsor[] = await db
+export async function getSponsorById(id: number): Promise<Sponsor | null> {
+	const sponsor: Sponsor[] = await db
 		.select()
 		.from(sponsors)
 		.where(eq(sponsors.id, id))
