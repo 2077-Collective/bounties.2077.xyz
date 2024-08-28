@@ -7,6 +7,6 @@ const getRedirectPath = (jwt: string | undefined): '/login' | '/create-account' 
 
 export const load: PageServerLoad = async ({ locals, cookies }) => {
 	if (!locals.account) {
-		redirect(307, getRedirectPath(cookies.get('jwt')));
+		throw redirect(307, getRedirectPath(cookies.get('jwt')));
 	}
 };

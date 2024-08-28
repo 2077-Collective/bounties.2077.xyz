@@ -1,15 +1,29 @@
 import { test, expect } from '@playwright/test';
+import { setupDb } from '../utils/setup-db';
 
-test.describe.skip('Create account - Registration Form', () => {
-	test.beforeEach(async ({ page }) => {
-		await page.goto('/create-account');
+test.describe('Create account - Registration Form', () => {
+	test.beforeAll(async () => setupDb());
+
+	test.beforeEach(async ({ page, browser }) => {
+		const browserContext = await browser.newContext();
+		await browserContext.addCookies([
+			{
+				name: 'jwt',
+				value:
+					'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOm51bGx9.mPVHMpoIhg-XLn3_Kj3kI88ulNRchozDxtJpRGkbVkA',
+				path: '/',
+				domain: 'localhost:4173'
+			}
+		]);
+
+		await page.goto('/');
 		await page.evaluate(() => {
 			localStorage.setItem('walletAddress', '0x742d35Cc6634C0532925a3b844Bc454e4438f44e');
 		});
-		await page.reload();
+		await page.goto('/create-account');
 	});
 
-	test('should submit form with valid data', async ({ page }) => {
+	test.only('should submit form with valid data', async ({ page }) => {
 		// Fill out the form
 		await page.fill('#displayName', 'John Doe');
 		await page.fill('#email', 'john.doe@example.com');
@@ -26,7 +40,7 @@ test.describe.skip('Create account - Registration Form', () => {
 
 		// Assert that the form submission was successful
 		// This will depend on your server response or redirection
-		await expect(page).toHaveURL('/success-page-or-some-other-page');
+		await expect(page).toHaveURL('/app');
 	});
 
 	test('should display validation errors for empty required fields', async ({ page }) => {

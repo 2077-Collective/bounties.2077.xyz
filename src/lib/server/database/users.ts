@@ -3,8 +3,9 @@ import { db } from '.';
 import { sponsors, users, type InsertUser, type UpdateUser, type SelectUser } from '../schema';
 import type { Account } from '$lib/types';
 
-export function createNewUser(user: InsertUser) {
-	return db.insert(users).values(user).returning();
+export async function createNewUser(user: InsertUser) {
+	const createdUsers = await db.insert(users).values(user).returning();
+	return createdUsers[0];
 }
 
 export async function getUsers(ids: number[]) {
