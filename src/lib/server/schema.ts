@@ -15,6 +15,7 @@ import type { z } from 'zod';
 // Database schemas
 export const sponsors = pgTable('sponsors', {
 	id: serial('id').primaryKey().unique(),
+	displayName: text('display_name').notNull(),
 	userId: serial('sponsor_id')
 		.references(() => users.id)
 		.notNull(),
@@ -45,7 +46,6 @@ export const users = pgTable('users', {
 	website: text('website'),
 	twitter: text('twitter'),
 	bio: text('bio').notNull(),
-	isSponsor: boolean('is_sponsor').notNull().default(false),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });

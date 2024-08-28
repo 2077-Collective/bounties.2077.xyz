@@ -12,6 +12,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:integration": "playwright test",
+		"test:integration-ui": "playwright test --headed",
 		"test:unit": "vitest",
 		"pretest:unit": "npm run db:push",
 		"db:push": "drizzle-kit push",
@@ -25,6 +26,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@synthetixio/synpress": "^3.7.3",
 		"@types/eslint": "^9.6.0",
 		"autoprefixer": "^10.4.20",
 		"drizzle-kit": "^0.24.0",
@@ -47,6 +49,7 @@
 	"dependencies": {
 		"@2077Collective/persona": "../auth",
 		"@neondatabase/serverless": "^0.9.4",
+		"@tenkeylabs/dappwright": "^2.8.5",
 		"@types/node": "^22.2.0",
 		"drizzle-orm": "^0.33.0",
 		"drizzle-zod": "^0.5.1",
