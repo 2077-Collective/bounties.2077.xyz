@@ -16,7 +16,9 @@ import type { z } from 'zod';
 export const sponsors = pgTable('sponsors', {
 	id: serial('id').primaryKey().unique(),
 	displayName: text('display_name').notNull(),
-	username: text('username').notNull().unique(),
+	userId: serial('sponsor_id')
+		.references(() => users.id)
+		.notNull(),
 	email: text('email').notNull(),
 	website: text('website').notNull(),
 	twitter: text('twitter').notNull(),
@@ -31,11 +33,15 @@ export const skills = pgTable('skills', {
 	name: text('name').notNull().unique()
 });
 
+// TODO: need to ensure that user always has a wallet address or an email address
+// Wallet adress used to authenticate via SIWE
+// Email is used to authenticate via social login
 export const users = pgTable('users', {
 	id: serial('id').primaryKey().unique(),
 	displayName: text('display_name').notNull(),
-	username: text('username').notNull().unique(),
-	email: text('email').notNull(),
+	// TODO: wallet address can be null in a future where we have social login
+	walletAddress: text('wallet_address').unique().notNull(),
+	email: text('email').notNull().unique(),
 	image: text('image'),
 	website: text('website'),
 	twitter: text('twitter'),
@@ -120,7 +126,7 @@ export const comments = pgTable('comments', {
 // Types
 export const InsertSponsorSchema = createInsertSchema(sponsors);
 export const UpdateSponsorSchema = InsertSponsorSchema.partial();
-export type SelectSponsor = typeof sponsors.$inferSelect;
+export type SponsorSelect = typeof sponsors.$inferSelect;
 export type InsertSponsor = typeof sponsors.$inferInsert;
 
 export const InsertBountySchema = createInsertSchema(bounties);
