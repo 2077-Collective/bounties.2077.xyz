@@ -1,4 +1,13 @@
 {
+<<<<<<< Updated upstream
   "status": "interrupted",
   "failedTests": []
+=======
+  "status": "failed",
+  "failedTests": [
+    "1f6cfdfa6aa07736ad47-d5ec6fda959202e7714a",
+    "29465268b80813b47385-a7cba6e9f01e71f50a55",
+    "29465268b80813b47385-46937bed32a857a1ddd0"
+  ]
+>>>>>>> Stashed changes
 }

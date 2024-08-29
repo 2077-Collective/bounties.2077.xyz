@@ -6,7 +6,11 @@ test.describe('Login - Registered Users', () => {
 		await page.goto('/login');
 	});
 
+<<<<<<< Updated upstream
 	test.only('should set cookie with jwt on successful login', async ({ page, wallet }) => {
+=======
+	test.skip('should set cookie with jwt on successful login', async ({ page, wallet }) => {
+>>>>>>> Stashed changes
 		await page.click('#login');
 		await wallet.signin();
 
