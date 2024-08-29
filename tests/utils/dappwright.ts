@@ -6,6 +6,7 @@ export const test = baseTest.extend<{
 	wallet: Dappwright;
 }>({
 	context: async ({}, use) => {
+		// Launch context with extension
 		const [, , context] = await dappwright.bootstrap('', {
 			wallet: 'metamask',
 			version: MetaMaskWallet.recommendedVersion,

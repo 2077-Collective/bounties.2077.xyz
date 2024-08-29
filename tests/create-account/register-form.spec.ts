@@ -1,10 +1,6 @@
 import { test, expect } from '@playwright/test';
+import { setupDb } from '../utils/setup-db';
 
-<<<<<<< Updated upstream
-test.describe.skip('Create account - Registration Form', () => {
-	test.beforeEach(async ({ page }) => {
-		await page.goto('/create-account');
-=======
 test.describe('Create account - Registration Form', () => {
 	const walletAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
 
@@ -23,23 +19,13 @@ test.describe('Create account - Registration Form', () => {
 		]);
 
 		await page.goto('/');
->>>>>>> Stashed changes
 		await page.evaluate(() => {
 			localStorage.setItem('walletAddress', walletAddress);
 		});
-		await page.reload();
+		await page.goto('/create-account');
 	});
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 	test('should submit form with valid data', async ({ page }) => {
-		// Fill out the form
-=======
-	test.only('should submit form with valid data', async ({ page }) => {
->>>>>>> Stashed changes
-=======
-	test.only('should submit form with valid data', async ({ page }) => {
->>>>>>> Stashed changes
 		await page.fill('#displayName', 'John Doe');
 		await page.fill('#email', 'john.doe@example.com');
 		await page.fill('#twitter', '@johndoe');
@@ -49,16 +35,9 @@ test.describe('Create account - Registration Form', () => {
 
 		await page.click('button[type="submit"]');
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 		// Assert that the form submission was successful
 		// This will depend on your server response or redirection
-		await expect(page).toHaveURL('/success-page-or-some-other-page');
-=======
-=======
->>>>>>> Stashed changes
 		await expect(page).toHaveURL('/app');
->>>>>>> Stashed changes
 	});
 
 	test.skip('should display validation errors for empty required fields', async ({ page }) => {
