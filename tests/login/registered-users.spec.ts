@@ -7,7 +7,11 @@ test.describe('Login - Registered Users', () => {
 	});
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	test.only('should set cookie with jwt on successful login', async ({ page, wallet }) => {
+=======
+	test.skip('should set cookie with jwt on successful login', async ({ page, wallet }) => {
+>>>>>>> Stashed changes
 =======
 	test.skip('should set cookie with jwt on successful login', async ({ page, wallet }) => {
 >>>>>>> Stashed changes

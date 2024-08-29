@@ -31,8 +31,12 @@ test.describe('Create account - Registration Form', () => {
 	});
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 	test('should submit form with valid data', async ({ page }) => {
 		// Fill out the form
+=======
+	test.only('should submit form with valid data', async ({ page }) => {
+>>>>>>> Stashed changes
 =======
 	test.only('should submit form with valid data', async ({ page }) => {
 >>>>>>> Stashed changes
@@ -46,10 +50,13 @@ test.describe('Create account - Registration Form', () => {
 		await page.click('button[type="submit"]');
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 		// Assert that the form submission was successful
 		// This will depend on your server response or redirection
 		await expect(page).toHaveURL('/success-page-or-some-other-page');
 =======
+=======
+>>>>>>> Stashed changes
 		await expect(page).toHaveURL('/app');
 >>>>>>> Stashed changes
 	});
