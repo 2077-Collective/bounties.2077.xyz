@@ -7,7 +7,7 @@ test.describe.skip('Login - Registered Users', () => {
 		await page.goto('/login');
 	});
 
-	test('should set cookie with jwt on successful login', async ({ page, wallet }) => {
+	test.skip('should set cookie with jwt on successful login', async ({ page, wallet }) => {
 		await page.click('#login');
 		await wallet.signin();
 

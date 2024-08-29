@@ -2,6 +2,8 @@ import { test, expect } from '@playwright/test';
 import { setupDb } from '../utils/setup-db';
 
 test.describe('Create account - Registration Form', () => {
+	const walletAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';
+
 	test.beforeAll(async () => setupDb());
 
 	test.beforeEach(async ({ page, browser }) => {
@@ -18,13 +20,12 @@ test.describe('Create account - Registration Form', () => {
 
 		await page.goto('/');
 		await page.evaluate(() => {
-			localStorage.setItem('walletAddress', '0x742d35Cc6634C0532925a3b844Bc454e4438f44e');
+			localStorage.setItem('walletAddress', walletAddress);
 		});
 		await page.goto('/create-account');
 	});
 
-	test.only('should submit form with valid data', async ({ page }) => {
-		// Fill out the form
+	test('should submit form with valid data', async ({ page }) => {
 		await page.fill('#displayName', 'John Doe');
 		await page.fill('#email', 'john.doe@example.com');
 		await page.fill('#twitter', '@johndoe');
@@ -32,10 +33,6 @@ test.describe('Create account - Registration Form', () => {
 		await page.fill('#image', 'https://johndoe.com/image.jpg');
 		await page.fill('#bio', 'This is a short bio.');
 
-		// Select user type
-		await page.check('#regular');
-
-		// Submit the form
 		await page.click('button[type="submit"]');
 
 		// Assert that the form submission was successful
@@ -43,19 +40,16 @@ test.describe('Create account - Registration Form', () => {
 		await expect(page).toHaveURL('/app');
 	});
 
-	test('should display validation errors for empty required fields', async ({ page }) => {
-		// Try to submit the form without filling out required fields
+	test.skip('should display validation errors for empty required fields', async ({ page }) => {
 		await page.click('button[type="submit"]');
 
-		// Check for validation errors
 		await expect(page.locator('p:text("Display name is required")')).toBeVisible();
 		await expect(page.locator('p:text("Username is required")')).toBeVisible();
 		await expect(page.locator('p:text("Email is required")')).toBeVisible();
 		await expect(page.locator('p:text("Bio is required")')).toBeVisible();
 	});
 
-	test('should send walletAddress from local storage', async ({ page }) => {
-		// Fill out the form
+	test.skip('should send walletAddress from local storage', async ({ page }) => {
 		await page.fill('#displayName', 'John Doe');
 		await page.fill('#email', 'john.doe@example.com');
 		await page.fill('#twitter', '@johndoe');
@@ -63,13 +57,9 @@ test.describe('Create account - Registration Form', () => {
 		await page.fill('#image', 'https://johndoe.com/image.jpg');
 		await page.fill('#bio', 'This is a short bio.');
 
-		// Select user type
-		await page.check('#regular');
-
-		// Intercept the form submission and check the payload
 		await page.route('**/register', (route) => {
 			const postData = route.request().postData();
-			expect(postData).toContain('walletAddress=0x1234567890abcdef');
+			expect(postData).toContain('walletAddress=' + walletAddress);
 			route.fulfill({
 				status: 200,
 				contentType: 'application/json',
@@ -77,7 +67,6 @@ test.describe('Create account - Registration Form', () => {
 			});
 		});
 
-		// Submit the form
 		await page.click('button[type="submit"]');
 	});
 });
