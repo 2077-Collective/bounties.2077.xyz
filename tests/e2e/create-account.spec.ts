@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { setupDb } from '../utils/setup-db';
+import { setupDb } from './utils/fixtures';
 
 test.describe('Create account - Registration Form', () => {
 	const walletAddress = '0x742d35Cc6634C0532925a3b844Bc454e4438f44e';

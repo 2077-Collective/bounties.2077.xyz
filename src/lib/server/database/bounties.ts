@@ -18,6 +18,10 @@ export async function getBountyById(id: number) {
 	return bounty[0];
 }
 
+export async function getBountiesBySponsorId(sponsorId: number) {
+	return db.select().from(bounties).where(eq(bounties.sponsorId, sponsorId)).execute();
+}
+
 export async function updateBountyById(id: number, bounty: UpdateBounty) {
 	return db.update(bounties).set(bounty).where(eq(bounties.id, id));
 }

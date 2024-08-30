@@ -126,7 +126,7 @@ export const comments = pgTable('comments', {
 // Types
 export const InsertSponsorSchema = createInsertSchema(sponsors);
 export const UpdateSponsorSchema = InsertSponsorSchema.partial();
-export type SponsorSelect = typeof sponsors.$inferSelect;
+export type SelectSponsor = typeof sponsors.$inferSelect;
 export type InsertSponsor = typeof sponsors.$inferInsert;
 
 export const InsertBountySchema = createInsertSchema(bounties);

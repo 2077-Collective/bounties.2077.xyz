@@ -1,6 +1,6 @@
-import type { SponsorSelect, UserSelect } from '$lib/server/schema';
+import type { SelectSponsor, SelectUser } from '$lib/server/schema';
 
 export interface Account {
-	users: UserSelect;
-	sponsors: SponsorSelect | null;
+	users: SelectUser;
+	sponsors: SelectSponsor | null;
 }

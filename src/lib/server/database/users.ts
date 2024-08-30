@@ -26,6 +26,20 @@ export async function getUserById(id: number) {
 	return user[0];
 }
 
+export async function getUserByAddress(walletAddress: string) {
+	const user: Account[] = await db
+		.select()
+		.from(users)
+		.where(eq(users.walletAddress, walletAddress))
+		.leftJoin(sponsors, eq(users.id, sponsors.userId))
+		.limit(1)
+		.execute();
+
+	if (user.length === 0) return null;
+
+	return user[0];
+}
+
 export async function getUserIdByWalletAddress(walletAddress: string): Promise<number | null> {
 	const user: SelectUser[] = await db
 		.select()

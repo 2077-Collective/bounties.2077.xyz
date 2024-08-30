@@ -1,14 +1,21 @@
-import { test, expect } from '@playwright/test';
-import { setupDb } from '../utils/setup-db';
+import { test } from './utils/dappwright';
+import { expect } from '@playwright/test';
+import { setupDb, createUserFixture } from './utils/fixtures';
 
-test.describe('Sponsor Information Form', () => {
-	test.beforeAll(async () => await setupDb());
-
-	test.beforeEach(async ({ page }) => {
-		await page.goto('/sponsor');
+test.describe.only('Sponsor Information Form', () => {
+	test.beforeAll(async () => {
+		await setupDb([createUserFixture]);
 	});
 
-	test.only('renders the form correctly', async ({ page }) => {
+	test.only("redirects to create sponsor profile page if user doesn't have one", async ({
+		cookiePage
+	}) => {
+		await cookiePage.goto('/sponsor');
+		await cookiePage.pause();
+		await expect(cookiePage).toHaveURL('/app/createa-sponsor-profile');
+	});
+
+	test('renders the form correctly', async ({ page }) => {
 		await expect(page.getByRole('heading', { name: 'Sponsor Information' })).toBeVisible();
 		await expect(page.getByLabel('Display Name')).toBeVisible();
 		await expect(page.getByLabel('Email')).toBeVisible();
@@ -19,7 +26,7 @@ test.describe('Sponsor Information Form', () => {
 		await expect(page.getByRole('button', { name: 'Submit' })).toBeVisible();
 	});
 
-	test.only('fills out the form and submits successfully', async ({ page }) => {
+	test('fills out the form and submits successfully', async ({ page }) => {
 		await page.fill('#displayName', 'John Doe');
 		await page.fill('#email', 'john.doe@example.com');
 		await page.fill('#twitter', '@johndoe');

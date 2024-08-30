@@ -12,7 +12,7 @@ const t1 = true;
 const connectionUrl = process.env.DATABASE_CONNECTION_URL || '';
 
 export const postgresDb = () => {
-	const queryClient = postgres(connectionUrl);
+	const queryClient = postgres(connectionUrl, { onnotice: () => {} });
 	return drizzlePg(queryClient);
 };
 

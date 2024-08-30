@@ -1,6 +1,6 @@
 import {
 	sponsors,
-	type Sponsor,
+	type SelectSponsor,
 	UpdateSponsorSchema,
 	type InsertSponsor
 } from '$lib/server/schema';
@@ -16,8 +16,8 @@ export function getSponsors() {
 	return db.select().from(sponsors).orderBy(asc(sponsors.displayName));
 }
 
-export async function getSponsorById(id: number): Promise<Sponsor | null> {
-	const sponsor: Sponsor[] = await db
+export async function getSponsorById(id: number): Promise<SelectSponsor | null> {
+	const sponsor: SelectSponsor[] = await db
 		.select()
 		.from(sponsors)
 		.where(eq(sponsors.id, id))
@@ -29,6 +29,14 @@ export async function getSponsorById(id: number): Promise<Sponsor | null> {
 	return sponsor[0];
 }
 
-export function updateSponsorById(id: number, sponsor: z.infer<typeof UpdateSponsorSchema>) {
-	return db.update(sponsors).set(sponsor).where(eq(sponsors.id, id));
+export async function updateSponsorById(id: number, sponsor: z.infer<typeof UpdateSponsorSchema>) {
+	const updatedSponsor = await db
+		.update(sponsors)
+		.set(sponsor)
+		.where(eq(sponsors.id, id))
+		.returning();
+
+	if (updatedSponsor.length === 0) return null;
+
+	return updatedSponsor[0];
 }
