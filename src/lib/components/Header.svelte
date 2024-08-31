@@ -6,11 +6,12 @@
 			</div>
 			<div class="hidden md:block">
 				<div class="ml-10 flex items-baseline space-x-4">
-					<button
+					<a
+						href="/app"
 						class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 					>
-						Profile
-					</button>
+						Home
+					</a>
 					<a
 						class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 						href="/app/sponsor"

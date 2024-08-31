@@ -9,7 +9,7 @@ import postgres from 'postgres';
 export async function setupDb(fixtures: (() => Promise<void>)[] = []) {
 	const connectionUrl = process.env.DATABASE_CONNECTION_URL || '';
 
-	const migrationClient = postgres(connectionUrl, { max: 1 });
+	const migrationClient = postgres(connectionUrl, { max: 1, onnotice: () => {} });
 	await migrate(drizzle(migrationClient), {
 		migrationsFolder: path.join(process.cwd(), 'drizzle')
 	});
@@ -33,4 +33,10 @@ export async function createUserFixture(): Promise<void> {
 		website: '2077.xyz',
 		bio: 'Unoficial marketing department of Ethereum.'
 	});
+}
+
+export async function clearSponsorsTable(): Promise<void> {
+	const db = postgresDb();
+
+	await db.execute(sql`TRUNCATE TABLE sponsors CASCADE`);
 }

@@ -14,9 +14,8 @@ export const actions: Actions = {
 		const sponsor = InsertSponsorSchema.parse(formData);
 		await createNewSponsor({ ...sponsor, userId: account.users.id });
 
-		// Must update locals
 		locals.account = await getUserById(account.users.id);
 
-		throw redirect(307, '/app/sponsor');
+		throw redirect(303, '/app/sponsor');
 	}
 };

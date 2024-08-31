@@ -3,42 +3,42 @@ import { redirect, type Handle } from '@sveltejs/kit';
 import { JWTSigner } from '@2077Collective/persona';
 import { getUserById } from '$lib/server/database/users';
 import { JWT_SECRET } from '$env/static/private';
+import fs from 'fs/promises';
 
 export const getAccount = async (jwt: string): Promise<Account | null> => {
 	const payload = await new JWTSigner(JWT_SECRET).verify(jwt);
 
-	console.log({ payload: payload.data });
-
-	if (!payload.data) {
+	if (payload.data === undefined || payload.data === null) {
 		return null;
 	}
 
-	console.log({ payload: payload.data });
+	const user = getUserById(
+		typeof payload === 'number' ? payload : parseInt(payload.data as string)
+	);
 
-	return getUserById(typeof payload === 'number' ? payload : parseInt(payload.data as string));
+	return user;
 };
 
 const skipAuth = ['/login', '/', '/create-account'];
 
 export const handle: Handle = async ({ event, resolve }) => {
-	console.log('Inside hook');
+	await fs.appendFile('payload.txt', 'Inside hook\n');
 
 	if (event.route.id && skipAuth.includes(event.route.id)) {
 		return resolve(event);
 	}
 
 	const jwt = event.cookies.get('jwt');
-	console.log({ jwt });
 	if (!jwt) {
 		throw redirect(307, '/login');
 	}
 
 	const account = await getAccount(jwt);
-	console.log({ account });
 	if (!account) {
 		throw redirect(307, '/create-account');
 	}
 
 	event.locals.account = account;
+	await fs.appendFile('payload.txt', 'Locals set\n');
 	return resolve(event);
 };
