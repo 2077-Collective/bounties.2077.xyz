@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	const { class: className, description } = $props<{ class: string; description: Snippet }>();
+	const { class: className, children } = $props<{ class?: string; children: Snippet }>();
 </script>
 
 <p class={`text-sm text-muted-foreground ${className}`}>
-	{@render description()}
+	{@render children()}
 </p>

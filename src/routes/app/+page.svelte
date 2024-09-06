@@ -1,4 +1,14 @@
 <script lang="ts">
+	import Select from '$lib/components/Select.svelte';
+
+	// Filter options
+	const filterOptions = [
+		{ label: 'All', value: 'all' },
+		{ label: 'Open', value: 'open' },
+		{ label: 'In progress', value: 'in-progress' },
+		{ label: 'Finished', value: 'finished' }
+	];
+
 	// Mock data for bounties
 	const mockBounties = [
 		{
@@ -34,7 +44,7 @@
 			: mockBounties.filter((bounty) => bounty.status === statusFilter);
 </script>
 
-<div class="min-h-screen bg-gray-100">
+<div class="min-h-screen">
 	<div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
 		<div class="px-4 py-6 sm:px-0">
 			<div class="flex justify-between items-center mb-6">
@@ -43,17 +53,7 @@
 
 			<div class="mb-6">
 				<label for="status" class="block text-sm font-medium text-gray-700">Filter by Status</label>
-				<select
-					id="status"
-					name="status"
-					class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-					bind:value={statusFilter}
-				>
-					<option>All</option>
-					<option>Open</option>
-					<option>In Progress</option>
-					<option>Closed</option>
-				</select>
+				<Select options={filterOptions} onchange={() => console.log()} />
 			</div>
 
 			<div class="bg-white shadow overflow-hidden sm:rounded-md">

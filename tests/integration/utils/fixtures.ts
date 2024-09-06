@@ -1,10 +1,12 @@
 import { postgresDb } from '$lib/server/database';
-import { users } from '$lib/server/schema';
+import { users, sponsors } from '$lib/server/schema';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import path from 'path';
 import postgres from 'postgres';
+
+const db = postgresDb();
 
 export async function setupDb(fixtures: (() => Promise<void>)[] = []) {
 	const connectionUrl = process.env.DATABASE_CONNECTION_URL || '';
@@ -14,7 +16,8 @@ export async function setupDb(fixtures: (() => Promise<void>)[] = []) {
 		migrationsFolder: path.join(process.cwd(), 'drizzle')
 	});
 
-	await postgresDb().execute(sql`TRUNCATE TABLE users CASCADE`);
+	await db.execute(sql`TRUNCATE TABLE users CASCADE`);
+	await db.execute(sql`TRUNCATE TABLE sponsors CASCADE`);
 
 	for (const fixture of fixtures) {
 		await fixture();
@@ -22,8 +25,6 @@ export async function setupDb(fixtures: (() => Promise<void>)[] = []) {
 }
 
 export async function createUserFixture(): Promise<void> {
-	const db = postgresDb();
-
 	await db.insert(users).values({
 		id: 0,
 		email: 'test@2077.xyz',
@@ -35,8 +36,19 @@ export async function createUserFixture(): Promise<void> {
 	});
 }
 
-export async function clearSponsorsTable(): Promise<void> {
-	const db = postgresDb();
+export async function createSponsorFixture(): Promise<void> {
+	await db.insert(sponsors).values({
+		id: 0,
+		displayName: '2077 Collective',
+		website: '2077.xyz',
+		twitter: '2077Collective',
+		userId: 0,
+		email: 'test@2077.xyz',
+		image: 'https://2077.xyz/logo.png',
+		bio: 'Unoficial marketing department of Ethereum.'
+	});
+}
 
+export async function clearSponsorsTable(): Promise<void> {
 	await db.execute(sql`TRUNCATE TABLE sponsors CASCADE`);
 }

@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import Input from '$lib/components/Input.svelte';
+	import Button from '$lib/components/Button.svelte';
 
-	let userType: 'regular' | 'sponsor' = 'regular';
 	let formData = {
 		displayName: '',
 		username: '',
@@ -44,7 +45,7 @@
 >
 	<h2 class="text-2xl font-bold mb-6 text-center">User Information</h2>
 
-	<input
+	<Input
 		type="text"
 		id="walletAddress"
 		name="walletAddress"
@@ -55,7 +56,7 @@
 
 	<div class="mb-4">
 		<label for="displayName" class="block mb-2 font-medium text-gray-700">Display Name</label>
-		<input
+		<Input
 			type="text"
 			id="displayName"
 			name="displayName"
@@ -67,19 +68,12 @@
 
 	<div class="mb-4">
 		<label for="email" class="block mb-2 font-medium text-gray-700">Email</label>
-		<input
-			type="email"
-			id="email"
-			name="email"
-			bind:value={formData.email}
-			required
-			class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-		/>
+		<Input type="email" id="email" name="email" bind:value={formData.email} required />
 	</div>
 
 	<div class="mb-4">
 		<label for="image" class="block mb-2 font-medium text-gray-700">Image URL (optional)</label>
-		<input
+		<Input
 			type="url"
 			id="image"
 			name="image"
@@ -90,7 +84,7 @@
 
 	<div class="mb-4">
 		<label for="website" class="block mb-2 font-medium text-gray-700">Website (optional)</label>
-		<input
+		<Input
 			type="url"
 			id="website"
 			name="website"
@@ -101,13 +95,7 @@
 
 	<div class="mb-4">
 		<label for="twitter" class="block mb-2 font-medium text-gray-700">Twitter</label>
-		<input
-			type="text"
-			id="twitter"
-			bind:value={formData.twitter}
-			required
-			class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-		/>
+		<Input type="text" id="twitter" bind:value={formData.twitter} required />
 	</div>
 
 	<div class="mb-6">
@@ -122,10 +110,5 @@
 		></textarea>
 	</div>
 
-	<button
-		type="submit"
-		class="w-full py-2 px-4 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75"
-	>
-		Submit
-	</button>
+	<Button type="submit">Submit</Button>
 </form>

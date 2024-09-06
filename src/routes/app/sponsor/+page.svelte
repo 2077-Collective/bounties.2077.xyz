@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Calendar, DollarSign, Edit, User } from 'lucide-svelte';
 	import type { PageData } from './$types';
+	import LinkButton from '$lib/components/LinkButton.svelte';
+	import PageHeading from '$lib/components/PageHeading.svelte';
 
 	export let data: PageData;
 
@@ -59,7 +61,10 @@
 </script>
 
 <div class="container mx-auto px-4 py-8">
-	<h1 class="text-3xl font-bold mb-8">Sponsor Dashboard</h1>
+	<div class="flex justify-between items-center">
+		<PageHeading>Sponsor Dashboard</PageHeading>
+		<LinkButton href="/app/sponsor/create-bounty">Create Bounty</LinkButton>
+	</div>
 
 	<div class="mb-4">
 		<div class="flex border-b">

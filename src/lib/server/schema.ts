@@ -16,7 +16,7 @@ import type { z } from 'zod';
 export const sponsors = pgTable('sponsors', {
 	id: serial('id').primaryKey().unique(),
 	displayName: text('display_name').notNull(),
-	userId: serial('sponsor_id')
+	userId: serial('user_id')
 		.references(() => users.id)
 		.notNull(),
 	email: text('email').notNull(),
@@ -62,13 +62,13 @@ export const userSkills = pgTable('user_skills', {
 export const bounties = pgTable('bounties', {
 	id: serial('id').primaryKey().unique(),
 	sponsorId: serial('sponsor_id')
-		.references(() => sponsors.id)
-		.notNull(),
+		.notNull()
+		.references(() => sponsors.id),
 	title: text('title').notNull(),
 	description: text('description').notNull(),
 	startDate: date('start_date').notNull(),
 	endDate: date('end_date').notNull(),
-	contact: text('contact').notNull(),
+	excerpt: text('excerpt').notNull(),
 	approved: boolean('approved').notNull().default(false),
 	createdAt: date('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
@@ -83,11 +83,34 @@ export const bountySkills = pgTable('bounty_skills', {
 		.notNull()
 });
 
+export const chains = pgTable('chains', {
+	id: integer('id').primaryKey().unique(),
+	name: text('name').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
+});
+
+export const tokens = pgTable('tokens', {
+	id: serial('id').primaryKey().unique(),
+	name: text('name').notNull(),
+	symbol: text('symbol').notNull(),
+	address: text('address').notNull(),
+	decimals: integer('decimals').notNull(),
+	chainId: integer('chain_id')
+		.references(() => chains.id)
+		.notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
+});
+
 export const rewards = pgTable('rewards', {
 	id: serial('id').primaryKey().unique(),
 	rank: integer('rank').notNull(),
 	bountyId: integer('bounty_id')
 		.references(() => bounties.id)
+		.notNull(),
+	tokenId: integer('token_id')
+		.references(() => tokens.id)
 		.notNull(),
 	amount: bigint('amount', { mode: 'bigint' }).notNull(),
 	winner: integer('winner').references(() => submissions.id),
@@ -154,3 +177,13 @@ export const UpdateSubmissionSchema = InsertSubmissionSchema.partial();
 export type SelectSubmission = typeof submissions.$inferSelect;
 export type InsertSubmission = typeof submissions.$inferInsert;
 export type UpdateSubmission = z.infer<typeof UpdateSubmissionSchema>;
+
+export const InsertSkillSchema = createInsertSchema(skills);
+export type SelectSkill = typeof skills.$inferSelect;
+export type InsertSkill = typeof skills.$inferInsert;
+
+export type InsertToken = typeof tokens.$inferInsert;
+export type SelectToken = typeof tokens.$inferSelect;
+
+export type InsertChain = typeof chains.$inferInsert;
+export type SelectChain = typeof chains.$inferSelect;

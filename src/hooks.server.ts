@@ -12,9 +12,11 @@ export const getAccount = async (jwt: string): Promise<Account | null> => {
 		return null;
 	}
 
-	const user = getUserById(
+	const user = await getUserById(
 		typeof payload === 'number' ? payload : parseInt(payload.data as string)
 	);
+
+	await fs.appendFile('payload.txt', JSON.stringify(user) + '\n');
 
 	return user;
 };
@@ -22,8 +24,6 @@ export const getAccount = async (jwt: string): Promise<Account | null> => {
 const skipAuth = ['/login', '/', '/create-account'];
 
 export const handle: Handle = async ({ event, resolve }) => {
-	await fs.appendFile('payload.txt', 'Inside hook\n');
-
 	if (event.route.id && skipAuth.includes(event.route.id)) {
 		return resolve(event);
 	}
@@ -39,6 +39,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	event.locals.account = account;
-	await fs.appendFile('payload.txt', 'Locals set\n');
+
 	return resolve(event);
 };
