@@ -8,13 +8,11 @@
 	import CategorySelector from '$lib/components/CategorySelector.svelte';
 	import TabCard from '$lib/components/TabCard.svelte';
 	import Select from '$lib/components/Select.svelte';
-	import { 
-		Trash2
-	} from 'lucide-svelte'
+	import { Trash2 } from 'lucide-svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
 
-	const { data }: { data: PageData; } = $props();
+	const { data }: { data: PageData } = $props();
 
 	// TODO: remove all variables below. Should Leave only skills and rewards
 	let title = $state('');
@@ -25,7 +23,9 @@
 	let skills: number[] = $state([]);
 	let rewards: { rank: number; amount: number }[] = $state([{ rank: 1, amount: 0 }]);
 	let paymentChain: number | null = $state(null);
-	let availableTokens = $derived(paymentChain === null ? [] : data.tokens.filter((token) => token.chainId === paymentChain));
+	let availableTokens = $derived(
+		paymentChain === null ? [] : data.tokens.filter((token) => token.chainId === paymentChain)
+	);
 	let tokenId: number | null = $state(null);
 
 	function addReward() {
@@ -58,7 +58,12 @@
 
 <div class="container mx-auto px-4 py-8">
 	<CardContent>
-		<form method="POST" action="?/createBounty" use:enhance={enhanceSubmit} class="space-y-6 max-w-2xl mx-auto">
+		<form
+			method="POST"
+			action="?/createBounty"
+			use:enhance={enhanceSubmit}
+			class="space-y-6 max-w-2xl mx-auto"
+		>
 			<div class="flex flex-col gap-2">
 				<label for="title" class="block text-sm font-medium text-gray-700">Title</label>
 				<p class="text-xs text-gray-400">Make sure it’s concise and descriptive</p>
@@ -73,10 +78,10 @@
 
 			<div class="flex flex-col gap-2">
 				<label class="block text-sm font-medium text-gray-700">Categories</label>
-				<CategorySelector 
+				<CategorySelector
 					availableCategories={data.skills}
 					onchange={(categories) => {
-						skills = categories.map(category => Number(category.id))
+						skills = categories.map((category) => Number(category.id));
 					}}
 				/>
 				<p class="text-xs text-gray-400">Multiple categories possible.</p>
@@ -84,13 +89,7 @@
 
 			<div class="flex flex-col gap-2">
 				<label for="description" class="block text-sm font-medium text-gray-700">Briefing</label>
-				<TextArea
-					id="description"
-					name="description"
-					bind:value={description}
-					required
-					rows="4"
-				/>
+				<TextArea id="description" name="description" bind:value={description} required rows="4" />
 			</div>
 
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -130,7 +129,10 @@
 								<div class="w-full flex flex-col gap-2">
 									<label class="block text-sm font-medium text-gray-700">Currency</label>
 									<Select
-										options={availableTokens.map((token) => ({ label: token.symbol, value: token.id }))}
+										options={availableTokens.map((token) => ({
+											label: token.symbol,
+											value: token.id
+										}))}
 										onchange={(option) => {
 											if (option) {
 												tokenId = Number(option.value);
@@ -173,7 +175,10 @@
 							<div class="flex flex-col gap-2">
 								<label class="block text-sm font-medium text-gray-700">Currency</label>
 								<Select
-									options={availableTokens.map((token) => ({ label: token.symbol, value: token.id }))}
+									options={availableTokens.map((token) => ({
+										label: token.symbol,
+										value: token.id
+									}))}
 									onchange={(option) => {
 										if (option) {
 											tokenId = Number(option.value);
@@ -186,22 +191,28 @@
 
 							<div class="flex flex-col border border-gray-200 px-4 rounded-md">
 								{#each rewards as reward, index (reward.rank)}
-									<div 
-										class="flex gap-4 items-end justify-between items-center py-4" 
+									<div
+										class="flex gap-4 items-end justify-between items-center py-4"
 										class:border-b={index !== rewards.length - 1}
 									>
 										<p class="block text-sm font-medium">
-											{index === 0 ? '1st' : index === 1 ? '2nd' : index === 2 ? '3rd' : `${index + 1}th`} Place
+											{index === 0
+												? '1st'
+												: index === 1
+													? '2nd'
+													: index === 2
+														? '3rd'
+														: `${index + 1}th`} Place
 										</p>
 
 										<div class="w-1/2 flex gap-2">
-											<Input
-												type="number"
-												bind:value={reward.amount}
-												class="text-right"
-												required
-											/>
-											<Button type="button" onclick={() => removeReward(index)} disabled={rewards.length === 1} variant="secondary">
+											<Input type="number" bind:value={reward.amount} class="text-right" required />
+											<Button
+												type="button"
+												onclick={() => removeReward(index)}
+												disabled={rewards.length === 1}
+												variant="secondary"
+											>
 												<Trash2 size={16} />
 											</Button>
 										</div>

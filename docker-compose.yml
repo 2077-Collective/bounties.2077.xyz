@@ -4,9 +4,8 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_DB: "bounties"
-      POSTGRES_USER: "2077"
-      POSTGRES_PASSWORD: "2077"
+      POSTGRES_DB: 'bounties'
+      POSTGRES_USER: '2077'
+      POSTGRES_PASSWORD: '2077'
     ports:
-      - "5432:5432"
-
+      - '5432:5432'

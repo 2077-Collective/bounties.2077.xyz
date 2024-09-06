@@ -4,7 +4,12 @@ import { bounties, bountySkills, type InsertBounty, type UpdateBounty } from '..
 import { batchCreateRewards } from './rewards';
 
 // TODO: use transaction
-export async function createNewBounty(bounty: InsertBounty, rewards: bigint[], skills: number[], tokenId: number) {
+export async function createNewBounty(
+	bounty: InsertBounty,
+	rewards: bigint[],
+	skills: number[],
+	tokenId: number
+) {
 	const [newBounty] = await db.insert(bounties).values(bounty).returning();
 
 	await Promise.all([

@@ -28,7 +28,7 @@
 	{type}
 	class={`cursor-pointer flex items-center rounded-md text-sm font-medium focus:outline-none ${Variant[variant]}`}
 	{onclick}
-	disabled={disabled}
+	{disabled}
 >
 	{@render children()}
 </button>

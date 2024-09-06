@@ -14,11 +14,7 @@ const NewBountySchema = InsertBountySchema.extend({
 });
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const [ skills, tokens, chains ] = await Promise.all([
-		getSkills(),
-		getTokens(),
-		getChains()
-	]);
+	const [skills, tokens, chains] = await Promise.all([getSkills(), getTokens(), getChains()]);
 
 	return {
 		skills,

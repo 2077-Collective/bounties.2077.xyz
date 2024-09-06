@@ -9,7 +9,7 @@
 
 	const {
 		availableCategories,
-		onchange,
+		onchange
 	}: {
 		availableCategories: Category[];
 		onchange: (categories: Category[]) => void;
@@ -19,13 +19,17 @@
 	let dropdownElement: HTMLUListElement;
 	let categories: Category[] = $state([]);
 	let inputValue = $state('');
-	let filteredOptions: Category[] = $derived.by(() =>
-		availableCategories.filter(
+	let filteredOptions: Category[] = $derived.by(() => {
+		const filt = availableCategories.filter(
 			({ name }) =>
 				name.toLowerCase().includes(inputValue.toLowerCase()) &&
 				!categories.some((existingCat) => existingCat.name.toLowerCase() === name.toLowerCase())
-		)
-	);
+		);
+
+		console.log(filt);
+
+		return filt;
+	});
 	let showDropdown = $derived(inputValue !== '' && filteredOptions.length > 0);
 
 	onMount(() => {
@@ -38,7 +42,9 @@
 	}
 
 	function addCategory(category: Category) {
-		const isDuplicate = categories.some((cat) => cat.name.toLowerCase() === category.name.trim().toLowerCase());
+		const isDuplicate = categories.some(
+			(cat) => cat.name.toLowerCase() === category.name.trim().toLowerCase()
+		);
 
 		if (category.name.trim() && !isDuplicate) {
 			categories = [...categories, category];
@@ -51,13 +57,12 @@
 		if (e.key === 'Enter' && inputValue.trim()) {
 			const category = findCategoryByName(inputValue);
 
-			if (!category) return
+			if (!category) return;
 
 			// Do nothing if the category is invalid
 			addCategory(category);
 			e.preventDefault(); // Prevent form submission if within a form
-		}
-		else if (e.key === 'Backspace' && inputValue === '' && categories.length > 0) {
+		} else if (e.key === 'Backspace' && inputValue === '' && categories.length > 0) {
 			const lastCategory = categories[categories.length - 1];
 			removeCategory(lastCategory.id);
 		} else if (e.key === 'ArrowDown' && showDropdown) {
@@ -112,7 +117,7 @@
 					type="button"
 				>
 					<X size={14} />
-					</button>
+				</button>
 			</span>
 		{/each}
 		<input
