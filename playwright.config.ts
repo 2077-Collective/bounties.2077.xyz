@@ -1,5 +1,9 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { MetaMaskWallet } from '@tenkeylabs/dappwright';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env.test
+dotenv.config({ path: '.env.test' });
 
 const config: PlaywrightTestConfig = {
 	webServer: {

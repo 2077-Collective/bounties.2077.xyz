@@ -1,4 +1,4 @@
-import { postgresDb } from '$lib/server/database';
+import { db } from '$lib/server/database';
 import { users, sponsors } from '$lib/types/schema';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
@@ -6,22 +6,10 @@ import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import path from 'path';
 import postgres from 'postgres';
 
-const db = postgresDb();
-
-export async function truncateTables(fixtures: (() => Promise<void>)[] = []) {
-	await db.execute(sql`TRUNCATE TABLE users CASCADE`);
-	await db.execute(sql`TRUNCATE TABLE sponsors CASCADE`);
-
-	for (const fixture of fixtures) {
-		await fixture();
-	}
-}
-
 // Should only run migrations if the database is empty
 export async function runMigrations() {
-	const connectionUrl = process.env.TEST_DATABASE_CONNECTION_URL || '';
-
-	const migrationClient = postgres(connectionUrl, { max: 1, onnotice: () => {} });
+	const connectionUrl = process.env.DATABASE_CONNECTION_URL || '';
+	const migrationClient = postgres(connectionUrl, { max: 1 });
 	await migrate(drizzle(migrationClient), {
 		migrationsFolder: path.join(process.cwd(), 'drizzle')
 	});

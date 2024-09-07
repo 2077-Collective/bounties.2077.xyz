@@ -187,15 +187,7 @@ async function seedTokens() {
 }
 
 export async function globalSeeder() {
-	console.log('Seeding database...');
-
 	await seedSkills();
 	await seedChains();
 	await seedTokens();
-
-	console.log('Seeding complete!');
-
-	process.exit(0);
 }
-
-globalSeeder();

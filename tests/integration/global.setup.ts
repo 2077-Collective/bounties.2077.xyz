@@ -1,16 +1,11 @@
-import {
-	createSponsorFixture,
-	createUserFixture,
-	runMigrations,
-	truncateTables
-} from './utils/fixtures';
+import { createSponsorFixture, createUserFixture, runMigrations } from './utils/fixtures';
+import { globalSeeder } from '../../scripts/db/seed';
 
 async function globalSetup() {
 	await runMigrations();
-	await truncateTables();
 	await createUserFixture();
 	await createSponsorFixture();
-	// await globalSeeder();
+	await globalSeeder();
 }
 
 export default globalSetup;

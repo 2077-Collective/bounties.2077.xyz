@@ -1,16 +1,18 @@
 # This database is used for local development and testing purposes only.
 services:
-  db1:
+  db:
     image: postgres:latest
     restart: always
     environment:
       POSTGRES_DB: 'bounties'
       POSTGRES_USER: '2077'
       POSTGRES_PASSWORD: '2077'
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
 
-  db2:
+  db-test:
     image: postgres:latest
     restart: always
     environment:

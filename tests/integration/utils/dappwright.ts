@@ -1,9 +1,7 @@
-import { postgresDb } from '$lib/server/database';
+import { db } from '$lib/server/database';
 import { type BrowserContext, type Page, test as baseTest } from '@playwright/test';
 import dappwright, { type Dappwright, MetaMaskWallet } from '@tenkeylabs/dappwright';
 import { sql } from 'drizzle-orm';
-
-const db = postgresDb();
 
 export const test = baseTest.extend<{
 	context: BrowserContext;
