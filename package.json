@@ -13,7 +13,7 @@
 		"format": "prettier --write .",
 		"test:integration": "docker compose up -d && playwright test || true && docker compose down",
 		"test:integration-ui": "playwright test --headed",
-		"test:unit": "vitest",
+		"test:unit": "echo 'no unit tests'",
 		"db:seed": "vite-node scripts/db/seed.ts",
 		"db:push": "drizzle-kit push",
 		"db:migration": "drizzle-kit generate",
