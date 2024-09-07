@@ -10,7 +10,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      JWT_SECRET: "supersecret"
+      JWT_SECRET: 'supersecret'
 
     steps:
       - uses: actions/checkout@v3
