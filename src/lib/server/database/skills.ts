@@ -1,5 +1,6 @@
 import { db } from '.';
-import { skills, type InsertSkill } from '../schema';
+import { skills } from '$lib/types/schema';
+import type { InsertSkill } from '$lib/types';
 
 export async function batchCreateSkills(s: InsertSkill[]) {
 	return db.insert(skills).values(s).returning();

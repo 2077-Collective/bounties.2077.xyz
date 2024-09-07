@@ -6,7 +6,7 @@ const config: PlaywrightTestConfig = {
 		command: 'npm run build && npm run preview',
 		port: 4173
 	},
-	testDir: 'tests',
+	globalSetup: './tests/integration/global.setup',
 	projects: [
 		{
 			name: 'MetaMask',

@@ -1,5 +1,5 @@
 import { updateBountyById } from '$lib/server/database/bounties';
-import { UpdateBountySchema } from '$lib/server/schema';
+import { UpdateBountySchema } from '$lib/types';
 import { error, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {

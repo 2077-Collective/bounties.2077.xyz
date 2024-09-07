@@ -1,5 +1,5 @@
 import { updateUserById } from '$lib/server/database/users';
-import { UpdateUserSchema } from '$lib/server/schema';
+import { UpdateUserSchema } from '$lib/types';
 import { fail, type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {

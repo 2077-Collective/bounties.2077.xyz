@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '.';
-import { tokens, type InsertToken } from '../schema';
+import { tokens } from '$lib/types/schema';
+import type { InsertToken } from '$lib/types';
 
 export async function addToken(token: InsertToken) {
 	const [newToken] = await db.insert(tokens).values(token).returning();

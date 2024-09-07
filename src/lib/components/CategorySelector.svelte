@@ -8,9 +8,11 @@
 	}
 
 	const {
+		name,
 		availableCategories,
 		onchange
 	}: {
+		name: string;
 		availableCategories: Category[];
 		onchange: (categories: Category[]) => void;
 	} = $props();
@@ -19,17 +21,13 @@
 	let dropdownElement: HTMLUListElement;
 	let categories: Category[] = $state([]);
 	let inputValue = $state('');
-	let filteredOptions: Category[] = $derived.by(() => {
-		const filt = availableCategories.filter(
+	let filteredOptions: Category[] = $derived.by(() =>
+		availableCategories.filter(
 			({ name }) =>
 				name.toLowerCase().includes(inputValue.toLowerCase()) &&
 				!categories.some((existingCat) => existingCat.name.toLowerCase() === name.toLowerCase())
-		);
-
-		console.log(filt);
-
-		return filt;
-	});
+		)
+	);
 	let showDropdown = $derived(inputValue !== '' && filteredOptions.length > 0);
 
 	onMount(() => {
@@ -127,6 +125,7 @@
 			onkeydown={handleInputKeyDown}
 			class="flex-grow min-w-[100px] outline-none text-sm"
 			placeholder="Add category"
+			{name}
 		/>
 	</div>
 	<button

@@ -5,7 +5,7 @@ export default (() => {
 		throw new Error('DATABASE_CONNECTION_URL is not defined');
 
 	return defineConfig({
-		schema: './src/lib/server/schema.ts',
+		schema: './src/lib/types/schema.ts',
 		dialect: 'postgresql',
 		dbCredentials: {
 			url: process.env.DATABASE_CONNECTION_URL

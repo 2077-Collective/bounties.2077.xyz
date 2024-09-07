@@ -3,7 +3,7 @@
 
 	const Variant = {
 		primary: 'bg-black text-white px-3 py-2',
-		secondary: 'text-black'
+		transparent: 'text-black'
 	} as const;
 
 	const {

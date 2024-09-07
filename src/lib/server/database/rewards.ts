@@ -1,12 +1,22 @@
 import { eq } from 'drizzle-orm';
-import { db } from '.';
-import { rewards } from '../schema';
+import { db, type Transaction } from '.';
+import { rewards } from '$lib/types/schema';
+import { withTransaction } from './utils';
 
-export function batchCreateRewards(bountyId: number, tokenId: number, rewardAmounts: bigint[]) {
-	return db
-		.insert(rewards)
-		.values(rewardAmounts.map((amount, index) => ({ amount, bountyId, tokenId, rank: index + 1 })))
-		.returning();
+export function batchCreateRewards(
+	bountyId: number,
+	tokenId: number,
+	rewardAmounts: bigint[],
+	tx?: Transaction
+) {
+	return withTransaction(async (tx) => {
+		return tx
+			.insert(rewards)
+			.values(
+				rewardAmounts.map((amount, index) => ({ amount, bountyId, tokenId, rank: index + 1 }))
+			)
+			.returning();
+	}, tx);
 }
 
 export async function getRewardsByBountyId(bountyId: number) {

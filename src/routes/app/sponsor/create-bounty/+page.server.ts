@@ -1,7 +1,7 @@
 import { createNewBounty } from '$lib/server/database/bounties';
 import { getSkills } from '$lib/server/database/skills';
-import { InsertBountySchema } from '$lib/server/schema';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { InsertBountySchema } from '$lib/types';
+import { fail, type Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { PageServerLoad } from './$types';
 import { getTokens } from '$lib/server/database/tokens';
@@ -13,7 +13,7 @@ const NewBountySchema = InsertBountySchema.extend({
 	tokenId: z.string().transform((val) => parseInt(val, 10))
 });
 
-export const load: PageServerLoad = async ({ locals }) => {
+export const load: PageServerLoad = async () => {
 	const [skills, tokens, chains] = await Promise.all([getSkills(), getTokens(), getChains()]);
 
 	return {

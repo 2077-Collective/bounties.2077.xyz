@@ -9,14 +9,12 @@ import {
 	text,
 	timestamp
 } from 'drizzle-orm/pg-core';
-import { createInsertSchema } from 'drizzle-zod';
-import type { z } from 'zod';
+import { relations } from 'drizzle-orm';
 
-// Database schemas
 export const sponsors = pgTable('sponsors', {
 	id: serial('id').primaryKey().unique(),
 	displayName: text('display_name').notNull(),
-	userId: serial('user_id')
+	userId: integer('user_id')
 		.references(() => users.id)
 		.notNull(),
 	email: text('email').notNull(),
@@ -28,10 +26,22 @@ export const sponsors = pgTable('sponsors', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
+export const sponsorRelations = relations(sponsors, ({ one }) => ({
+	user: one(users, {
+		fields: [sponsors.userId],
+		references: [users.id]
+	})
+}));
+
 export const skills = pgTable('skills', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique()
 });
+
+export const skillRelations = relations(skills, ({ many }) => ({
+	users: many(users),
+	bounties: many(bounties)
+}));
 
 // TODO: need to ensure that user always has a wallet address or an email address
 // Wallet adress used to authenticate via SIWE
@@ -59,6 +69,11 @@ export const userSkills = pgTable('user_skills', {
 		.notNull()
 });
 
+export const userRelations = relations(users, ({ many }) => ({
+	sponsors: many(sponsors),
+	skills: many(skills)
+}));
+
 export const bounties = pgTable('bounties', {
 	id: serial('id').primaryKey().unique(),
 	sponsorId: serial('sponsor_id')
@@ -71,8 +86,20 @@ export const bounties = pgTable('bounties', {
 	excerpt: text('excerpt').notNull(),
 	approved: boolean('approved').notNull().default(false),
 	createdAt: date('created_at').notNull().defaultNow(),
-	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
+	draft: boolean('draft').notNull().default(true)
 });
+
+export const bountyRelations = relations(bounties, ({ many, one }) => ({
+	skills: many(bountySkills),
+	sponsor: one(sponsors, {
+		fields: [bounties.sponsorId],
+		references: [sponsors.id]
+	}),
+	comments: many(comments),
+	submissions: many(submissions),
+	rewards: many(rewards)
+}));
 
 export const bountySkills = pgTable('bounty_skills', {
 	bountyId: integer('bounty_id')
@@ -83,6 +110,16 @@ export const bountySkills = pgTable('bounty_skills', {
 		.notNull()
 });
 
+export const bountySkillsRelations = relations(bountySkills, ({ one }) => ({
+	bounty: one(bounties, {
+		fields: [bountySkills.bountyId],
+		references: [bounties.id]
+	}),
+	skill: one(skills, {
+		fields: [bountySkills.skillId],
+		references: [skills.id]
+	})
+}));
 export const chains = pgTable('chains', {
 	id: integer('id').primaryKey().unique(),
 	name: text('name').notNull(),
@@ -103,6 +140,17 @@ export const tokens = pgTable('tokens', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
+export const chainRelations = relations(chains, ({ many }) => ({
+	tokens: many(tokens)
+}));
+
+export const tokenRelations = relations(tokens, ({ one }) => ({
+	chain: one(chains, {
+		fields: [tokens.chainId],
+		references: [chains.id]
+	})
+}));
+
 export const rewards = pgTable('rewards', {
 	id: serial('id').primaryKey().unique(),
 	rank: integer('rank').notNull(),
@@ -117,6 +165,21 @@ export const rewards = pgTable('rewards', {
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
+
+export const rewardRelations = relations(rewards, ({ one }) => ({
+	bounty: one(bounties, {
+		fields: [rewards.bountyId],
+		references: [bounties.id]
+	}),
+	token: one(tokens, {
+		fields: [rewards.tokenId],
+		references: [tokens.id]
+	}),
+	winner: one(submissions, {
+		fields: [rewards.winner],
+		references: [submissions.id]
+	})
+}));
 
 export const submissions = pgTable('submissions', {
 	id: serial('id').primaryKey().unique(),
@@ -133,6 +196,17 @@ export const submissions = pgTable('submissions', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
+export const submissionRelations = relations(submissions, ({ one }) => ({
+	bounty: one(bounties, {
+		fields: [submissions.bountyId],
+		references: [bounties.id]
+	}),
+	user: one(users, {
+		fields: [submissions.userId],
+		references: [users.id]
+	})
+}));
+
 export const comments = pgTable('comments', {
 	id: serial('id').primaryKey().unique(),
 	bountyId: integer('bounty_id')
@@ -146,44 +220,35 @@ export const comments = pgTable('comments', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
-// Types
-export const InsertSponsorSchema = createInsertSchema(sponsors);
-export const UpdateSponsorSchema = InsertSponsorSchema.partial();
-export type SelectSponsor = typeof sponsors.$inferSelect;
-export type InsertSponsor = typeof sponsors.$inferInsert;
+export const commentRelations = relations(comments, ({ one }) => ({
+	bounty: one(bounties, {
+		fields: [comments.bountyId],
+		references: [bounties.id]
+	}),
+	user: one(users, {
+		fields: [comments.userId],
+		references: [users.id]
+	})
+}));
 
-export const InsertBountySchema = createInsertSchema(bounties);
-export const UpdateBountySchema = InsertBountySchema.partial();
-export type SelectBounty = typeof bounties.$inferSelect;
-export type InsertBounty = typeof bounties.$inferInsert;
-export type UpdateBounty = z.infer<typeof UpdateBountySchema>;
+export default {
+	sponsors,
+	bounties,
+	rewards,
+	users,
+	comments,
+	submissions,
+	skills,
+	tokens,
+	chains,
 
-export const InsertRewardSchema = createInsertSchema(rewards);
-export type SelectReward = typeof rewards.$inferSelect;
-export type InsertReward = typeof rewards.$inferInsert;
-
-export const InsertUserSchema = createInsertSchema(users);
-export const UpdateUserSchema = InsertUserSchema.partial();
-export type SelectUser = typeof users.$inferSelect;
-export type InsertUser = typeof users.$inferInsert;
-export type UpdateUser = z.infer<typeof UpdateUserSchema>;
-
-export const InsetCommentSchema = createInsertSchema(comments);
-export type SelectComment = typeof comments.$inferSelect;
-export type InsertComment = typeof comments.$inferInsert;
-
-export const InsertSubmissionSchema = createInsertSchema(submissions);
-export const UpdateSubmissionSchema = InsertSubmissionSchema.partial();
-export type SelectSubmission = typeof submissions.$inferSelect;
-export type InsertSubmission = typeof submissions.$inferInsert;
-export type UpdateSubmission = z.infer<typeof UpdateSubmissionSchema>;
-
-export const InsertSkillSchema = createInsertSchema(skills);
-export type SelectSkill = typeof skills.$inferSelect;
-export type InsertSkill = typeof skills.$inferInsert;
-
-export type InsertToken = typeof tokens.$inferInsert;
-export type SelectToken = typeof tokens.$inferSelect;
-
-export type InsertChain = typeof chains.$inferInsert;
-export type SelectChain = typeof chains.$inferSelect;
+	sponsorRelations,
+	bountyRelations,
+	bountySkillsRelations,
+	rewardRelations,
+	userRelations,
+	commentRelations,
+	submissionRelations,
+	tokenRelations,
+	chainRelations
+} as const;

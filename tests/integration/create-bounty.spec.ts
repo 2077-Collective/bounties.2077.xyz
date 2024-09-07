@@ -1,17 +1,8 @@
 import { expect } from '@playwright/test';
-import {
-	setupDb,
-	createUserFixture,
-	clearSponsorsTable,
-	createSponsorFixture
-} from './utils/fixtures';
+// import { createUserFixture, createSponsorFixture } from './utils/fixtures';
 import { test } from './utils/dappwright';
 
-test.describe.only('Create Bounty Form', () => {
-	test.beforeAll(async () => {
-		await setupDb([createUserFixture, createSponsorFixture]);
-	});
-
+test.describe('Create Bounty Form', () => {
 	test.beforeEach(async ({ cookiePage }) => {
 		await cookiePage.goto('/app/sponsor/create-bounty');
 	});
@@ -52,13 +43,14 @@ test.describe.only('Create Bounty Form', () => {
 		await cookiePage.fill('input#reward', '1000');
 
 		await cookiePage.click('#paymentChain');
-		await cookiePage.pause();
 		await cookiePage.click('li:has-text("Ethereum")');
 
 		await cookiePage.click('#tokenId');
 		await cookiePage.click('li:has-text("USDC")');
 
 		await cookiePage.click('button[type="submit"]');
+
+		await cookiePage.pause();
 
 		await expect(cookiePage).toHaveURL('/app/sponsor');
 

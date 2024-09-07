@@ -1,5 +1,5 @@
 import { createNewUser } from '$lib/server/database/users';
-import { InsertUserSchema } from '$lib/server/schema';
+import { InsertUserSchema } from '$lib/types';
 import { type Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {

@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '.';
-import { chains, type InsertChain, type SelectChain } from '../schema';
+import { chains } from '$lib/types/schema';
+import type { InsertChain, SelectChain } from '$lib/types';
 
 export async function addChain(chain: InsertChain) {
 	const [newChain] = await db.insert(chains).values(chain).returning();

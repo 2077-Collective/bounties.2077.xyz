@@ -1,7 +1,7 @@
 import { getBountyById } from '$lib/server/database/bounties';
 import { createNewComment, getCommentsByBountyId } from '$lib/server/database/comments';
 import { createNewSubmission } from '$lib/server/database/submissions';
-import { InsertSubmissionSchema, InsetCommentSchema } from '$lib/server/schema';
+import { InsertSubmissionSchema, InsetCommentSchema } from '$lib/types';
 import { error, type Actions, type LoadEvent } from '@sveltejs/kit';
 import { fail } from '@sveltejs/kit';
 

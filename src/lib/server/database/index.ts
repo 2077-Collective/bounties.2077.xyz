@@ -1,27 +1,32 @@
 import { neon } from '@neondatabase/serverless';
 import { drizzle as drizzleNeon } from 'drizzle-orm/neon-http';
 import { drizzle as drizzlePg } from 'drizzle-orm/postgres-js';
-import { migrate } from 'drizzle-orm/postgres-js/migrator';
-// import { DATABASE_CONNECTION_URL, NODE_ENV } from '$env/static/private';
 import postgres from 'postgres';
-import path from 'path';
 import 'dotenv/config';
+import * as schema from '$lib/types/schema';
 
-const t1 = true;
+// Note: note using $env because playwright isn't able to access the env variables
+const DATABASE_CONNECTION_URL = process.env.DATABASE_CONNECTION_URL || '';
+const TEST_DATABASE_CONNECTION_URL = process.env.TEST_DATABASE_CONNECTION_URL || '';
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
-const connectionUrl = process.env.DATABASE_CONNECTION_URL || '';
-
-export const postgresDb = () => {
+export const postgresDb = (connectionUrl: string = DATABASE_CONNECTION_URL) => {
 	const queryClient = postgres(connectionUrl, { onnotice: () => {} });
-	return drizzlePg(queryClient);
+	return drizzlePg<typeof schema>(queryClient, { schema });
 };
 
 // Uses postgres-js in development and neon in production
 export const db = (() => {
-	// if (NODE_ENV === 'development' || NODE_ENV === 'test') {
-	if (t1) {
+	if (NODE_ENV === 'development') {
 		return postgresDb();
+	} else if (NODE_ENV === 'test') {
+		return postgresDb(TEST_DATABASE_CONNECTION_URL);
 	}
 
-	return drizzleNeon(neon(connectionUrl));
+	return drizzleNeon<typeof schema>(neon(DATABASE_CONNECTION_URL), { schema });
 })();
+
+// Type for the transaction object, each database has a different generic type.
+// If you know a better way to do this, please let make a PR.
+export type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
+export type DbOrTransaction = typeof db | Transaction;

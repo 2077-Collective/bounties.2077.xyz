@@ -1,4 +1,4 @@
-import { UpdateSponsorSchema } from '$lib/server/schema';
+import { UpdateSponsorSchema } from '$lib/types';
 import type { Actions } from './$types';
 import { updateSponsorById } from '$lib/server/database/sponsors';
 import { error } from '@sveltejs/kit';

@@ -20,7 +20,7 @@
 	let isOpen = $state(false);
 	let searchTerm = $state('');
 	let selectedOption: Option | null = $state(null);
-	// @ts-ignore
+	// @ts-ignore TODO fix this
 	let selectedValue = $derived(selectedOption?.value);
 	let dropdownRef: HTMLDivElement;
 

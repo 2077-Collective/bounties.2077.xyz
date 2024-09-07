@@ -1,7 +1,9 @@
 import { eq } from 'drizzle-orm';
 import { db } from '.';
-import { submissions, type InsertSubmission, type UpdateSubmission } from '../schema';
+import { submissions } from '$lib/types/schema';
+import type { InsertSubmission, UpdateSubmission } from '$lib/types';
 
+// TODO: shouldn't allow new submissions if bounty is closed
 export function createNewSubmission(submission: InsertSubmission) {
 	return db.insert(submissions).values(submission).returning();
 }

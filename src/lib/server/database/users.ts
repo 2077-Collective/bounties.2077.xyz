@@ -1,7 +1,8 @@
 import { eq, inArray } from 'drizzle-orm';
 import { db } from '.';
-import { sponsors, users, type InsertUser, type UpdateUser, type SelectUser } from '../schema';
+import { sponsors, users } from '$lib/types/schema';
 import type { Account } from '$lib/types';
+import type { InsertUser, UpdateUser, SelectUser } from '$lib/types';
 
 export async function createNewUser(user: InsertUser) {
 	const createdUsers = await db.insert(users).values(user).returning();

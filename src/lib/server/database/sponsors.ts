@@ -1,12 +1,8 @@
-import {
-	sponsors,
-	type SelectSponsor,
-	UpdateSponsorSchema,
-	type InsertSponsor
-} from '$lib/server/schema';
+import { type SelectSponsor, UpdateSponsorSchema, type InsertSponsor } from '$lib/types';
 import { asc, eq } from 'drizzle-orm';
 import { db } from '.';
 import { z } from 'zod';
+import { sponsors } from '$lib/types/schema';
 
 export function createNewSponsor(sponsor: InsertSponsor) {
 	return db.insert(sponsors).values(sponsor).returning();

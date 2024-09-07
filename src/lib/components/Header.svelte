@@ -12,9 +12,9 @@
 			</div>
 			<div class="hidden md:block">
 				<div class="ml-10 flex items-baseline space-x-4">
-					<LinkButton variant="secondary" href="/app">Home</LinkButton>
-					<LinkButton variant="secondary" href="/app/sponsor">Sponsor</LinkButton>
-					<LinkButton variant="secondary" href="/app/preferences">Preferences</LinkButton>
+					<LinkButton variant="transparent" href="/app">Home</LinkButton>
+					<LinkButton variant="transparent" href="/app/sponsor">Sponsor</LinkButton>
+					<LinkButton variant="transparent" href="/app/preferences">Preferences</LinkButton>
 				</div>
 			</div>
 

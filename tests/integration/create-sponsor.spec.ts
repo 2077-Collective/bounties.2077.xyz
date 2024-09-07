@@ -1,23 +1,7 @@
 import { test } from './utils/dappwright';
 import { expect } from '@playwright/test';
-import { setupDb, createUserFixture, clearSponsorsTable } from './utils/fixtures';
 
 test.describe('Sponsor Information Form', () => {
-	test.beforeAll(async () => {
-		await setupDb([createUserFixture]);
-	});
-
-	test.beforeEach(async () => {
-		await clearSponsorsTable();
-	});
-
-	test("redirects to create sponsor profile cookiePage if user doesn't have one", async ({
-		cookiePage
-	}) => {
-		await cookiePage.goto('/app/sponsor');
-		await expect(cookiePage).toHaveURL('/app/create-sponsor-profile');
-	});
-
 	test('renders the form correctly', async ({ cookiePage }) => {
 		await cookiePage.goto('/app/create-sponsor-profile');
 

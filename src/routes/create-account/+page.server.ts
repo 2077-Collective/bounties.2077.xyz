@@ -1,5 +1,5 @@
 import { createNewUser } from '$lib/server/database/users';
-import { InsertUserSchema } from '$lib/server/schema';
+import { InsertUserSchema } from '$lib/types';
 import { JWTSigner } from '@2077Collective/persona';
 import { error, redirect, type Actions } from '@sveltejs/kit';
 

@@ -1,19 +1,29 @@
+<script lang="ts" module>
+	export type Variant = 'default' | 'success' | 'warning' | 'danger' | 'info';
+</script>
+
 <script lang="ts">
-	type Variant = 'default' | 'secondary' | 'destructive' | 'outline';
-
-	interface BadgeProps {
-		variant?: Variant;
-		class?: string;
-	}
-
-	let className: string = '';
-	export { className as class };
-	export let variant: Variant = 'default';
+	import type { Snippet } from 'svelte';
 
 	const variantStyles: Record<Variant, string> = {
-		default: 'bg-primary text-primary-foreground hover:bg-primary/80',
-		secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-		destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/80',
-		outline: 'text-foreground border border-input hover:bg-accent hover:text-accent-foreground'
+		default: 'bg-gray-lighter text-gray-dark',
+		success: 'bg-green text-green-dark',
+		danger: 'bg-red-light text-red-dark',
+		warning: 'bg-eggshell-light text-eggshell-dark',
+		info: 'bg-black text-white'
 	};
+
+	const {
+		variant = 'default',
+		class: className,
+		children
+	}: {
+		variant?: Variant;
+		class?: string;
+		children: Snippet;
+	} = $props();
 </script>
+
+<div class={`${variantStyles[variant]} rounded-full px-2 py-1 text-sm w-fit ${className}`}>
+	{@render children()}
+</div>

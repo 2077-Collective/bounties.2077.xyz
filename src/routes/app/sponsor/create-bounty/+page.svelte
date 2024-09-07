@@ -51,6 +51,7 @@
 		formData.append(`tokenId`, tokenId?.toString() ?? '');
 
 		return async ({ result }) => {
+			console.log(result);
 			if (result.type === 'success') goto('/app/sponsor');
 		};
 	};
@@ -77,12 +78,13 @@
 			</div>
 
 			<div class="flex flex-col gap-2">
-				<label class="block text-sm font-medium text-gray-700">Categories</label>
+				<label for="skills" class="block text-sm font-medium text-gray-700">Categories</label>
 				<CategorySelector
 					availableCategories={data.skills}
 					onchange={(categories) => {
 						skills = categories.map((category) => Number(category.id));
 					}}
+					name="skills"
 				/>
 				<p class="text-xs text-gray-400">Multiple categories possible.</p>
 			</div>
@@ -113,7 +115,9 @@
 					{#snippet winnerTakesAll()}
 						<div class="flex flex-col gap-6 w-full">
 							<div class="flex flex-col gap-2">
-								<label class="block text-sm font-medium text-gray-700"> Payment network </label>
+								<label for="paymentChain" class="block text-sm font-medium text-gray-700">
+									Payment network
+								</label>
 								<Select
 									options={data.chains.map((chain) => ({ label: chain.name, value: chain.id }))}
 									onchange={(option) => {
@@ -127,7 +131,9 @@
 							</div>
 							<div class="flex gap-6">
 								<div class="w-full flex flex-col gap-2">
-									<label class="block text-sm font-medium text-gray-700">Currency</label>
+									<label for="tokenId" class="block text-sm font-medium text-gray-700"
+										>Currency</label
+									>
 									<Select
 										options={availableTokens.map((token) => ({
 											label: token.symbol,
@@ -143,7 +149,7 @@
 									/>
 								</div>
 								<div class="w-full flex flex-col gap-2">
-									<label class="block text-sm font-medium text-gray-700">Amount</label>
+									<label for="reward" class="block text-sm font-medium text-gray-700">Amount</label>
 									<Input
 										type="number"
 										id="reward"
@@ -159,7 +165,9 @@
 					{#snippet multipleWinners()}
 						<div class="flex flex-col gap-6 w-full">
 							<div class="flex flex-col gap-2">
-								<label class="block text-sm font-medium text-gray-700">Payment network</label>
+								<label for="paymentChain" class="block text-sm font-medium text-gray-700"
+									>Payment network</label
+								>
 								<Select
 									options={data.chains.map((chain) => ({ label: chain.name, value: chain.id }))}
 									onchange={(option) => {
@@ -173,7 +181,8 @@
 							</div>
 
 							<div class="flex flex-col gap-2">
-								<label class="block text-sm font-medium text-gray-700">Currency</label>
+								<label for="tokenId" class="block text-sm font-medium text-gray-700">Currency</label
+								>
 								<Select
 									options={availableTokens.map((token) => ({
 										label: token.symbol,

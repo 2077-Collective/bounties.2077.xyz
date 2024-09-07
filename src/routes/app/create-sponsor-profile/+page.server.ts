@@ -1,5 +1,5 @@
 import { createNewSponsor } from '$lib/server/database/sponsors';
-import { InsertSponsorSchema } from '$lib/server/schema';
+import { InsertSponsorSchema } from '$lib/types';
 import { error, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { getUserById } from '$lib/server/database/users';
@@ -11,8 +11,8 @@ export const actions: Actions = {
 		if (!account) throw error(401, { message: 'Unauthorized' });
 
 		const formData = Object.fromEntries(await request.formData());
-		const sponsor = InsertSponsorSchema.parse(formData);
-		await createNewSponsor({ ...sponsor, userId: account.users.id });
+		const sponsor = InsertSponsorSchema.parse({ ...formData, userId: account.users.id });
+		await createNewSponsor(sponsor);
 
 		locals.account = await getUserById(account.users.id);
 

@@ -186,7 +186,7 @@ async function seedTokens() {
 	await batchCreateTokens(tokens);
 }
 
-async function seed() {
+export async function globalSeeder() {
 	console.log('Seeding database...');
 
 	await seedSkills();
@@ -198,4 +198,4 @@ async function seed() {
 	process.exit(0);
 }
 
-seed();
+globalSeeder();
