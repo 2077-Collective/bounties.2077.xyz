@@ -19,7 +19,8 @@
 		"db:migration": "drizzle-kit generate",
 		"db:drop": "drizzle-kit drop",
 		"db:migrate": "drizzle-kit migrate",
-		"db:studio": "drizzle-kit studio"
+		"db:studio": "drizzle-kit studio",
+		"prepare": "husky"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
@@ -34,6 +35,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.36.0",
 		"globals": "^15.0.0",
+		"husky": "^9.1.5",
 		"postcss": "^8.4.41",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
