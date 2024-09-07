@@ -16,7 +16,7 @@
 		disabled = false,
 		variant = 'regular'
 	}: {
-		value: string | number;
+		value: string;
 		class?: string;
 		id?: string;
 		name?: string;

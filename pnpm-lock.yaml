@@ -8,9 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@2077Collective/persona':
-        specifier: ../auth
-        version: link:../auth
+      '@2077collective/persona':
+        specifier: ^0.0.1
+        version: 0.0.1(@sveltejs/kit@2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(typescript@5.5.4)(webextension-polyfill@0.12.0)(zod@3.23.8)
       '@neondatabase/serverless':
         specifier: ^0.9.4
         version: 0.9.4
@@ -40,7 +40,7 @@ importers:
         version: 3.4.4
       test-sveltekit-web-auth:
         specifier: 0.0.1
-        version: 0.0.1(@sveltejs/kit@2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(typescript@5.5.4)(webextension-polyfill@0.12.0)(zod@3.23.8)
+        version: 0.0.1(@sveltejs/kit@2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(typescript@5.5.4)(webextension-polyfill@0.12.0)(zod@3.23.8)
       zod:
         specifier: ^3.23.8
         version: 3.23.8
@@ -50,10 +50,10 @@ importers:
         version: 1.46.1
       '@sveltejs/adapter-auto':
         specifier: ^3.0.0
-        version: 3.2.4(@sveltejs/kit@2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))
+        version: 3.2.4(@sveltejs/kit@2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))
       '@sveltejs/kit':
-        specifier: ^2.0.0
-        version: 2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
+        specifier: ^2.5.26
+        version: 2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^4.0.0-next.6
         version: 4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
@@ -116,6 +116,12 @@ importers:
         version: 2.0.5(@types/node@22.5.0)(terser@5.31.6)
 
 packages:
+
+  '@2077collective/persona@0.0.1':
+    resolution: {integrity: sha512-cEGIoClaqKZrm8jFithtIgFVZKCBX9ygwwKx6O3T774Grex+TgMv/FFY6wb0TFWBk3uu3F+D9ShCccLUtgO3Eg==}
+    peerDependencies:
+      '@sveltejs/kit': ^2.0.0
+      svelte: ^5.0.0-next.1
 
   '@adraffy/ens-normalize@1.10.0':
     resolution: {integrity: sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==}
@@ -1628,8 +1634,8 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
-  '@sveltejs/kit@2.5.24':
-    resolution: {integrity: sha512-Nr2oxsCsDfEkdS/zzQQQbsPYTbu692Qs3/iE3L7VHzCVjG2+WujF9oMUozWI7GuX98KxYSoPMlAsfmDLSg44hQ==}
+  '@sveltejs/kit@2.5.26':
+    resolution: {integrity: sha512-8l1JTIM2L+bS8ebq1E+nGjv/YSKSnD9Q19bYIUkc41vaEG2JjVUx6ikvPIJv2hkQAuqJLzoPrXlKk4KcyWOv3Q==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
@@ -3974,6 +3980,9 @@ packages:
   joi@17.13.3:
     resolution: {integrity: sha512-otDA4ldcIx+ZXsKHWmp0YizCweVRZG96J10b0FevjfuncLO1oX59THoAmHkNubYJ+9gWsYsp5k8v4ib6oDv1fA==}
 
+  jose@5.8.0:
+    resolution: {integrity: sha512-E7CqYpL/t7MMnfGnK/eg416OsFCVUrU/Y3Vwe7QjKhu/BkS1Ms455+2xsqZQVN57/U2MHMBvEb5SrmAZWAIntA==}
+
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -5944,6 +5953,22 @@ packages:
 
 snapshots:
 
+  '@2077collective/persona@0.0.1(@sveltejs/kit@2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(typescript@5.5.4)(webextension-polyfill@0.12.0)(zod@3.23.8)':
+    dependencies:
+      '@metamask/providers': 17.1.2(webextension-polyfill@0.12.0)
+      '@sveltejs/kit': 2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
+      arctic: 1.9.2
+      jose: 5.8.0
+      svelte: 5.0.0-next.234
+      viem: 2.20.0(typescript@5.5.4)(zod@3.23.8)
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - typescript
+      - utf-8-validate
+      - webextension-polyfill
+      - zod
+
   '@adraffy/ens-normalize@1.10.0': {}
 
   '@adraffy/ens-normalize@1.10.1': {}
@@ -7469,12 +7494,12 @@ snapshots:
 
   '@sindresorhus/is@0.7.0': {}
 
-  '@sveltejs/adapter-auto@3.2.4(@sveltejs/kit@2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))':
+  '@sveltejs/adapter-auto@3.2.4(@sveltejs/kit@2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))':
     dependencies:
-      '@sveltejs/kit': 2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
+      '@sveltejs/kit': 2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
       import-meta-resolve: 4.1.0
 
-  '@sveltejs/kit@2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))':
+  '@sveltejs/kit@2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))':
     dependencies:
       '@sveltejs/vite-plugin-svelte': 4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
       '@types/cookie': 0.6.0
@@ -10238,6 +10263,8 @@ snapshots:
       '@sideway/formula': 3.0.1
       '@sideway/pinpoint': 2.0.0
 
+  jose@5.8.0: {}
+
   js-tokens@4.0.0: {}
 
   js-yaml@3.14.1:
@@ -11709,10 +11736,10 @@ snapshots:
       glob: 7.2.3
       minimatch: 3.1.2
 
-  test-sveltekit-web-auth@0.0.1(@sveltejs/kit@2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(typescript@5.5.4)(webextension-polyfill@0.12.0)(zod@3.23.8):
+  test-sveltekit-web-auth@0.0.1(@sveltejs/kit@2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(typescript@5.5.4)(webextension-polyfill@0.12.0)(zod@3.23.8):
     dependencies:
       '@metamask/providers': 17.1.2(webextension-polyfill@0.12.0)
-      '@sveltejs/kit': 2.5.24(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
+      '@sveltejs/kit': 2.5.26(@sveltejs/vite-plugin-svelte@4.0.0-next.7(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6)))(svelte@5.0.0-next.234)(vite@5.4.2(@types/node@22.5.0)(terser@5.31.6))
       '@types/jsonwebtoken': 9.0.6
       arctic: 1.9.2
       jsonwebtoken: 9.0.2

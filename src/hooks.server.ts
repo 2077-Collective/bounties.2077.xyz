@@ -1,9 +1,8 @@
 import type { Account } from '$lib/types';
 import { redirect, type Handle } from '@sveltejs/kit';
-import { JWTSigner } from '@2077Collective/persona';
+import { JWTSigner } from '@2077collective/persona';
 import { getUserById } from '$lib/server/database/users';
 import { JWT_SECRET } from '$env/static/private';
-import fs from 'fs/promises';
 
 export const getAccount = async (jwt: string): Promise<Account | null> => {
 	const payload = await new JWTSigner(JWT_SECRET).verify(jwt);
@@ -15,8 +14,6 @@ export const getAccount = async (jwt: string): Promise<Account | null> => {
 	const user = await getUserById(
 		typeof payload === 'number' ? payload : parseInt(payload.data as string)
 	);
-
-	await fs.appendFile('payload.txt', JSON.stringify(user) + '\n');
 
 	return user;
 };

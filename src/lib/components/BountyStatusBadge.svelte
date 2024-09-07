@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SubmissionState, type EnhancedBounty, type SelectBounty } from '$lib/types';
+	import { SubmissionState, type EnhancedBounty } from '$lib/types';
 	import Badge, { type Variant as BadgeVariant } from './Badge.svelte';
 
 	type BountyStatus = 'draft' | 'open' | 'review' | 'closed';
@@ -18,14 +18,12 @@
 	} = $props();
 
 	const status: BountyStatus = $derived.by(() => {
-		// @ts-ignore
-		if (bounty?.draft) return 'draft';
+		if (bounty.draft) return 'draft';
 
 		const today = new Date();
 		const startDate = new Date(bounty.startDate);
 		const endDate = new Date(bounty.endDate);
 
-		// @ts-ignore
 		if (startDate > today && endDate > today && !bounty.draft) return 'open';
 
 		const hasUnreviewedSubmissions = bounty.submissions.some(

@@ -6,7 +6,7 @@
 	import { formatDistanceToNow, isPast } from 'date-fns';
 	import Input from '$lib/components/Input.svelte';
 	import Badge from '$lib/components/Badge.svelte';
-	import { SubmissionState, type EnhancedBounty, type SelectBounty } from '$lib/types';
+	import { SubmissionState, type EnhancedBounty } from '$lib/types';
 
 	const {
 		data
@@ -17,7 +17,6 @@
 	let searchTerm = $state('');
 
 	const bounties = $derived(data.bounties);
-	const sponsor = $derived(data.sponsor);
 	const filteredBounties = $derived(bounties.filter((bounty) => bounty.title.includes(searchTerm)));
 
 	function formatRelativeDate(endDate: string): string {
@@ -52,7 +51,7 @@
 	<hr />
 
 	<div class="space-y-6">
-		{#each filteredBounties as bounty, index}
+		{#each filteredBounties as bounty}
 			<div class="flex justify-between gap-2">
 				<div class="bg-white rounded-lg flex flex-col gap-2 w-3/4">
 					<div class="flex flex-col gap-2">

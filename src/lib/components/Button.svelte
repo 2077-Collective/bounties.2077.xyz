@@ -19,7 +19,7 @@
 		children: Snippet;
 		type?: ButtonType;
 		variant?: keyof typeof Variant;
-		onclick?: () => any;
+		onclick?: () => void;
 		disabled?: boolean;
 	} = $props();
 </script>

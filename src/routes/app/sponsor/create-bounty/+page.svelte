@@ -21,7 +21,7 @@
 	let endDate = $state('');
 	let excerpt = $state('');
 	let skills: number[] = $state([]);
-	let rewards: { rank: number; amount: number }[] = $state([{ rank: 1, amount: 0 }]);
+	let rewards: { rank: number; amount: string }[] = $state([{ rank: 1, amount: '0' }]);
 	let paymentChain: number | null = $state(null);
 	let availableTokens = $derived(
 		paymentChain === null ? [] : data.tokens.filter((token) => token.chainId === paymentChain)
@@ -30,7 +30,7 @@
 
 	function addReward() {
 		const newRank = rewards.length + 1;
-		rewards = [...rewards, { rank: newRank, amount: 0 }];
+		rewards = [...rewards, { rank: newRank, amount: '0' }];
 	}
 
 	function removeReward(index: number) {
@@ -234,7 +234,7 @@
 								<p class="text-sm text-gray-400">
 									Total bounty amount:
 									<span class="font-semibold">
-										{rewards.reduce((acc, reward) => acc + reward.amount, 0)}
+										{rewards.reduce((acc, reward) => acc + parseInt(reward.amount), 0)}
 										{tokenId ? ` ${data.tokens.find((token) => token.id === tokenId)?.symbol}` : ''}
 									</span>
 								</p>

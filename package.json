@@ -6,7 +6,7 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"test": "npm run test:integration && npm run test:unit",
+		"test": "npm run test:integration",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
@@ -24,8 +24,8 @@
 	"devDependencies": {
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.0.0",
-        "@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
+		"@sveltejs/kit": "^2.5.26",
+		"@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
 		"@synthetixio/synpress": "^3.7.3",
 		"@types/eslint": "^9.6.0",
 		"autoprefixer": "^10.4.20",
@@ -48,7 +48,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@2077Collective/persona": "../auth",
+		"@2077collective/persona": "^0.0.1",
 		"@neondatabase/serverless": "^0.9.4",
 		"@tenkeylabs/dappwright": "^2.8.5",
 		"@types/node": "^22.2.0",

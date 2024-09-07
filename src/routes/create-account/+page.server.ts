@@ -1,6 +1,6 @@
 import { createNewUser } from '$lib/server/database/users';
 import { InsertUserSchema } from '$lib/types';
-import { JWTSigner } from '@2077Collective/persona';
+import { JWTSigner } from '@2077collective/persona';
 import { error, redirect, type Actions } from '@sveltejs/kit';
 
 const jwtSigner = new JWTSigner('secret');

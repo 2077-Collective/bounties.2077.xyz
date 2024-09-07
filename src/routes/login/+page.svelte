@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Auth, type WalletLoginResponse } from '@2077Collective/persona';
+	import { Auth, type WalletLoginResponse } from '@2077collective/persona';
 
 	function handleLogin(user: WalletLoginResponse) {
 		localStorage.setItem('walletAddress', user.address);

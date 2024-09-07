@@ -18,7 +18,7 @@
 	} = $props();
 
 	let inputElement: HTMLInputElement;
-	let dropdownElement: HTMLUListElement;
+	let dropdownElement = $state<HTMLUListElement | null>(null);
 	let categories: Category[] = $state([]);
 	let inputValue = $state('');
 	let filteredOptions: Category[] = $derived.by(() =>
@@ -52,21 +52,35 @@
 	}
 
 	function handleInputKeyDown(e: KeyboardEvent) {
-		if (e.key === 'Enter' && inputValue.trim()) {
-			const category = findCategoryByName(inputValue);
+		switch (e.key) {
+			case 'Enter':
+				if (inputValue.trim()) {
+					const category = findCategoryByName(inputValue);
+					if (category) {
+						addCategory(category);
+						e.preventDefault();
+					}
+				}
+				break;
 
-			if (!category) return;
+			case 'Backspace':
+				if (inputValue === '' && categories.length > 0) {
+					removeCategory(categories[categories.length - 1].id);
+				}
+				break;
 
-			// Do nothing if the category is invalid
-			addCategory(category);
-			e.preventDefault(); // Prevent form submission if within a form
-		} else if (e.key === 'Backspace' && inputValue === '' && categories.length > 0) {
-			const lastCategory = categories[categories.length - 1];
-			removeCategory(lastCategory.id);
-		} else if (e.key === 'ArrowDown' && showDropdown) {
-			e.preventDefault();
-			dropdownElement?.firstElementChild?.focus();
+			case 'ArrowDown':
+				if (showDropdown) {
+					e.preventDefault();
+					focusFirstDropdownOption();
+				}
+				break;
 		}
+	}
+
+	function focusFirstDropdownOption() {
+		const firstOption = dropdownElement?.querySelector('button');
+		firstOption?.focus();
 	}
 
 	function findCategoryByName(name: string): Category | undefined {
@@ -80,18 +94,37 @@
 	}
 
 	function handleOptionKeyDown(e: KeyboardEvent, option: Category) {
-		if (e.key === 'Enter') {
-			addCategory(option);
-		} else if (e.key === 'ArrowDown') {
-			e.preventDefault();
-			(e.target as HTMLLIElement).nextElementSibling?.focus();
-		} else if (e.key === 'ArrowUp') {
-			e.preventDefault();
-			const prevSibling = (e.target as HTMLLIElement).previousElementSibling;
-			if (prevSibling) {
-				prevSibling.focus();
-			} else {
-				inputElement.focus();
+		e.preventDefault();
+		e.stopPropagation();
+
+		const target = e.currentTarget as HTMLButtonElement;
+		switch (e.key) {
+			case 'Enter':
+				addCategory(option);
+				inputElement?.focus();
+				break;
+
+			case 'ArrowDown':
+				e.preventDefault();
+				(
+					target.closest('li')?.nextElementSibling?.querySelector('button') as HTMLButtonElement
+				)?.focus();
+				break;
+
+			case 'ArrowUp': {
+				e.preventDefault();
+
+				const prevButton = target
+					.closest('li')
+					?.previousElementSibling?.querySelector('button') as HTMLButtonElement;
+
+				if (prevButton) {
+					prevButton.focus();
+				} else {
+					inputElement?.focus();
+				}
+
+				break;
 			}
 		}
 	}
@@ -105,11 +138,7 @@
 			>
 				{category.name}
 				<button
-					onclick={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						removeCategory(category.id);
-					}}
+					onclick={() => removeCategory(category.id)}
 					class="ml-1 text-gray-500 hover:text-gray-700 focus:outline-none"
 					aria-label="Remove {category.name} category"
 					type="button"
@@ -140,12 +169,13 @@
 			class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
 		>
 			{#each filteredOptions as option, index (index)}
-				<li
-					onkeydown={(e) => handleOptionKeyDown(e, option)}
-					class="px-4 py-2 hover:bg-gray-100 cursor-pointer focus:bg-gray-100 focus:outline-none"
-					tabindex="-1"
-				>
-					<button onclick={() => handleOptionClick(option)} class="w-full text-left">
+				<li tabindex="-1">
+					<button
+						onclick={() => handleOptionClick(option)}
+						onkeydown={(e) => handleOptionKeyDown(e, option)}
+						class="w-full text-left focus:bg-gray-100 focus:outline-none px-4 py-2 hover:bg-gray-100"
+						type="button"
+					>
 						{option.name}
 					</button>
 				</li>

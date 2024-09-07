@@ -14,7 +14,6 @@
 		twitter: '',
 		bio: ''
 	};
-	let errors: Record<string, string> = {};
 
 	onMount(() => {
 		const walletAddress = localStorage.getItem('walletAddress');
@@ -26,16 +25,6 @@
 
 		formData.walletAddress = walletAddress;
 	});
-
-	function validateForm(): boolean {
-		errors = {};
-		if (!formData.displayName) errors.displayName = 'Display name is required';
-		if (!formData.username) errors.username = 'Username is required';
-		if (!formData.email) errors.email = 'Email is required';
-		if (!/^\S+@\S+\.\S+$/.test(formData.email)) errors.email = 'Invalid email format';
-		if (!formData.bio) errors.bio = 'Bio is required';
-		return Object.keys(errors).length === 0;
-	}
 </script>
 
 <form

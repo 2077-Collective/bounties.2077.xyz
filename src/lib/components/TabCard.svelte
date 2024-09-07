@@ -2,10 +2,13 @@
 	import type { Snippet } from 'svelte';
 	import { Card } from './Card';
 
-	type Props = {
+	interface Props {
 		title: string;
 		labels: string[];
-	} & { [key: string]: Snippet };
+		// This allows the component to accept any #snippet as a child.
+		// If you have a better solution, please make a PR.
+		[key: string]: Snippet | string | string[];
+	}
 
 	const { title, labels, ...restProps }: Props = $props();
 

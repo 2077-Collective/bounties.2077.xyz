@@ -1,5 +1,5 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { generateJWTFromSignedMessage, generateSIWEMessage } from '@2077Collective/persona';
+import { generateJWTFromSignedMessage, generateSIWEMessage } from '@2077collective/persona';
 import { getUserIdByWalletAddress } from '$lib/server/database/users';
 import { JWT_SECRET } from '$env/static/private';
 

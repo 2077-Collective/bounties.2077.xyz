@@ -7,8 +7,8 @@ export const test = baseTest.extend<{
 	cookieContext: BrowserContext;
 	cookiePage: Page;
 }>({
+	// eslint-disable-next-line
 	context: async ({}, use) => {
-		// Launch context with extension
 		const [, , context] = await dappwright.bootstrap('', {
 			wallet: 'metamask',
 			version: MetaMaskWallet.recommendedVersion,

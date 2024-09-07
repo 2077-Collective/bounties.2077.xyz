@@ -85,7 +85,9 @@
 					<li
 						class="px-3 py-2 cursor-pointer hover:bg-blue-100"
 						onclick={() => handleSelect(option)}
+						onkeydown={(e) => e.key === 'Enter' && handleSelect(option)}
 						role="option"
+						tabindex="0"
 						aria-selected={selectedOption?.value === option.value}
 					>
 						{option.label}
