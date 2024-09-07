@@ -1,5 +1,5 @@
-import { db } from '$lib/server/database';
-import { users, sponsors } from '$lib/types/schema';
+import { db } from '../../../src/lib/server/database';
+import { users, sponsors } from '../../../src/lib/types/schema';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
