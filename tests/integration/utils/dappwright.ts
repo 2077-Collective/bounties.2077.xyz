@@ -1,14 +1,11 @@
-import { db } from '$lib/server/database';
 import { type BrowserContext, type Page, test as baseTest } from '@playwright/test';
 import dappwright, { type Dappwright, MetaMaskWallet } from '@tenkeylabs/dappwright';
-import { sql } from 'drizzle-orm';
 
 export const test = baseTest.extend<{
 	context: BrowserContext;
 	wallet: Dappwright;
 	cookieContext: BrowserContext;
 	cookiePage: Page;
-	db: typeof db;
 }>({
 	context: async ({}, use) => {
 		// Launch context with extension
@@ -20,13 +17,6 @@ export const test = baseTest.extend<{
 		});
 
 		await use(context);
-	},
-	db: async ({}, use) => {
-		await db.execute(sql`START TRANSACTION`);
-
-		await use(db);
-
-		await db.execute(sql`ROLLBACK`);
 	},
 	wallet: async ({ context }, use) => {
 		const metamask = await dappwright.getWallet('metamask', context);
