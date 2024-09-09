@@ -43,6 +43,9 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
+      - name: Set up playwright
+        uses: pnpm exec playwright install
+
       - name: Run integration tests
         run: pnpm run test:integration
 
