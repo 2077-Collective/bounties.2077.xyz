@@ -1,9 +1,10 @@
+import { JWT_SECRET } from '$env/static/private';
 import { createNewUser } from '$lib/server/database/users';
 import { InsertUserSchema } from '$lib/types';
 import { JWTSigner } from '@2077collective/persona';
 import { error, redirect, type Actions } from '@sveltejs/kit';
 
-const jwtSigner = new JWTSigner('secret');
+const jwtSigner = new JWTSigner(JWT_SECRET);
 
 // TODO: this function needs to be merged with the app hook
 async function isAuthenticated(jwt: string | undefined): Promise<boolean> {
