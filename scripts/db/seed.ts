@@ -191,3 +191,5 @@ export async function globalSeeder() {
 	await seedChains();
 	await seedTokens();
 }
+
+globalSeeder().then(() => console.log('Seeding complete'));
