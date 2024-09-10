@@ -26,7 +26,7 @@
 
 <button
 	{type}
-	class={`cursor-pointer flex items-center rounded-md text-sm font-medium focus:outline-none ${Variant[variant]}`}
+	class={`cursor-pointer flex items-center rounded-lg text-sm font-medium focus:outline-none w-max ${Variant[variant]}`}
 	{onclick}
 	{disabled}
 >
