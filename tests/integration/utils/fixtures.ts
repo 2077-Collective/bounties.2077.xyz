@@ -8,7 +8,7 @@ import postgres from 'postgres';
 
 // Should only run migrations if the database is empty
 export async function runMigrations() {
-	const connectionUrl = process.env.DATABASE_CONNECTION_URL || '';
+	const connectionUrl = process.env.DATABASE_URL || '';
 	const migrationClient = postgres(connectionUrl, { max: 1 });
 	await migrate(drizzle(migrationClient), {
 		migrationsFolder: path.join(process.cwd(), 'drizzle')
