@@ -13,7 +13,7 @@ const postgresDb = (connectionUrl: string) => {
 // Uses postgres-js in development and neon in production
 export const db = (() => {
 	// Note: note using $env because playwright isn't able to access the env variables
-	const databaseConnectionUrl = process.env.DATABASE_CONNECTION_URL || '';
+	const databaseConnectionUrl = process.env.DATABASE_URL || '';
 	const nodeEnv = process.env.NODE_ENV || 'development';
 
 	return nodeEnv === 'development' || nodeEnv === 'test'
