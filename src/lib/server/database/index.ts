@@ -14,7 +14,6 @@ const postgresDb = (connectionUrl: string) => {
 export const db = (() => {
 	// Note: note using $env because playwright isn't able to access the env variables
 	const databaseConnectionUrl = process.env.DATABASE_CONNECTION_URL || '';
-	console.log('databaseConnectionUrl', databaseConnectionUrl);
 	const nodeEnv = process.env.NODE_ENV || 'development';
 
 	return nodeEnv === 'development' || nodeEnv === 'test'
