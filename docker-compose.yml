@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: '2077'
       POSTGRES_PASSWORD: '2077'
     volumes:
-      - ./db-data:/var/lib/postgresql/data
+      - /var/lib/docker/volumes/
     ports:
       - '5432:5432'
 

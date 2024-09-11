@@ -3,6 +3,7 @@ import { desc, eq, sql } from 'drizzle-orm';
 import { type Transaction } from '.';
 import { withTransaction } from './utils';
 import { v4 as uuidv4 } from 'uuid';
+import { alias } from 'drizzle-orm/pg-core';
 
 // Create a new entry in the waitilist. If a referralUuid is provided, the new entry will be linked to the referral.
 // If the referralUuid is invalid, an error will be thrown.
@@ -14,26 +15,34 @@ import { v4 as uuidv4 } from 'uuid';
 // @ returns the new waitlist entry
 export async function enterWaitlist(email: string, referralCode: string | null, tx?: Transaction) {
 	return withTransaction(async (tx) => {
-		return tx.insert(waitlist).values({
-			email,
-			referralCode: uuidv4(),
-			referredBy: referralCode ? await getWaitlistIfByReferralCode(referralCode, tx) : undefined
-		});
+		const [newEntry] = await tx
+			.insert(waitlist)
+			.values({
+				email,
+				referralCode: uuidv4(),
+				referredBy: referralCode ? await getReferrerByReferralCode(referralCode, tx) : undefined
+			})
+			.returning();
+
+		return newEntry;
 	}, tx);
 }
 
 export async function getWaitlistRank(tx?: Transaction) {
+	const referredWaitList = alias(waitlist, 'referredWaitList');
+
 	return withTransaction(async (tx) => {
 		const query = tx
 			.select({
+				id: waitlist.id,
 				email: waitlist.email,
-				referredBy: waitlist.referredBy,
-				occurrenceCount: sql<number>`count(*)`.as('occurrence_count'),
-				latestCreatedAt: sql<Date>`max(${waitlist.createdAt})`.as('latest_created_at')
+				count: sql`COALESCE(count(${referredWaitList.id}), 0)`.as('count'),
+				inclusionDate: waitlist.createdAt
 			})
 			.from(waitlist)
-			.groupBy(waitlist.referredBy)
-			.orderBy(desc(sql`occurrence_count`), desc(sql`latest_created_at`));
+			.leftJoin(referredWaitList, eq(waitlist.id, referredWaitList.referredBy))
+			.groupBy(waitlist.id, waitlist.email, waitlist.createdAt)
+			.orderBy(desc(sql`count`), waitlist.createdAt);
 
 		return query.execute();
 	}, tx);
@@ -41,23 +50,19 @@ export async function getWaitlistRank(tx?: Transaction) {
 
 export async function getPositionInWaitlist(email: string, tx?: Transaction) {
 	return withTransaction(async (tx) => {
-		const query = tx
-			.select({
-				rank: sql<number>`rank()`.as('rank')
-			})
-			.from(
-				sql`(
-                    select email, row_number() over (order by created_at) as rank
-                    from waitlist
-                ) as waitlist`
-			)
-			.where(eq(waitlist.email, email));
+		const rank = await getWaitlistRank(tx);
 
-		return query.execute();
+		const position = rank.findIndex((entry) => entry.email === email);
+
+		if (position === -1) {
+			throw new Error('Email not found in waitlist');
+		}
+
+		return position + 1;
 	}, tx);
 }
 
-async function getWaitlistIfByReferralCode(
+async function getReferrerByReferralCode(
 	referredBy: string,
 	tx?: Transaction
 ): Promise<number | undefined> {
@@ -70,7 +75,7 @@ async function getWaitlistIfByReferralCode(
 		});
 
 		if (!queryRes) {
-			throw new Error('Invalid referral');
+			return undefined;
 		}
 
 		return queryRes.id;

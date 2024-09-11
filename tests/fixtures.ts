@@ -1,5 +1,5 @@
-import { db } from '../../../src/lib/server/database';
-import { users, sponsors } from '../../../src/lib/types/schema';
+import { db } from '../src/lib/server/database';
+import { users, sponsors } from '../src/lib/types/schema';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
@@ -9,6 +9,9 @@ import postgres from 'postgres';
 // Should only run migrations if the database is empty
 export async function runMigrations() {
 	const connectionUrl = process.env.DATABASE_URL || '';
+
+	console.log('Running migrations', connectionUrl);
+
 	const migrationClient = postgres(connectionUrl, { max: 1 });
 	await migrate(drizzle(migrationClient), {
 		migrationsFolder: path.join(process.cwd(), 'drizzle')

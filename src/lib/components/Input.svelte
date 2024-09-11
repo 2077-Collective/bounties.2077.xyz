@@ -50,7 +50,7 @@
 			{placeholder}
 			{min}
 			{disabled}
-			class="flex-grow focus:outline-none placeholder-gray"
+			class="flex-grow focus:outline-none placeholder-gray disabled:text-gray disabled:bg-white"
 		/>
 		{#if button}
 			{@render button()}

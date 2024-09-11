@@ -60,15 +60,6 @@ export const users = pgTable('users', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
-export const userSkills = pgTable('user_skills', {
-	userId: integer('user_id')
-		.references(() => users.id)
-		.notNull(),
-	skillId: integer('skill_id')
-		.references(() => skills.id)
-		.notNull()
-});
-
 export const userRelations = relations(users, ({ many }) => ({
 	sponsors: many(sponsors),
 	skills: many(skills)

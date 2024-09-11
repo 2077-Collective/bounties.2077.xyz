@@ -10,7 +10,7 @@ const config: PlaywrightTestConfig = {
 		command: 'npm run build && npm run preview',
 		port: 4173
 	},
-	globalSetup: './tests/integration/global.setup',
+	globalSetup: './tests/e2e/e2e.setup',
 	projects: [
 		{
 			name: 'MetaMask',
@@ -22,7 +22,12 @@ const config: PlaywrightTestConfig = {
 			}
 		}
 	],
-	testMatch: /(.+\.)?(test|spec)\.[jt]s/
+	testMatch: ['**/tests/e2e/**/*.spec.ts'],
+	testIgnore: ['**/tests/e2e/utils/**', '**/node_modules/**'],
+	timeout: 30000,
+	use: {
+		baseURL: 'http://localhost:4173'
+	}
 };
 
 export default config;
