@@ -2,8 +2,8 @@ import { waitlist } from '$lib/types/schema';
 import { desc, eq, sql } from 'drizzle-orm';
 import { type Transaction } from '.';
 import { withTransaction } from './utils';
-import { v4 as uuidv4 } from 'uuid';
 import { alias } from 'drizzle-orm/pg-core';
+import { nanoid } from 'nanoid';
 
 // Create a new entry in the waitilist. If a referralUuid is provided, the new entry will be linked to the referral.
 // If the referralUuid is invalid, an error will be thrown.
@@ -19,7 +19,7 @@ export async function enterWaitlist(email: string, referralCode: string | null, 
 			.insert(waitlist)
 			.values({
 				email,
-				referralCode: uuidv4(),
+				referralCode: nanoid(6),
 				referredBy: referralCode ? await getReferrerByReferralCode(referralCode, tx) : undefined
 			})
 			.returning();
