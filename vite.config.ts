@@ -1,11 +1,9 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { loadEnv } from 'vite';
 import { defineConfig } from 'vitest/config';
+import dotenv from 'dotenv';
 
-// import dotenv from 'dotenv';
-
-// // Load environment variables from .env.test
-// dotenv.config({ path: '.env.test' });
+dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
 
 export default defineConfig(({ mode }) => {
 	return {

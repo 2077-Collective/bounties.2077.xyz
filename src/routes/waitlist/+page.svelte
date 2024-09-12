@@ -33,8 +33,6 @@
 					waitlistPosition = result.data.waitlistPosition;
 				}
 
-				console.log(result.data);
-
 				if (result.data?.referralLink) {
 					referralLink = result.data.referralLink;
 				}
