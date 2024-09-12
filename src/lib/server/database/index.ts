@@ -1,5 +1,5 @@
-import { neon } from '@neondatabase/serverless';
-import { drizzle as drizzleNeon } from 'drizzle-orm/neon-http';
+import { Pool } from '@neondatabase/serverless';
+import { drizzle as drizzleNeon } from 'drizzle-orm/neon-serverless';
 import { drizzle as drizzlePg } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import 'dotenv/config';
@@ -16,9 +16,12 @@ export const db = (() => {
 	const databaseConnectionUrl = process.env.DATABASE_URL || '';
 	const nodeEnv = process.env.NODE_ENV || 'development';
 
-	return nodeEnv === 'development' || nodeEnv === 'test'
-		? postgresDb(databaseConnectionUrl)
-		: drizzleNeon<typeof schema>(neon(databaseConnectionUrl), { schema });
+	if (nodeEnv === 'development' || nodeEnv === 'test') {
+		return postgresDb(databaseConnectionUrl);
+	} else {
+		const pool = new Pool({ connectionString: databaseConnectionUrl });
+		return drizzleNeon<typeof schema>(pool, { schema });
+	}
 })();
 
 // Type for the transaction object, each database has a different generic type.

@@ -7,7 +7,8 @@ import {
 	sponsors,
 	submissions,
 	tokens,
-	users
+	users,
+	waitlist
 } from '$lib/types/schema';
 import { createInsertSchema } from 'drizzle-zod';
 import type { z } from 'zod';
@@ -68,3 +69,7 @@ export type SelectToken = typeof tokens.$inferSelect;
 
 export type InsertChain = typeof chains.$inferInsert;
 export type SelectChain = typeof chains.$inferSelect;
+
+export const InsertWaitlistSchema = createInsertSchema(waitlist);
+export type SelectWaitlist = typeof waitlist.$inferSelect;
+export type InsertWaitlist = typeof waitlist.$inferInsert;

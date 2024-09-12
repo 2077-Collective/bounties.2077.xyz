@@ -45,6 +45,9 @@ jobs:
       - name: Set up playwright
         run: pnpm exec playwright install
 
+      - name: Run e2e tests
+        run: pnpm run test:e2e
+
       - name: Run integration tests
         run: pnpm run test:integration
 

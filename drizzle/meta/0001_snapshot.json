@@ -1,0 +1,832 @@
+{
+	"id": "9ca6f24e-1fcd-4239-a129-2ae29a671b2a",
+	"prevId": "ce10599e-29c5-406f-aa6a-18cc520ac244",
+	"version": "7",
+	"dialect": "postgresql",
+	"tables": {
+		"public.bounties": {
+			"name": "bounties",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"sponsor_id": {
+					"name": "sponsor_id",
+					"type": "serial",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"title": {
+					"name": "title",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"description": {
+					"name": "description",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"start_date": {
+					"name": "start_date",
+					"type": "date",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"end_date": {
+					"name": "end_date",
+					"type": "date",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"excerpt": {
+					"name": "excerpt",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"approved": {
+					"name": "approved",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"default": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "date",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"draft": {
+					"name": "draft",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"default": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"bounties_sponsor_id_sponsors_id_fk": {
+					"name": "bounties_sponsor_id_sponsors_id_fk",
+					"tableFrom": "bounties",
+					"tableTo": "sponsors",
+					"columnsFrom": ["sponsor_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"bounties_id_unique": {
+					"name": "bounties_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				}
+			}
+		},
+		"public.bounty_skills": {
+			"name": "bounty_skills",
+			"schema": "",
+			"columns": {
+				"bounty_id": {
+					"name": "bounty_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"skill_id": {
+					"name": "skill_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"bounty_skills_bounty_id_bounties_id_fk": {
+					"name": "bounty_skills_bounty_id_bounties_id_fk",
+					"tableFrom": "bounty_skills",
+					"tableTo": "bounties",
+					"columnsFrom": ["bounty_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				},
+				"bounty_skills_skill_id_skills_id_fk": {
+					"name": "bounty_skills_skill_id_skills_id_fk",
+					"tableFrom": "bounty_skills",
+					"tableTo": "skills",
+					"columnsFrom": ["skill_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {}
+		},
+		"public.chains": {
+			"name": "chains",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "integer",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"chains_id_unique": {
+					"name": "chains_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				}
+			}
+		},
+		"public.comments": {
+			"name": "comments",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"bounty_id": {
+					"name": "bounty_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"content": {
+					"name": "content",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"comments_bounty_id_bounties_id_fk": {
+					"name": "comments_bounty_id_bounties_id_fk",
+					"tableFrom": "comments",
+					"tableTo": "bounties",
+					"columnsFrom": ["bounty_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				},
+				"comments_user_id_users_id_fk": {
+					"name": "comments_user_id_users_id_fk",
+					"tableFrom": "comments",
+					"tableTo": "users",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"comments_id_unique": {
+					"name": "comments_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				}
+			}
+		},
+		"public.rewards": {
+			"name": "rewards",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"rank": {
+					"name": "rank",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"bounty_id": {
+					"name": "bounty_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"token_id": {
+					"name": "token_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"amount": {
+					"name": "amount",
+					"type": "bigint",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"winner": {
+					"name": "winner",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"rewards_bounty_id_bounties_id_fk": {
+					"name": "rewards_bounty_id_bounties_id_fk",
+					"tableFrom": "rewards",
+					"tableTo": "bounties",
+					"columnsFrom": ["bounty_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				},
+				"rewards_token_id_tokens_id_fk": {
+					"name": "rewards_token_id_tokens_id_fk",
+					"tableFrom": "rewards",
+					"tableTo": "tokens",
+					"columnsFrom": ["token_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				},
+				"rewards_winner_submissions_id_fk": {
+					"name": "rewards_winner_submissions_id_fk",
+					"tableFrom": "rewards",
+					"tableTo": "submissions",
+					"columnsFrom": ["winner"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"rewards_id_unique": {
+					"name": "rewards_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				}
+			}
+		},
+		"public.skills": {
+			"name": "skills",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"skills_name_unique": {
+					"name": "skills_name_unique",
+					"nullsNotDistinct": false,
+					"columns": ["name"]
+				}
+			}
+		},
+		"public.sponsors": {
+			"name": "sponsors",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"display_name": {
+					"name": "display_name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"email": {
+					"name": "email",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"website": {
+					"name": "website",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"twitter": {
+					"name": "twitter",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"image": {
+					"name": "image",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"bio": {
+					"name": "bio",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"sponsors_user_id_users_id_fk": {
+					"name": "sponsors_user_id_users_id_fk",
+					"tableFrom": "sponsors",
+					"tableTo": "users",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"sponsors_id_unique": {
+					"name": "sponsors_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				}
+			}
+		},
+		"public.submissions": {
+			"name": "submissions",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"bounty_id": {
+					"name": "bounty_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"user_id": {
+					"name": "user_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"state": {
+					"name": "state",
+					"type": "smallint",
+					"primaryKey": false,
+					"notNull": true,
+					"default": 0
+				},
+				"link": {
+					"name": "link",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"description": {
+					"name": "description",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"submissions_bounty_id_bounties_id_fk": {
+					"name": "submissions_bounty_id_bounties_id_fk",
+					"tableFrom": "submissions",
+					"tableTo": "bounties",
+					"columnsFrom": ["bounty_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				},
+				"submissions_user_id_users_id_fk": {
+					"name": "submissions_user_id_users_id_fk",
+					"tableFrom": "submissions",
+					"tableTo": "users",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"submissions_id_unique": {
+					"name": "submissions_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				}
+			}
+		},
+		"public.tokens": {
+			"name": "tokens",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"symbol": {
+					"name": "symbol",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"address": {
+					"name": "address",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"decimals": {
+					"name": "decimals",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"chain_id": {
+					"name": "chain_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"tokens_chain_id_chains_id_fk": {
+					"name": "tokens_chain_id_chains_id_fk",
+					"tableFrom": "tokens",
+					"tableTo": "chains",
+					"columnsFrom": ["chain_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"tokens_id_unique": {
+					"name": "tokens_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				}
+			}
+		},
+		"public.user_skills": {
+			"name": "user_skills",
+			"schema": "",
+			"columns": {
+				"user_id": {
+					"name": "user_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"skill_id": {
+					"name": "skill_id",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"user_skills_user_id_users_id_fk": {
+					"name": "user_skills_user_id_users_id_fk",
+					"tableFrom": "user_skills",
+					"tableTo": "users",
+					"columnsFrom": ["user_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				},
+				"user_skills_skill_id_skills_id_fk": {
+					"name": "user_skills_skill_id_skills_id_fk",
+					"tableFrom": "user_skills",
+					"tableTo": "skills",
+					"columnsFrom": ["skill_id"],
+					"columnsTo": ["id"],
+					"onDelete": "no action",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {}
+		},
+		"public.users": {
+			"name": "users",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"display_name": {
+					"name": "display_name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"wallet_address": {
+					"name": "wallet_address",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"email": {
+					"name": "email",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"image": {
+					"name": "image",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"website": {
+					"name": "website",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"twitter": {
+					"name": "twitter",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"bio": {
+					"name": "bio",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"users_id_unique": {
+					"name": "users_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				},
+				"users_wallet_address_unique": {
+					"name": "users_wallet_address_unique",
+					"nullsNotDistinct": false,
+					"columns": ["wallet_address"]
+				},
+				"users_email_unique": {
+					"name": "users_email_unique",
+					"nullsNotDistinct": false,
+					"columns": ["email"]
+				}
+			}
+		},
+		"public.waitlist": {
+			"name": "waitlist",
+			"schema": "",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "serial",
+					"primaryKey": true,
+					"notNull": true
+				},
+				"email": {
+					"name": "email",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"referral_uuid": {
+					"name": "referral_uuid",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": true,
+					"default": "now()"
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "timestamp (3)",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"invite_used": {
+					"name": "invite_used",
+					"type": "boolean",
+					"primaryKey": false,
+					"notNull": true,
+					"default": false
+				},
+				"invite_sent_at": {
+					"name": "invite_sent_at",
+					"type": "timestamp",
+					"primaryKey": false,
+					"notNull": false
+				},
+				"referred_by": {
+					"name": "referred_by",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {
+				"waitlist_id_unique": {
+					"name": "waitlist_id_unique",
+					"nullsNotDistinct": false,
+					"columns": ["id"]
+				},
+				"waitlist_email_unique": {
+					"name": "waitlist_email_unique",
+					"nullsNotDistinct": false,
+					"columns": ["email"]
+				}
+			}
+		}
+	},
+	"enums": {},
+	"schemas": {},
+	"sequences": {},
+	"_meta": {
+		"columns": {},
+		"schemas": {},
+		"tables": {}
+	}
+}

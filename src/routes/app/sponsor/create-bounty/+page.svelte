@@ -51,7 +51,6 @@
 		formData.append(`tokenId`, tokenId?.toString() ?? '');
 
 		return async ({ result }) => {
-			console.log(result);
 			if (result.type === 'success') goto('/app/sponsor');
 		};
 	};

@@ -1,7 +1,10 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	const Variant = {
 		regular: 'px-3 py-2',
-		small: 'px-2 py-1'
+		small: 'px-2 py-1',
+		custom: ''
 	} as const;
 
 	let {
@@ -14,7 +17,9 @@
 		placeholder,
 		min,
 		disabled = false,
-		variant = 'regular'
+		variant = 'regular',
+		icon,
+		button
 	}: {
 		value: string;
 		class?: string;
@@ -26,17 +31,41 @@
 		min?: string;
 		disabled?: boolean;
 		variant?: keyof typeof Variant;
+		icon?: Snippet;
+		button?: Snippet;
 	} = $props();
 </script>
 
-<input
-	type={type || 'text'}
-	{id}
-	{name}
-	bind:value
-	{required}
-	{placeholder}
-	{min}
-	{disabled}
-	class={`w-full ${Variant[variant]} border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
-/>
+{#if icon}
+	<div
+		class={`flex h-[48px] flex-grow items-center gap-2 ${Variant[variant]} border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
+	>
+		{@render icon()}
+		<input
+			type={type || 'text'}
+			{id}
+			{name}
+			bind:value
+			{required}
+			{placeholder}
+			{min}
+			{disabled}
+			class="flex-grow focus:outline-none placeholder-gray disabled:text-gray disabled:bg-white"
+		/>
+		{#if button}
+			{@render button()}
+		{/if}
+	</div>
+{:else}
+	<input
+		type={type || 'text'}
+		{id}
+		{name}
+		bind:value
+		{required}
+		{placeholder}
+		{min}
+		{disabled}
+		class={`flex-grow ${Variant[variant]} border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
+	/>
+{/if}

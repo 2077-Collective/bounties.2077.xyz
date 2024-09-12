@@ -60,15 +60,6 @@ export const users = pgTable('users', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
-export const userSkills = pgTable('user_skills', {
-	userId: integer('user_id')
-		.references(() => users.id)
-		.notNull(),
-	skillId: integer('skill_id')
-		.references(() => skills.id)
-		.notNull()
-});
-
 export const userRelations = relations(users, ({ many }) => ({
 	sponsors: many(sponsors),
 	skills: many(skills)
@@ -231,6 +222,29 @@ export const commentRelations = relations(comments, ({ one }) => ({
 	})
 }));
 
+export const waitlist = pgTable('waitlist', {
+	id: serial('id').primaryKey().unique(),
+	email: text('email').notNull().unique(),
+	referralCode: text('referral_uuid').notNull(),
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
+	inviteUsed: boolean('invite_used').notNull().default(false),
+	inviteSentAt: timestamp('invite_sent_at'),
+	// Cannot set as refereced to waitlist.id because it is not created yet
+	referredBy: integer('referred_by')
+});
+
+export const waitlistReferralRelations = relations(waitlist, ({ one }) => ({
+	wailistId: one(waitlist, {
+		fields: [waitlist.id],
+		references: [waitlist.id]
+	}),
+	referredBy: one(waitlist, {
+		fields: [waitlist.referredBy],
+		references: [waitlist.id]
+	})
+}));
+
 export default {
 	sponsors,
 	bounties,
@@ -241,6 +255,7 @@ export default {
 	skills,
 	tokens,
 	chains,
+	waitlist,
 
 	sponsorRelations,
 	bountyRelations,
@@ -250,5 +265,6 @@ export default {
 	commentRelations,
 	submissionRelations,
 	tokenRelations,
-	chainRelations
+	chainRelations,
+	waitlistReferralRelations
 } as const;

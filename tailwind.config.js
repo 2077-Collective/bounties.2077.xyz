@@ -42,6 +42,9 @@ export default {
 					light: '#E4E4E7',
 					DEFAULT: '#71717A',
 					dark: '#18181B'
+				},
+				fontFamily: {
+					inter: ['Inter Variable', 'sans-serif']
 				}
 			}
 		}

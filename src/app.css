@@ -1,3 +1,5 @@
+@import '@fontsource-variable/inter';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,4 +7,5 @@
 html,
 body {
 	height: 100%;
+	font-family: 'Inter', sans-serif;
 }
