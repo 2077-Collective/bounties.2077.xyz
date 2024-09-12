@@ -1,9 +1,10 @@
-import { Pool } from '@neondatabase/serverless';
+import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle as drizzleNeon } from 'drizzle-orm/neon-serverless';
 import { drizzle as drizzlePg } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import 'dotenv/config';
 import * as schema from '$lib/types/schema';
+import ws from 'ws';
 
 const postgresDb = (connectionUrl: string) => {
 	const queryClient = postgres(connectionUrl);
@@ -20,6 +21,7 @@ export const db = (() => {
 		return postgresDb(databaseConnectionUrl);
 	} else {
 		const pool = new Pool({ connectionString: databaseConnectionUrl });
+		neonConfig.webSocketConstructor = ws;
 		return drizzleNeon<typeof schema>(pool, { schema });
 	}
 })();
