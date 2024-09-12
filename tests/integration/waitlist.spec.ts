@@ -7,7 +7,7 @@ import { waitlist } from '$lib/types/schema';
 // TODO: this is being skipped because drizzle-orm currently has a bug that prevents
 // calling tx.rollback() in any situation.
 // For more details see: https://github.com/drizzle-team/drizzle-orm/issues/1723
-describe('Add new user to waitlist', () => {
+describe.skip('Add new user to waitlist', () => {
 	let tx: Transaction;
 
 	const testEmail0 = 'test0@2077.xyz';
