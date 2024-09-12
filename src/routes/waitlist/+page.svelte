@@ -55,30 +55,30 @@
 	};
 </script>
 
-<div class="relative h-screen">
+<div class="relative h-screen p-6">
 	<!-- Blurred background -->
 	<div
 		class="bottom-0 mx-auto left-0 right-0 max-w-6xl absolute w-screen h-4/6 rounded-full blur-3xl bg-gradient-to-t from-purple-light to-white -z-10"
 	></div>
 
-	<div class="flex h-full flex-col items-center justify-center">
+	<div class="flex h-full flex-col items-center sm:justify-center">
 		<div class="max-w-2xl w-full space-y-10 text-center">
 			<div class="flex flex-col items-center">
 				<Badge class="bg-white border border-gray-light">Coming soon</Badge>
 			</div>
-			<div class="flex gap-4 justify-center">
-				<div class="bg-white p-2 rounded-2xl border border-light">
+			<div class="flex flex-col items-center md:flex-row gap-4 justify-center">
+				<div class="bg-white p-1 sm:p-2 rounded-2xl border border-light w-min">
 					<Logo size="48px" />
 				</div>
 
-				<h1 class="text-6xl font-bold text-gray-dark flex items-center justify-center">
+				<h1 class="text-4xl md:text-6xl font-bold text-gray-dark flex items-center justify-center">
 					2077 Bounty
 				</h1>
 			</div>
 			{#if success}
 				<div class="flex flex-col gap-10">
 					<div class="flex flex-col gap-2">
-						<h2 class="text-4xl font-semibold">You're on the waitlist!</h2>
+						<h2 class="text-2xl sm:text-4xl font-semibold">You're on the waitlist!</h2>
 						<p class="text-gray-600">
 							Skip ahead in line by referring friends using the link below
 						</p>
@@ -107,7 +107,7 @@
 					{#if waitlistPosition !== null}
 						<div class="flex flex-col gap-2">
 							<p class="text-gray-600">Your place in line</p>
-							<h2 class="text-5xl font-semibold">{waitlistPosition}</h2>
+							<h2 class="text-4xl sm:text-5xl font-semibold">{waitlistPosition}</h2>
 						</div>
 					{/if}
 				</div>
