@@ -1,8 +1,13 @@
 import { db } from '$lib/server/database';
-import { enterWaitlist, getPositionInWaitlist } from '$lib/server/database/waitlist';
+import {
+	enterWaitlist,
+	getPositionInWaitlist,
+	getReferrerByEmail
+} from '$lib/server/database/waitlist';
 import type { Actions } from '@sveltejs/kit';
 import { z } from 'zod';
 import type { PageServerLoad } from './$types';
+import type { SelectWaitlist } from '$lib/types';
 
 const WAITLIST_COOKIE_NAME = 'waitlist';
 
@@ -44,7 +49,13 @@ export const actions: Actions = {
 		return await db.transaction(async (tx) => {
 			const formData = Object.fromEntries(await request.formData());
 			const { referrerCode, email } = WaitlistSchema.parse(formData);
-			const referrer = await enterWaitlist(email, referrerCode, tx);
+
+			let referrer: SelectWaitlist | undefined = await getReferrerByEmail(email, tx);
+
+			if (!referrer) {
+				referrer = await enterWaitlist(email, referrerCode, tx);
+			}
+
 			const referralLink = getReferralLink(url.origin, referrer.referralCode);
 			const payload = WaitListCookiePayloadSchema.parse({ referralLink, email });
 

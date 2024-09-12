@@ -81,3 +81,15 @@ async function getReferrerByReferralCode(
 		return queryRes.id;
 	}, tx);
 }
+
+export async function getReferrerByEmail(email: string, tx?: Transaction) {
+	return withTransaction(async (tx) => {
+		const queryRes = await tx.query.waitlist.findFirst({
+			where: eq(waitlist.email, email)
+		});
+
+		if (!queryRes) return undefined;
+
+		return queryRes;
+	}, tx);
+}
