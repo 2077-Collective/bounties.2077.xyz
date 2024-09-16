@@ -28,6 +28,6 @@ export default [
 		}
 	},
 	{
-		ignores: ['build/', '.svelte-kit/', 'dist/', '.pnpm-store/']
+		ignores: ['build/', '.svelte-kit/', 'dist/', '.pnpm-store/', 'src/lib/components/ui']
 	}
 ];

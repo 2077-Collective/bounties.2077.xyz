@@ -22,7 +22,7 @@ const skipAuth = ['/login', '/', '/create-account', '/waitlist'];
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// TODO: switch to production
-	if (NODE_ENV === 'development' && event.route.id !== '/waitlist') {
+	if (NODE_ENV === 'production' && event.route.id !== '/waitlist') {
 		throw redirect(307, '/waitlist');
 	}
 

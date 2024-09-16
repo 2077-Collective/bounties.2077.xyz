@@ -1,53 +1,62 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
+	darkMode: ['class'],
 	content: ['./src/**/*.{html,js,svelte,ts}'],
+	safelist: ['dark'],
 	theme: {
+		container: {
+			center: true,
+			padding: '2rem',
+			screens: {
+				'2xl': '1400px'
+			}
+		},
 		extend: {
 			colors: {
-				white: '#FFFFFF',
-				black: '#09090B',
-				green: {
-					light: '#F2FFCC',
-					DEFAULT: '#DFFF80',
-					dark: ' #245D54'
+				border: 'hsl(var(--border) / <alpha-value>)',
+				input: 'hsl(var(--input) / <alpha-value>)',
+				ring: 'hsl(var(--ring) / <alpha-value>)',
+				background: 'hsl(var(--background) / <alpha-value>)',
+				foreground: 'hsl(var(--foreground) / <alpha-value>)',
+				primary: {
+					DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
+					foreground: 'hsl(var(--primary-foreground) / <alpha-value>)'
 				},
-				red: {
-					light: '#FFF0F0',
-					DEFAULT: '#FBA7B1',
-					dark: '#AE0F0F'
+				secondary: {
+					DEFAULT: 'hsl(var(--secondary) / <alpha-value>)',
+					foreground: 'hsl(var(--secondary-foreground) / <alpha-value>)'
 				},
-				blue: {
-					light: '#EBFCFE',
-					DEFAULT: '#91ECFA',
-					dark: '#0C588B'
+				destructive: {
+					DEFAULT: 'hsl(var(--destructive) / <alpha-value>)',
+					foreground: 'hsl(var(--destructive-foreground) / <alpha-value>)'
 				},
-				pink: {
-					light: '#FEF0FC',
-					DEFAULT: '#FBA2EF',
-					dark: '#8B0C6D'
+				muted: {
+					DEFAULT: 'hsl(var(--muted) / <alpha-value>)',
+					foreground: 'hsl(var(--muted-foreground) / <alpha-value>)'
 				},
-				purple: {
-					light: '#EBE2FF',
-					DEFAULT: '#AFA1FF',
-					dark: '#4A04A5'
+				accent: {
+					DEFAULT: 'hsl(var(--accent) / <alpha-value>)',
+					foreground: 'hsl(var(--accent-foreground) / <alpha-value>)'
 				},
-				eggshell: {
-					light: '#FFF3EB',
-					DEFAULT: '#FFB885',
-					dark: '#AB3812'
+				popover: {
+					DEFAULT: 'hsl(var(--popover) / <alpha-value>)',
+					foreground: 'hsl(var(--popover-foreground) / <alpha-value>)'
 				},
-				gray: {
-					lightest: '#FAFAFA',
-					lighter: '#F4F4F5',
-					light: '#E4E4E7',
-					DEFAULT: '#71717A',
-					dark: '#18181B'
-				},
-				fontFamily: {
-					inter: ['Inter Variable', 'sans-serif']
+				card: {
+					DEFAULT: 'hsl(var(--card) / <alpha-value>)',
+					foreground: 'hsl(var(--card-foreground) / <alpha-value>)'
 				}
+			},
+			borderRadius: {
+				lg: 'var(--radius)',
+				md: 'calc(var(--radius) - 2px)',
+				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				inter: ['Inter Variable', 'sans-serif']
 			}
 		}
-	},
-	plugins: []
+	}
 };
+
+export default config;
