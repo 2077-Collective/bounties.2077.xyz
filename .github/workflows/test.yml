@@ -13,6 +13,20 @@ jobs:
       JWT_SECRET: 'secret'
       DATABASE_URL: 'postgresql://2077:2077@localhost:5433/test_bounties'
       NODE_ENV: 'test'
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: 2077
+          POSTGRES_PASSWORD: 2077
+          POSTGRES_DB: test_bounties
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready -U 2077
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
@@ -20,12 +34,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Adjust this to your project's Node.js version
+          node-version: '20'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8 # Specify the pnpm version you want to use
+          version: 8
 
       - name: Install dependencies
         run: pnpm install
@@ -39,11 +53,18 @@ jobs:
       - name: Run unit tests
         run: pnpm run test:unit
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
+      - name: Run database migrations
+        run: pnpm run db:migrate
 
-      - name: Set up playwright
+      - name: Set up Playwright
         run: pnpm exec playwright install
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5433 -U 2077; do
+            echo "Waiting for PostgreSQL..."
+            sleep 2
+          done
 
       - name: Run e2e tests
         run: pnpm run test:e2e
