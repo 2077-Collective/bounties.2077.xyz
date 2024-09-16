@@ -3,7 +3,7 @@
 
 	const Variant = {
 		primary: 'bg-black text-white px-3 py-2',
-		transparent: 'text-black'
+		transparent: 'text-black underline'
 	} as const;
 
 	const {
@@ -21,7 +21,7 @@
 
 <a
 	{href}
-	class={`flex items-center px-3 py-2 rounded-md text-sm font-medium cursor-pointer underline ${Variant[variant]} ${className}`}
+	class={`flex items-center px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${Variant[variant]} ${className}`}
 >
 	{@render children()}
 </a>
