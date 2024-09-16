@@ -7,19 +7,21 @@
 	} as const;
 
 	const {
+		class: className,
 		href,
 		children,
-		variant = Variant.primary
-	} = $props<{
+		variant = 'primary'
+	}: {
 		href: string;
 		children: Snippet;
 		variant?: keyof typeof Variant;
-	}>();
+		class?: string;
+	} = $props();
 </script>
 
 <a
 	{href}
-	class={`flex items-center px-3 py-2 rounded-md text-sm font-medium cursor-pointer ${variant}`}
+	class={`flex items-center px-3 py-2 rounded-md text-sm font-medium cursor-pointer underline ${Variant[variant]} ${className}`}
 >
 	{@render children()}
 </a>
