@@ -32,7 +32,7 @@
 	}
 </script>
 
-<div class="container flex flex-col gap-4 mx-auto px-4 py-8">
+<div class="flex flex-col gap-4">
 	<div class="flex flex-col gap-1">
 		<h2 class="text-xl">Bounties</h2>
 		<p class="text-sm text-gray">All your open and historic bounties</p>
