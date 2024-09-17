@@ -58,7 +58,7 @@
 <div class="relative h-screen p-6">
 	<!-- Blurred background -->
 	<div
-		class="bottom-0 mx-auto left-0 right-0 max-w-6xl absolute w-screen h-4/6 rounded-full blur-3xl bg-gradient-to-t from-purple-light to-white -z-10"
+		class="bottom-0 mx-auto left-0 right-0 max-w-6xl absolute w-screen h-4/6 rounded-full blur-3xl bg-gradient-to-t from-[#EBE2FF] to-white -z-10"
 	></div>
 
 	<div class="flex h-full flex-col items-center sm:justify-center">
@@ -104,7 +104,7 @@
 						</div>
 					{/if}
 
-					{#if waitlistPosition !== null}
+					{#if waitlistPosition !== undefined}
 						<div class="flex flex-col gap-2">
 							<p class="text-gray-600">Your place in line</p>
 							<h2 class="text-4xl sm:text-5xl font-semibold">{waitlistPosition}</h2>

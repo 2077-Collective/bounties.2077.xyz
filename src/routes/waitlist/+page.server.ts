@@ -1,7 +1,7 @@
 import { db } from '$lib/server/database';
 import {
 	enterWaitlist,
-	getPositionInWaitlist,
+	// getPositionInWaitlist,
 	getReferrerByEmail
 } from '$lib/server/database/waitlist';
 import type { Actions } from '@sveltejs/kit';
@@ -38,7 +38,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	return {
 		email,
 		referralLink,
-		waitlistPosition: await getPositionInWaitlist(email)
+		waitlistPosition: undefined // await getPositionInWaitlist(email)
 	};
 };
 
@@ -68,7 +68,7 @@ export const actions: Actions = {
 
 			return {
 				success: true,
-				waitlistPosition: await getPositionInWaitlist(email, tx),
+				waitlistPosition: undefined, // await getPositionInWaitlist(email)
 				referralLink
 			};
 		});
