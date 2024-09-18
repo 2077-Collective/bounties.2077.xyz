@@ -40,7 +40,11 @@ export async function updateSponsorById(id: number, sponsor: z.infer<typeof Upda
 export async function getSponsorPublicProfile(id: number) {
 	const sponsorPromise = db.query.sponsors.findFirst({
 		with: {
-			bounties: true
+			bounties: {
+				with: {
+					skills: true
+				}
+			}
 		},
 		where: eq(sponsors.id, id)
 	});
