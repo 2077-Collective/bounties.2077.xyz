@@ -42,7 +42,7 @@ export const skills = pgTable('skills', {
 
 export const skillRelations = relations(skills, ({ many }) => ({
 	userSkills: many(userSkills),
-	bounties: many(bountySkills)
+	bountySkills: many(bountySkills)
 }));
 
 // TODO: need to ensure that user always has a wallet address or an email address
@@ -111,7 +111,7 @@ export const bounties = pgTable('bounties', {
 });
 
 export const bountyRelations = relations(bounties, ({ many, one }) => ({
-	skills: many(bountySkills),
+	bountySkills: many(bountySkills),
 	sponsor: one(sponsors, {
 		fields: [bounties.sponsorId],
 		references: [sponsors.id]
