@@ -4,6 +4,7 @@ import {
 	date,
 	integer,
 	pgTable,
+	primaryKey,
 	serial,
 	smallint,
 	text,
@@ -26,11 +27,12 @@ export const sponsors = pgTable('sponsors', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
-export const sponsorRelations = relations(sponsors, ({ one }) => ({
+export const sponsorRelations = relations(sponsors, ({ one, many }) => ({
 	user: one(users, {
 		fields: [sponsors.userId],
 		references: [users.id]
-	})
+	}),
+	bounties: many(bounties)
 }));
 
 export const skills = pgTable('skills', {
@@ -39,8 +41,8 @@ export const skills = pgTable('skills', {
 });
 
 export const skillRelations = relations(skills, ({ many }) => ({
-	users: many(users),
-	bounties: many(bounties)
+	userSkills: many(userSkills),
+	bountySkills: many(bountySkills)
 }));
 
 // TODO: need to ensure that user always has a wallet address or an email address
@@ -61,8 +63,35 @@ export const users = pgTable('users', {
 });
 
 export const userRelations = relations(users, ({ many }) => ({
+	// TODO: do we want a many to one relationship or one to one?
 	sponsors: many(sponsors),
-	skills: many(skills)
+	userSkills: many(userSkills)
+}));
+
+export const userSkills = pgTable(
+	'user_skills',
+	{
+		userId: integer('user_id')
+			.references(() => users.id)
+			.notNull(),
+		skillId: integer('skill_id')
+			.references(() => skills.id)
+			.notNull()
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.userId, t.skillId] })
+	})
+);
+
+export const userSkillsRelations = relations(userSkills, ({ one }) => ({
+	user: one(users, {
+		fields: [userSkills.userId],
+		references: [users.id]
+	}),
+	skill: one(skills, {
+		fields: [userSkills.skillId],
+		references: [skills.id]
+	})
 }));
 
 export const bounties = pgTable('bounties', {
@@ -82,7 +111,7 @@ export const bounties = pgTable('bounties', {
 });
 
 export const bountyRelations = relations(bounties, ({ many, one }) => ({
-	skills: many(bountySkills),
+	bountySkills: many(bountySkills),
 	sponsor: one(sponsors, {
 		fields: [bounties.sponsorId],
 		references: [sponsors.id]
@@ -92,14 +121,20 @@ export const bountyRelations = relations(bounties, ({ many, one }) => ({
 	rewards: many(rewards)
 }));
 
-export const bountySkills = pgTable('bounty_skills', {
-	bountyId: integer('bounty_id')
-		.references(() => bounties.id)
-		.notNull(),
-	skillId: integer('skill_id')
-		.references(() => skills.id)
-		.notNull()
-});
+export const bountySkills = pgTable(
+	'bounty_skills',
+	{
+		bountyId: integer('bounty_id')
+			.references(() => bounties.id)
+			.notNull(),
+		skillId: integer('skill_id')
+			.references(() => skills.id)
+			.notNull()
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.bountyId, t.skillId] })
+	})
+);
 
 export const bountySkillsRelations = relations(bountySkills, ({ one }) => ({
 	bounty: one(bounties, {
@@ -111,6 +146,7 @@ export const bountySkillsRelations = relations(bountySkills, ({ one }) => ({
 		references: [skills.id]
 	})
 }));
+
 export const chains = pgTable('chains', {
 	id: integer('id').primaryKey().unique(),
 	name: text('name').notNull(),
@@ -124,6 +160,7 @@ export const tokens = pgTable('tokens', {
 	symbol: text('symbol').notNull(),
 	address: text('address').notNull(),
 	decimals: integer('decimals').notNull(),
+	logo: text('logo').notNull(),
 	chainId: integer('chain_id')
 		.references(() => chains.id)
 		.notNull(),

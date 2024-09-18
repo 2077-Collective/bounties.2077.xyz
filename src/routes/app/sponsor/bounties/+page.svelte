@@ -3,9 +3,9 @@
 	import type { PageData } from './$types';
 	import LinkButton from '$lib/components/LinkButton.svelte';
 	import BountyStatusBadge from '$lib/components/BountyStatusBadge.svelte';
-	import { formatDistanceToNow, isPast } from 'date-fns';
 	import Input from '$lib/components/Input.svelte';
 	import Badge from '$lib/components/Badge.svelte';
+	import { formatRelativeDate } from '$lib/utils';
 	import { SubmissionState, type EnhancedBounty } from '$lib/types';
 
 	const {
@@ -18,12 +18,6 @@
 
 	const bounties = $derived(data.bounties);
 	const filteredBounties = $derived(bounties.filter((bounty) => bounty.title.includes(searchTerm)));
-
-	function formatRelativeDate(endDate: string): string {
-		const date = new Date(endDate);
-		const distanceString = formatDistanceToNow(date, { addSuffix: true });
-		return isPast(date) ? `Ended ${distanceString}` : `Ends ${distanceString}`;
-	}
 
 	function getSubmissionCount(bounty: EnhancedBounty) {
 		return bounty.submissions.filter(

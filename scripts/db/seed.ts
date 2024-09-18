@@ -67,6 +67,7 @@ async function seedTokens() {
 			name: 'Ether',
 			symbol: 'ETH',
 			address: '0x0000000000000000000000000000000000000000',
+			logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
 			decimals: 18,
 			chainId: 1
 		},
@@ -74,6 +75,7 @@ async function seedTokens() {
 			name: 'USD Coin',
 			symbol: 'USDC',
 			address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+			logo: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png',
 			decimals: 6,
 			chainId: 1
 		},
@@ -81,6 +83,7 @@ async function seedTokens() {
 			name: 'Tether',
 			symbol: 'USDT',
 			address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+			logo: 'https://assets.coingecko.com/coins/images/325/large/Tether-logo.png',
 			decimals: 6,
 			chainId: 1
 		},
@@ -88,6 +91,7 @@ async function seedTokens() {
 			name: 'Dai',
 			symbol: 'DAI',
 			address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+			logo: 'https://assets.coingecko.com/coins/images/9956/large/dai-multi-collateral-mcd.png',
 			decimals: 18,
 			chainId: 1
 		},
@@ -97,6 +101,7 @@ async function seedTokens() {
 			name: 'Ether',
 			symbol: 'ETH',
 			address: '0x0000000000000000000000000000000000001010',
+			logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
 			decimals: 18,
 			chainId: 137
 		},
@@ -104,6 +109,7 @@ async function seedTokens() {
 			name: 'USD Coin',
 			symbol: 'USDC',
 			address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+			logo: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png',
 			decimals: 6,
 			chainId: 137
 		},
@@ -111,6 +117,7 @@ async function seedTokens() {
 			name: 'Tether',
 			symbol: 'USDT',
 			address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+			logo: 'https://assets.coingecko.com/coins/images/325/large/Tether-logo.png',
 			decimals: 6,
 			chainId: 137
 		},
@@ -118,6 +125,7 @@ async function seedTokens() {
 			name: 'Dai',
 			symbol: 'DAI',
 			address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+			logo: 'https://assets.coingecko.com/coins/images/9956/large/dai-multi-collateral-mcd.png',
 			decimals: 18,
 			chainId: 137
 		},
@@ -127,6 +135,7 @@ async function seedTokens() {
 			name: 'Ether',
 			symbol: 'ETH',
 			address: '0x0000000000000000000000000000000000000000',
+			logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
 			decimals: 18,
 			chainId: 10
 		},
@@ -134,6 +143,7 @@ async function seedTokens() {
 			name: 'USD Coin',
 			symbol: 'USDC',
 			address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+			logo: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png',
 			decimals: 6,
 			chainId: 10
 		},
@@ -141,6 +151,7 @@ async function seedTokens() {
 			name: 'Tether',
 			symbol: 'USDT',
 			address: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
+			logo: 'https://assets.coingecko.com/coins/images/325/large/Tether-logo.png',
 			decimals: 6,
 			chainId: 10
 		},
@@ -148,6 +159,7 @@ async function seedTokens() {
 			name: 'Dai',
 			symbol: 'DAI',
 			address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
+			logo: 'https://assets.coingecko.com/coins/images/9956/large/dai-multi-collateral-mcd.png',
 			decimals: 18,
 			chainId: 10
 		},
@@ -157,6 +169,7 @@ async function seedTokens() {
 			name: 'Ether',
 			symbol: 'ETH',
 			address: '0x0000000000000000000000000000000000000000',
+			logo: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png',
 			decimals: 18,
 			chainId: 42161
 		},
@@ -164,6 +177,7 @@ async function seedTokens() {
 			name: 'USD Coin',
 			symbol: 'USDC',
 			address: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+			logo: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png',
 			decimals: 6,
 			chainId: 42161
 		},
@@ -171,6 +185,7 @@ async function seedTokens() {
 			name: 'Tether',
 			symbol: 'USDT',
 			address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
+			logo: 'https://assets.coingecko.com/coins/images/325/large/Tether-logo.png',
 			decimals: 6,
 			chainId: 42161
 		},
@@ -178,6 +193,7 @@ async function seedTokens() {
 			name: 'Dai',
 			symbol: 'DAI',
 			address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
+			logo: 'https://assets.coingecko.com/coins/images/9956/large/dai-multi-collateral-mcd.png',
 			decimals: 18,
 			chainId: 42161
 		}
@@ -191,3 +207,5 @@ export async function globalSeeder() {
 	await seedChains();
 	await seedTokens();
 }
+
+globalSeeder().catch(console.error);

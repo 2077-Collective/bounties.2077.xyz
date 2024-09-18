@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
+import { formatDistanceToNow, isPast } from 'date-fns';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
@@ -53,4 +54,10 @@ export const flyAndScale = (
 		},
 		easing: cubicOut
 	};
+};
+
+export const formatRelativeDate = (endDate: string): string => {
+	const date = new Date(endDate);
+	const distanceString = formatDistanceToNow(date, { addSuffix: true });
+	return isPast(date) ? `Ended ${distanceString}` : `Ends ${distanceString}`;
 };

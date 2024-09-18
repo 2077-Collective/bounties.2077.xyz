@@ -22,6 +22,20 @@
 			"when": 1726093039666,
 			"tag": "0002_many_silvermane",
 			"breakpoints": true
+		},
+		{
+			"idx": 3,
+			"version": "7",
+			"when": 1726657084187,
+			"tag": "0003_chunky_iron_fist",
+			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "7",
+			"when": 1726672656766,
+			"tag": "0004_lame_wolfpack",
+			"breakpoints": true
 		}
 	]
 }

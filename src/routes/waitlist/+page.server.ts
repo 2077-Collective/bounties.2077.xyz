@@ -42,8 +42,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 	};
 };
 
-// TODO: if a user tries to enter the waitlist twice, the second time should return
-// the position and referral link
 export const actions: Actions = {
 	async enterWaitlist({ request, url, cookies }) {
 		return await db.transaction(async (tx) => {
