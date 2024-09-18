@@ -1,5 +1,5 @@
 <script lang="ts" module>
-	export type Variant = 'default' | 'success' | 'warning' | 'danger' | 'info';
+	export type Variant = 'default' | 'success' | 'warning' | 'danger' | 'info' | 'transparent';
 </script>
 
 <script lang="ts">
@@ -10,7 +10,8 @@
 		success: 'bg-green text-green-dark',
 		danger: 'bg-red-light text-red-dark',
 		warning: 'bg-eggshell-light text-eggshell-dark',
-		info: 'bg-black text-white'
+		info: 'bg-black text-white',
+		transparent: 'border border-gray'
 	};
 
 	const {
