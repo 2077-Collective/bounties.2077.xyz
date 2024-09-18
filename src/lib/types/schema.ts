@@ -27,11 +27,12 @@ export const sponsors = pgTable('sponsors', {
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
-export const sponsorRelations = relations(sponsors, ({ one }) => ({
+export const sponsorRelations = relations(sponsors, ({ one, many }) => ({
 	user: one(users, {
 		fields: [sponsors.userId],
 		references: [users.id]
-	})
+	}),
+	bounties: many(bounties)
 }));
 
 export const skills = pgTable('skills', {
