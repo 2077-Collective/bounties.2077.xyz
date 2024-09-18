@@ -4,6 +4,7 @@ import { error, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import { getUserById } from '$lib/server/database/users';
 
+// TODO: validate whether the user paste a full twitter url or just the username
 export const actions: Actions = {
 	async createSponsor({ request, locals }) {
 		const account = locals.account;
