@@ -160,6 +160,7 @@ export const tokens = pgTable('tokens', {
 	symbol: text('symbol').notNull(),
 	address: text('address').notNull(),
 	decimals: integer('decimals').notNull(),
+	logo: text('logo').notNull(),
 	chainId: integer('chain_id')
 		.references(() => chains.id)
 		.notNull(),
