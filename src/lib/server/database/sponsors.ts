@@ -1,5 +1,5 @@
 import { type SelectSponsor, UpdateSponsorSchema, type InsertSponsor } from '$lib/types';
-import { asc, desc, eq, sql, sum } from 'drizzle-orm';
+import { and, asc, desc, eq, isNotNull, sql, sum } from 'drizzle-orm';
 import { db } from '.';
 import { z } from 'zod';
 import { bounties, rewards, sponsors, submissions, users } from '$lib/types/schema';
@@ -42,7 +42,17 @@ export async function getSponsorPublicProfile(id: number) {
 		with: {
 			bounties: {
 				with: {
-					skills: true
+					sponsor: true,
+					bountySkills: {
+						with: {
+							skill: true
+						}
+					},
+					rewards: {
+						with: {
+							token: true
+						}
+					}
 				}
 			}
 		},
@@ -71,7 +81,7 @@ async function getTotalAmountAwarded(id: number) {
 		})
 		.from(rewards)
 		.innerJoin(bounties, eq(bounties.id, rewards.bountyId))
-		.where(eq(bounties.sponsorId, id))
+		.where(and(eq(bounties.sponsorId, id), isNotNull(rewards.winner)))
 		.limit(1)
 		.execute();
 

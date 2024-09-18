@@ -41,7 +41,11 @@ export async function getBountiesBySponsorId(sponsorId: number) {
 	return db.query.bounties.findMany({
 		where: eq(bounties.sponsorId, sponsorId),
 		with: {
-			skills: true,
+			bountySkills: {
+				with: {
+					skill: true
+				}
+			},
 			comments: true,
 			submissions: true,
 			rewards: true
