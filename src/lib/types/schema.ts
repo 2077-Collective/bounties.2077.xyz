@@ -14,10 +14,12 @@ import { relations } from 'drizzle-orm';
 
 export const sponsors = pgTable('sponsors', {
 	id: serial('id').primaryKey().unique(),
+	// TODO: display name needs to be unique
 	displayName: text('display_name').notNull(),
 	userId: integer('user_id')
 		.references(() => users.id)
 		.notNull(),
+	// TODO: email should be unique
 	email: text('email').notNull(),
 	website: text('website').notNull(),
 	twitter: text('twitter').notNull(),

@@ -8,7 +8,7 @@
 	}
 
 	const accountLinks: AccountMenuLinks[] = [
-		{ name: 'Sponsor profile', href: '/' },
+		{ name: 'Sponsor profile', href: '/app/sponsor/edit' },
 		{ name: 'Team', href: '/' },
 		{ name: 'Preferences', href: '/' }
 	];

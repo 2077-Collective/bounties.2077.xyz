@@ -16,7 +16,8 @@
 		variant = 'primary',
 		onclick,
 		disabled = false,
-		loading = false
+		loading = false,
+		class: className
 	}: {
 		children: Snippet;
 		type?: ButtonType;
@@ -24,12 +25,13 @@
 		onclick?: () => void;
 		disabled?: boolean;
 		loading?: boolean;
+		class?: string;
 	} = $props();
 </script>
 
 <button
 	{type}
-	class={`cursor-pointer flex items-center rounded-lg text-sm font-500 focus:outline-none w-max ${Variant[variant]}`}
+	class={`cursor-pointer flex items-center rounded-lg text-sm font-500 focus:outline-none w-max ${Variant[variant]} ${className}`}
 	{onclick}
 	{disabled}
 >

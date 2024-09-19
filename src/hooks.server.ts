@@ -20,6 +20,7 @@ export const getAccount = async (jwt: string): Promise<Account | null> => {
 
 const skipAuth = ['/login', '/', '/create-account', '/waitlist'];
 
+// Check if user is sponsor if not, redirect to create sponsor acocunt
 export const handle: Handle = async ({ event, resolve }) => {
 	// TODO: switch to production
 	if (NODE_ENV === 'production' && event.route.id !== '/waitlist') {

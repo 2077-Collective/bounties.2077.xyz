@@ -34,7 +34,7 @@
 <div class="flex flex-col gap-10">
 	<div class="w-full flex justify-between">
 		<div class="flex w-full grow">
-			<ProfileImage size="80px" />
+			<ProfileImage size="80px" image={sponsor.image} />
 
 			<div class="ml-6 flex flex-col gap-3 py-1">
 				<h1 class="text-4xl font-bold">{sponsor.displayName}</h1>
@@ -96,7 +96,7 @@
 				<a href={`app/bounty/${bounty.id}`}>
 					<div class="flex gap-4 border border-gray rounded-lg p-6">
 						<div class="w-2/12">
-							<ProfileImage size="64px" />
+							<ProfileImage size="64px" image={sponsor.image} />
 						</div>
 
 						<div class="flex flex-col gap-3">

@@ -1,0 +1,84 @@
+<script lang="ts">
+	import { ExternalLink } from 'lucide-svelte';
+	import Input from '$lib/components/Input.svelte';
+	import TextArea from '$lib/components/TextArea.svelte';
+	import InputImage from '$lib/components/InputImage.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import { getAccount, updateAccountSponsor } from '$lib/stores/account.svelte';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from './$types';
+
+	interface ProfileInfo {
+		displayName: string;
+		website: string;
+		twitter: string;
+		bio: string;
+	}
+
+	const account = getAccount();
+	const sponsorInfo: ProfileInfo = $state({
+		displayName: account?.sponsors?.displayName || '',
+		website: account?.sponsors?.website || '',
+		twitter: account?.sponsors?.twitter || '',
+		bio: account?.sponsors?.bio || ''
+	});
+
+	let loading = $state(false);
+
+	const enhanceSubmit: SubmitFunction = async () => {
+		loading = true;
+
+		return async ({ result }) => {
+			if (result.type === 'success') {
+				if (result.data?.sponsor) {
+					updateAccountSponsor(result.data.sponsor);
+				}
+			}
+
+			loading = false;
+		};
+	};
+</script>
+
+<div class="max-w-screen-sm">
+	<div class="border-b border-gray pb-6">
+		<h3>Sponsor profile</h3>
+		<div class="flex justify-between">
+			<p class="text-gray-400 text-sm">Provide as much or as little information as you like.</p>
+			<a href={`/app/profile/sponsor/${account?.sponsors?.id}`} class="text-sm flex gap-1">
+				View my profile <ExternalLink class="w-4 h-4" />
+			</a>
+		</div>
+	</div>
+	<form
+		action="?/updateSponsorProfile"
+		method="POST"
+		enctype="multipart/form-data"
+		class="py-6 flex flex-col gap-10"
+		use:enhance={enhanceSubmit}
+	>
+		<InputImage name="image" image={account?.sponsors?.image} />
+		<div class="flex flex-col gap-6">
+			<div class="flex flex-col gap-2">
+				<label for="displayName">Organisation</label>
+				<Input name="displayName" bind:value={sponsorInfo.displayName} />
+				<p class="text-sm text-gray-400">This is your public display name.</p>
+			</div>
+			<div class="flex flex-col gap-2">
+				<label for="website">Website</label>
+				<Input name="website" bind:value={sponsorInfo.website} />
+			</div>
+			<div class="flex flex-col gap-2">
+				<label for="twitter">X (Twitter)</label>
+				<Input name="twitter" bind:value={sponsorInfo.twitter} />
+			</div>
+			<div class="flex flex-col gap-2">
+				<label for="bio">About</label>
+				<TextArea name="bio" bind:value={sponsorInfo.bio} />
+			</div>
+		</div>
+		<div class="flex justify-end">
+			<Button type="submit" {loading} class="px-6 py-3 text-lg">Save</Button>
+		</div>
+	</form>
+</div>
