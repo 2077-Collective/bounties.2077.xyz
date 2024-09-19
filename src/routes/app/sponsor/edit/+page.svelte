@@ -1,23 +1,25 @@
 <script lang="ts">
-	import { ExternalLink, PencilLine } from 'lucide-svelte';
-	import ProfileImage from '$lib/components/ProfileImage.svelte';
+	import { ExternalLink } from 'lucide-svelte';
 	import Input from '$lib/components/Input.svelte';
 	import TextArea from '$lib/components/TextArea.svelte';
+	import InputImage from '$lib/components/InputImage.svelte';
+	import Button from '$lib/components/Button.svelte';
+	import { getAccount } from '$lib/stores/account.svelte';
+	import { enhance } from '$app/forms';
 
 	interface ProfileInfo {
 		displayName: string;
 		website: string;
 		twitter: string;
 		bio: string;
-		image: string;
 	}
 
+	const account = getAccount();
 	const sponsorInfo: ProfileInfo = $state({
-		displayName: '',
-		website: '',
-		twitter: '',
-		bio: '',
-		image: ''
+		displayName: account?.sponsors?.displayName || '',
+		website: account?.sponsors?.website || '',
+		twitter: account?.sponsors?.twitter || '',
+		bio: account?.sponsors?.bio || ''
 	});
 </script>
 
@@ -32,15 +34,18 @@
 		</div>
 	</div>
 
-	<form class="py-6 flex flex-col gap-10">
-		<div class="relative group w-fit cursor-pointer">
-			<ProfileImage size="90px" />
-			<div class="hidden group-hover:block transition-all absolute top-0 -right-2">
-				<div class="bg-white rounded-full border border-gray-300 p-2">
-					<PencilLine class="right-0 w-4 h-4" />
-				</div>
-			</div>
-		</div>
+	<form
+		action="?/updateSponsorProfile"
+		method="POST"
+		enctype="multipart/form-data"
+		class="py-6 flex flex-col gap-10"
+		use:enhance
+	>
+		<InputImage
+			name="image"
+			bind:value={sponsorInfo.displayName}
+			image={account?.sponsors?.image}
+		/>
 
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-col gap-2">
@@ -51,18 +56,20 @@
 
 			<div class="flex flex-col gap-2">
 				<label for="displayName">Website</label>
-				<Input name="displayName" bind:value={sponsorInfo.website} />
+				<Input name="website" bind:value={sponsorInfo.website} />
 			</div>
 
 			<div class="flex flex-col gap-2">
 				<label for="displayName">X (Twitter)</label>
-				<Input name="displayName" bind:value={sponsorInfo.twitter} />
+				<Input name="twitter" bind:value={sponsorInfo.twitter} />
 			</div>
 
 			<div class="flex flex-col gap-2">
 				<label for="displayName">About</label>
-				<TextArea name="displayName" bind:value={sponsorInfo.bio} />
+				<TextArea name="bio" bind:value={sponsorInfo.bio} />
 			</div>
 		</div>
+
+		<Button type="submit">Save</Button>
 	</form>
 </div>
