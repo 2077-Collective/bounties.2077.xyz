@@ -45,7 +45,7 @@
 		<h3>Sponsor profile</h3>
 		<div class="flex justify-between">
 			<p class="text-gray-400 text-sm">Provide as much or as little information as you like.</p>
-			<a href={`/app/profile/sponsor/${'0'}`} class="text-sm flex gap-1">
+			<a href={`/app/profile/sponsor/${account?.sponsors?.id}`} class="text-sm flex gap-1">
 				View my profile <ExternalLink class="w-4 h-4" />
 			</a>
 		</div>
