@@ -5,11 +5,9 @@
 	interface InputImageProps extends ProfileImageProps {
 		edit?: boolean;
 		name?: string;
-		value?: string;
 	}
 
-	const { image, name, size = '90px', value = $bindable('') }: InputImageProps = $props();
-	console.log('value', image);
+	const { image, name, size = '90px' }: InputImageProps = $props();
 	let input: HTMLInputElement | null = $state(null);
 	let tempImage = $state('');
 

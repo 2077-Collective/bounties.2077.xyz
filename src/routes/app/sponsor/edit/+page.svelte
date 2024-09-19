@@ -41,11 +41,7 @@
 		class="py-6 flex flex-col gap-10"
 		use:enhance
 	>
-		<InputImage
-			name="image"
-			bind:value={sponsorInfo.displayName}
-			image={account?.sponsors?.image}
-		/>
+		<InputImage name="image" image={account?.sponsors?.image} />
 
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-col gap-2">
