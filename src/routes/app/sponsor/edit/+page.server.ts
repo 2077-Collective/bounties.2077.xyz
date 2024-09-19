@@ -19,17 +19,27 @@ export const actions: Actions = {
 		const formData = Object.fromEntries(await request.formData());
 		const sponsorId = locals.account.sponsors.id;
 		const sponsorForm = UpdateSponsorFormSchema.parse(formData);
-		// TODO: How to avoid updating an image it's the same?
-		const { url } = await put(nanoid(10), sponsorForm.image, {
-			access: 'public',
-			token: BLOB_READ_WRITE_TOKEN
-		});
-		const updatedSponsor = await updateSponsorById(sponsorId, { ...sponsorForm, image: url });
+
+		let image: string | undefined;
+		if (sponsorForm.image.size > 0) {
+			if (sponsorForm.image.size > 4 * 1024 * 1024) {
+				return fail(400, { message: 'Image too large' });
+			}
+
+			const { url } = await put(nanoid(10), sponsorForm.image, {
+				access: 'public',
+				token: BLOB_READ_WRITE_TOKEN
+			});
+
+			image = url;
+		}
+
+		const updatedSponsor = await updateSponsorById(sponsorId, { ...sponsorForm, image });
 
 		locals.account.sponsors = updatedSponsor;
 
 		return {
-			success: true
+			sponsor: updatedSponsor
 		};
 	}
 };

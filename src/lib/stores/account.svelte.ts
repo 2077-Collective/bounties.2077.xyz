@@ -9,3 +9,9 @@ export function setAccount(account: Account | null) {
 export function getAccount() {
 	return accountStore;
 }
+
+export function updateAccountSponsor(sponsor: Account['sponsors']) {
+	if (!accountStore) throw new Error('Account not found');
+
+	accountStore.sponsors = sponsor;
+}
