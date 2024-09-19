@@ -2,11 +2,15 @@
 	import ProfileImage from '$lib/components/ProfileImage.svelte';
 	import { CirclePlus, LogOut, User, Settings, RefreshCcw, LayoutDashboard } from 'lucide-svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index';
+	import { getAccount } from '$lib/stores/account.svelte';
+
+	const account = getAccount();
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
-		<ProfileImage />
+		<!-- TODO: Review this logic when implementing user profile -->
+		<ProfileImage image={account?.sponsors?.image} />
 	</DropdownMenu.Trigger>
 
 	<DropdownMenu.Content class="w-56">
