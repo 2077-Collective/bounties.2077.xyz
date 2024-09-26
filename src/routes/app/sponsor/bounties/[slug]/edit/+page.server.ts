@@ -29,8 +29,6 @@ export const load: PageServerLoad = async ({ params }) => {
 
 export const actions: Actions = {
 	async upadateBounty({ request, params, locals }) {
-		// TODO: Check if the update is happning within 24hrs
-
 		const sponsorId = locals.account?.sponsors?.id;
 		if (sponsorId === undefined) throw error(401, { message: 'Unauthorized' });
 

@@ -25,7 +25,7 @@ export const sponsors = pgTable('sponsors', {
 	twitter: text('twitter').notNull(),
 	image: text('image').notNull(),
 	bio: text('bio').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -60,7 +60,7 @@ export const users = pgTable('users', {
 	website: text('website'),
 	twitter: text('twitter'),
 	bio: text('bio').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -107,7 +107,7 @@ export const bounties = pgTable('bounties', {
 	endDate: date('end_date').notNull(),
 	excerpt: text('excerpt').notNull(),
 	approved: boolean('approved').notNull().default(false),
-	createdAt: date('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
 	draft: boolean('draft').notNull().default(true)
 });
@@ -152,7 +152,7 @@ export const bountySkillsRelations = relations(bountySkills, ({ one }) => ({
 export const chains = pgTable('chains', {
 	id: integer('id').primaryKey().unique(),
 	name: text('name').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -166,7 +166,7 @@ export const tokens = pgTable('tokens', {
 	chainId: integer('chain_id')
 		.references(() => chains.id)
 		.notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -192,7 +192,7 @@ export const rewards = pgTable('rewards', {
 		.notNull(),
 	amount: bigint('amount', { mode: 'bigint' }).notNull(),
 	winner: integer('winner').references(() => submissions.id),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -222,7 +222,7 @@ export const submissions = pgTable('submissions', {
 	state: smallint('state').notNull().default(0),
 	link: text('link').notNull(),
 	details: text('description').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -246,7 +246,7 @@ export const comments = pgTable('comments', {
 		.references(() => users.id)
 		.notNull(),
 	content: text('content').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -265,7 +265,7 @@ export const waitlist = pgTable('waitlist', {
 	id: serial('id').primaryKey().unique(),
 	email: text('email').notNull().unique(),
 	referralCode: text('referral_uuid').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
 	inviteUsed: boolean('invite_used').notNull().default(false),
 	inviteSentAt: timestamp('invite_sent_at'),

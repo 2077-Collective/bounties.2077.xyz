@@ -68,12 +68,21 @@ export async function updateBountyById(
 	tx?: Transaction
 ) {
 	return withTransaction(async (tx) => {
-		const oldBountySkillIds = (
-			await tx.query.bountySkills.findMany({
-				where: eq(bountySkills.bountyId, id)
-			})
-		).map((bountySkills) => bountySkills.skillId);
+		const oldBounty = await tx.query.bounties.findFirst({
+			with: {
+				bountySkills: true
+			},
+			where: eq(bounties.id, id)
+		});
 
+		if (!oldBounty) throw new Error(`Bounty with id ${id} not found`);
+
+		// Disallow editing bounties older than 24 hours
+		if (Date.now() - oldBounty.createdAt.getTime() > 24 * 60 * 60 * 1000) {
+			throw new Error('Bounty is too old to edit');
+		}
+
+		const oldBountySkillIds = oldBounty?.bountySkills.map((bountySkills) => bountySkills.skillId);
 		const skillsToRemove = oldBountySkillIds.filter((skillId) => !skills.includes(skillId));
 		const skillsToAdd = skills.filter((skillId) => !oldBountySkillIds.includes(skillId));
 
