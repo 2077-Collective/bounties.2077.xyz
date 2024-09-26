@@ -31,7 +31,7 @@
 
 <button
 	{type}
-	class={`cursor-pointer flex items-center rounded-lg text-sm font-500 focus:outline-none w-max ${Variant[variant]} ${className}`}
+	class={`${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} flex items-center rounded-lg text-sm font-500 focus:outline-none w-max ${Variant[variant]} ${className}`}
 	{onclick}
 	{disabled}
 >

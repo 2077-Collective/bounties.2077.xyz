@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "NODE_ENV=development vite dev",
-		"build": "npm run db:migrate && npm run db:seed && vite build",
+		"build": "npm run db:migrate && vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

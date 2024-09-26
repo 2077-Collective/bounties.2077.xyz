@@ -13,13 +13,23 @@
 		onchange: (selectedOption: Option | null) => void;
 		name?: string;
 		id?: string;
+		value?: Option;
+		disabled?: boolean;
 	}
 
-	const { options, placeholder = 'Select an option', onchange, name, id }: Props = $props();
+	const {
+		options,
+		placeholder = 'Select an option',
+		onchange,
+		name,
+		id,
+		value,
+		disabled
+	}: Props = $props();
 
 	let isOpen = $state(false);
 	let searchTerm = $state('');
-	let selectedOption: Option | null = $state(null);
+	let selectedOption: Option | undefined = $state(value);
 	let dropdownRef: HTMLDivElement;
 
 	const filteredOptions: Option[] = $derived(
@@ -55,9 +65,11 @@
 	</select>
 
 	<button
-		class="w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+		class={`w-full px-4 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${disabled ? 'text-gray-400' : 'text-gray-900'}`}
 		type="button"
 		onclick={() => (isOpen = !isOpen)}
+		{disabled}
+		class:cursor-not-allowed={disabled}
 	>
 		<div class="flex items-center justify-between">
 			<span class="block truncate">

@@ -11,7 +11,7 @@ import {
 	waitlist
 } from '$lib/types/schema';
 import { createInsertSchema } from 'drizzle-zod';
-import type { z } from 'zod';
+import { z } from 'zod';
 
 export interface Account {
 	users: SelectUser;
@@ -24,15 +24,21 @@ export type SelectSponsor = typeof sponsors.$inferSelect;
 export type InsertSponsor = typeof sponsors.$inferInsert;
 
 export const InsertBountySchema = createInsertSchema(bounties);
-export const UpdateBountySchema = InsertBountySchema.partial();
+export const UpdateBountySchema = InsertBountySchema.extend({
+	skills: z.array(z.string()).transform((arr) => arr.map((val) => parseInt(val, 10)))
+});
 export type SelectBounty = typeof bounties.$inferSelect;
 export type InsertBounty = typeof bounties.$inferInsert;
 export type UpdateBounty = z.infer<typeof UpdateBountySchema>;
 export type EnhancedBounty = SelectBounty & {
-	skills: Omit<SelectSkill, 'id' | 'name'>[];
-	comments: Omit<SelectComment, 'id' | 'content' | 'userId'>[];
-	submissions: Omit<SelectSubmission, 'id' | 'content' | 'userId'>[];
-	rewards: Omit<SelectReward, 'id' | 'amount' | 'currency'>[];
+	bountySkills: {
+		bountyId: number;
+		skillId: number;
+		skill: SelectSkill;
+	}[];
+	comments: SelectComment[];
+	submissions: SelectSubmission[];
+	rewards: SelectReward[];
 };
 
 export const InsertRewardSchema = createInsertSchema(rewards);

@@ -1,8 +1,8 @@
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq, inArray } from 'drizzle-orm';
 import { db, type Transaction } from '.';
 import { bounties, bountySkills } from '../../types/schema';
 import { batchCreateRewards } from './rewards';
-import type { InsertBounty, UpdateBounty } from '$lib/types';
+import type { EnhancedBounty, InsertBounty } from '$lib/types';
 import { withTransaction } from './utils';
 
 // TODO: use transaction
@@ -29,15 +29,23 @@ export async function getBounties() {
 	return db.select().from(bounties).orderBy(desc(bounties.createdAt));
 }
 
-export async function getBountyById(id: number) {
-	const bounty = await db.select().from(bounties).where(eq(bounties.id, id)).limit(1).execute();
-
-	if (bounty.length === 0) return null;
-
-	return bounty[0];
+export async function getBountyById(id: number): Promise<EnhancedBounty | undefined> {
+	return db.query.bounties.findFirst({
+		where: eq(bounties.id, id),
+		with: {
+			bountySkills: {
+				with: {
+					skill: true
+				}
+			},
+			comments: true,
+			submissions: true,
+			rewards: true
+		}
+	});
 }
 
-export async function getBountiesBySponsorId(sponsorId: number) {
+export async function getBountiesBySponsorId(sponsorId: number): Promise<EnhancedBounty[]> {
 	return db.query.bounties.findMany({
 		where: eq(bounties.sponsorId, sponsorId),
 		with: {
@@ -53,15 +61,52 @@ export async function getBountiesBySponsorId(sponsorId: number) {
 	});
 }
 
-export async function updateBountyById(id: number, bounty: UpdateBounty) {
-	return db.update(bounties).set(bounty).where(eq(bounties.id, id));
+export async function updateBountyById(
+	id: number,
+	bounty: InsertBounty,
+	skills: number[],
+	tx?: Transaction
+) {
+	return withTransaction(async (tx) => {
+		const oldBountySkillIds = (
+			await tx.query.bountySkills.findMany({
+				where: eq(bountySkills.bountyId, id)
+			})
+		).map((bountySkills) => bountySkills.skillId);
+
+		const skillsToRemove = oldBountySkillIds.filter((skillId) => !skills.includes(skillId));
+		const skillsToAdd = skills.filter((skillId) => !oldBountySkillIds.includes(skillId));
+
+		await Promise.all([
+			tx.update(bounties).set(bounty).where(eq(bounties.id, id)),
+			batchCreateBountySkills(id, skillsToAdd, tx),
+			batchDeleteBountySkills(id, skillsToRemove, tx)
+		]);
+	}, tx);
 }
 
 async function batchCreateBountySkills(bountyId: number, skillIds: number[], tx?: Transaction) {
+	if (skillIds.length === 0) {
+		return;
+	}
+
 	return withTransaction(async (tx) => {
 		return tx
 			.insert(bountySkills)
 			.values(skillIds.map((skillId) => ({ bountyId, skillId })))
+			.returning();
+	}, tx);
+}
+
+async function batchDeleteBountySkills(bountyId: number, skillIds: number[], tx?: Transaction) {
+	if (skillIds.length === 0) {
+		return;
+	}
+
+	return withTransaction(async (tx) => {
+		return tx
+			.delete(bountySkills)
+			.where(and(eq(bountySkills.bountyId, bountyId), inArray(bountySkills.skillId, skillIds)))
 			.returning();
 	}, tx);
 }

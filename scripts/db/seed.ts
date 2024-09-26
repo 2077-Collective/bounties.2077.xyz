@@ -207,5 +207,3 @@ export async function globalSeeder() {
 	await seedChains();
 	await seedTokens();
 }
-
-globalSeeder().catch(console.error);

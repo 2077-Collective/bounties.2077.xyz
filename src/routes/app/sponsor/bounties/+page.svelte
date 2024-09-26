@@ -76,7 +76,7 @@
 						Open bounty page
 					</LinkButton>
 
-					<LinkButton href={`/app/sponsor/bounty/${bounty.id}/edit`} variant="transparent">
+					<LinkButton href={`/app/sponsor/bounties/${bounty.id}/edit`} variant="transparent">
 						<Pencil class="w-4 h-4 mr-2" />
 						Edit bounty
 					</LinkButton>

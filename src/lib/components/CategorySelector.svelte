@@ -10,16 +10,18 @@
 	const {
 		name,
 		availableCategories,
-		onchange
+		onchange,
+		value = []
 	}: {
 		name: string;
 		availableCategories: Category[];
 		onchange: (categories: Category[]) => void;
+		value?: Category[];
 	} = $props();
 
 	let inputElement: HTMLInputElement;
 	let dropdownElement = $state<HTMLUListElement | null>(null);
-	let categories: Category[] = $state([]);
+	let categories: Category[] = $state(value);
 	let inputValue = $state('');
 	let filteredOptions: Category[] = $derived.by(() =>
 		availableCategories.filter(

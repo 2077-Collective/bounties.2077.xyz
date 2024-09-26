@@ -8,7 +8,7 @@
 		placeholder,
 		rows
 	} = $props<{
-		value: string;
+		value?: string;
 		class?: string;
 		id?: string;
 		name?: string;

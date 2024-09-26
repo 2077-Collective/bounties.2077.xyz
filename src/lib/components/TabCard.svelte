@@ -5,14 +5,16 @@
 	interface Props {
 		title: string;
 		labels: string[];
+		active?: number;
+		disabled?: boolean;
 		// This allows the component to accept any #snippet as a child.
 		// If you have a better solution, please make a PR.
-		[key: string]: Snippet | string | string[];
+		[key: string]: Snippet | string | string[] | number | undefined | boolean;
 	}
 
-	const { title, labels, ...restProps }: Props = $props();
+	const { title, labels, active = 1, disabled, ...restProps }: Props = $props();
 
-	let activeTab = $state(1);
+	let activeTab = $state(active);
 	const childs = $derived(Object.values(restProps).filter((f) => typeof f === 'function'));
 	const activeContent: Snippet = $derived(childs[activeTab]);
 </script>
@@ -24,11 +26,13 @@
 		{#each labels as label, index}
 			<button
 				type="button"
+				{disabled}
 				onclick={() => (activeTab = index)}
+				class:cursor-not-allowed={disabled}
 				class="px-4 py-2 rounded-md w-full text-sm font-medium transition-colors {activeTab ===
 				index
 					? 'bg-white text-black'
-					: 'bg-gray-100 text-gray-700 hover:bg-gray-200'}"
+					: `bg-gray-100 text-gray-700 ${disabled ? '' : 'hover:bg-gray-200'}`}"
 			>
 				{label}
 			</button>

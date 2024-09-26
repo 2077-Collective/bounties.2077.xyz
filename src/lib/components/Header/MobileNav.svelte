@@ -12,7 +12,6 @@
 </button>
 
 {#if open}
-	<button class="fixed inset-0 bg-black bg-opacity-50 z-40" onclick={() => (open = false)}></button>
 	<div
 		class="fixed inset-y-0 left-0 w-full md:w-2/5 lg:max-w-sm w-full max-w-full bg-white dark:bg-gray shadow-lg z-50 overflow-y-auto flex flex-col p-4"
 		transition:blur={{ duration: 300, easing: quintOut }}

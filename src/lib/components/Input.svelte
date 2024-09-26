@@ -21,7 +21,7 @@
 		icon,
 		button
 	}: {
-		value: string;
+		value?: string;
 		class?: string;
 		id?: string;
 		name?: string;
@@ -38,7 +38,7 @@
 
 {#if icon}
 	<div
-		class={`flex h-[48px] flex-grow items-center gap-2 ${Variant[variant]} border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
+		class={`flex h-[48px] flex-grow items-center gap-2  border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${className} ${Variant[variant]}`}
 	>
 		{@render icon()}
 		<input
@@ -66,6 +66,6 @@
 		{placeholder}
 		{min}
 		{disabled}
-		class={`flex-grow ${Variant[variant]} border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 ${className}`}
+		class={`${disabled ? 'text-gray-400 bg-white' : 'text-gray-700'} flex-grow ${Variant[variant]} border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
 	/>
 {/if}

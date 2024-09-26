@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import BountyForm from '$lib/components/BountyForm.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
-	import BountyForm from '$lib/components/BountyForm.svelte';
 
 	const { data }: { data: PageData } = $props();
 
@@ -31,9 +31,10 @@
 </script>
 
 <BountyForm
+	bounty={data.bounty}
 	tokens={data.tokens}
 	skills={data.skills}
 	chains={data.chains}
+	action="?/upadateBounty"
 	{enhanceSubmit}
-	action="?/createBounty"
 />
