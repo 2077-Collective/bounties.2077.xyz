@@ -1,6 +1,6 @@
 import { and, desc, eq, inArray } from 'drizzle-orm';
 import { db, type Transaction } from '.';
-import { bounties, bountySkills } from '../../types/schema';
+import { bounties, bountySkills, comments } from '../../types/schema';
 import { batchCreateRewards } from './rewards';
 import type { EnhancedBounty, InsertBounty } from '$lib/types';
 import { withTransaction } from './utils';
@@ -33,14 +33,24 @@ export async function getBountyById(id: number): Promise<EnhancedBounty | undefi
 	return db.query.bounties.findFirst({
 		where: eq(bounties.id, id),
 		with: {
+			sponsor: true,
 			bountySkills: {
 				with: {
 					skill: true
 				}
 			},
-			comments: true,
+			comments: {
+				with: {
+					user: true
+				},
+				orderBy: desc(comments.createdAt)
+			},
 			submissions: true,
-			rewards: true
+			rewards: {
+				with: {
+					token: true
+				}
+			}
 		}
 	});
 }
@@ -54,9 +64,19 @@ export async function getBountiesBySponsorId(sponsorId: number): Promise<Enhance
 					skill: true
 				}
 			},
-			comments: true,
+			comments: {
+				with: {
+					user: true
+				},
+				orderBy: desc(comments.createdAt)
+			},
+			sponsor: true,
 			submissions: true,
-			rewards: true
+			rewards: {
+				with: {
+					token: true
+				}
+			}
 		}
 	});
 }

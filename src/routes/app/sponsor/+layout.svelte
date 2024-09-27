@@ -19,7 +19,7 @@
 	];
 </script>
 
-<div class="px-32">
+<div>
 	<div class="gap-3 border-b border-light py-10 flex flex-col gap-2">
 		<h1 class="text-3xl font-600">2077 Collective</h1>
 		<p class="text-foreground/60">Manage your account and bounties</p>

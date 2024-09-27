@@ -19,5 +19,7 @@
 <div class="w-full h-full">
 	<ShortcutsHandler />
 	<Header />
-	{@render children()}
+	<div class="px-8 md:px-16 lg:px-32">
+		{@render children()}
+	</div>
 </div>

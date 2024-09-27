@@ -71,7 +71,7 @@
 				</div>
 
 				<div class="w-1/4 flex flex-col items-end">
-					<LinkButton href={`/app/sponsor/bounty/${bounty.id}`} variant="transparent">
+					<LinkButton href={`/app/bounty/${bounty.id}`} variant="transparent">
 						<ExternalLink class="w-4 h-4 mr-2" />
 						Open bounty page
 					</LinkButton>

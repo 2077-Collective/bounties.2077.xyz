@@ -7,7 +7,7 @@
 
 	const variantStyles: Record<Variant, string> = {
 		default: 'bg-gray-lighter text-gray-dark',
-		success: 'bg-green text-green-dark',
+		success: 'bg-lime-300 text-lime-800',
 		danger: 'bg-red-light text-red-dark',
 		warning: 'bg-eggshell-light text-eggshell-dark',
 		info: 'bg-black text-white',
@@ -25,6 +25,6 @@
 	} = $props();
 </script>
 
-<div class={`${variantStyles[variant]} rounded-full px-2 py-1 text-sm w-fit ${className}`}>
+<div class={`${variantStyles[variant]} h-fit rounded-full px-2 py-1 text-sm w-fit ${className}`}>
 	{@render children()}
 </div>

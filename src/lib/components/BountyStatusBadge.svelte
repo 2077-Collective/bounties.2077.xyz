@@ -24,7 +24,7 @@
 		const startDate = new Date(bounty.startDate);
 		const endDate = new Date(bounty.endDate);
 
-		if (startDate > today && endDate > today && !bounty.draft) return 'open';
+		if (startDate <= today && endDate >= today && !bounty.draft) return 'open';
 
 		const hasUnreviewedSubmissions = bounty.submissions.some(
 			(submission) => submission.state === SubmissionState.Unreviewed
