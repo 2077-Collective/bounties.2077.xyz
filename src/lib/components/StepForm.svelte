@@ -9,17 +9,26 @@
 		steps,
 		class: className,
 		action,
-		onsubmit
-	}: { steps: Snippet[]; class?: string; action: string; onsubmit: SubmitFunction } = $props();
+		onsubmit,
+		enctype,
+		loading
+	}: {
+		steps: Snippet[];
+		class?: string;
+		action: string;
+		onsubmit: SubmitFunction;
+		enctype?: string;
+		loading?: boolean;
+	} = $props();
 
 	let currentStep = $state(0);
 	let isTransitioning = false;
-	let direction = $state('left'); // Track direction of slide
+	let direction = $state('left');
 
 	function nextStep() {
 		if (currentStep < steps.length - 1 && !isTransitioning) {
 			isTransitioning = true;
-			direction = 'left'; // Set the direction for slide forward
+			direction = 'left';
 			currentStep += 1;
 		}
 	}
@@ -27,17 +36,18 @@
 	function previousStep() {
 		if (currentStep > 0 && !isTransitioning) {
 			isTransitioning = true;
-			direction = 'right'; // Set the direction for slide backward
+			direction = 'right';
 			currentStep -= 1;
 		}
 	}
 </script>
 
 <form
-	class={`h-full relative rounded p-8  border flex flex-col gap-6 ${className}`}
+	class={`h-full relative flex flex-col gap-6 ${className}`}
 	{action}
 	method="POST"
 	use:enhance={onsubmit}
+	{enctype}
 >
 	<div class="h-1 w-full bg-accent rounded-lg">
 		<div
@@ -53,6 +63,7 @@
 					in:fly={{ x: direction === 'left' ? 500 : -500, duration: 300 }}
 					out:fly={{ x: direction === 'left' ? -500 : 500, duration: 300 }}
 					onoutroend={() => (isTransitioning = false)}
+					class="w-full"
 				>
 					{@render steps[currentStep]()}
 				</div>
@@ -69,7 +80,7 @@
 				<Button onclick={nextStep} class="px-6">Next</Button>
 			{/if}
 			{#if currentStep === steps.length - 1}
-				<Button type="submit">Submit</Button>
+				<Button type="submit" {loading}>Submit</Button>
 			{/if}
 		</div>
 	</div>

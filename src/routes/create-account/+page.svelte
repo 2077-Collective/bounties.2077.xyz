@@ -1,18 +1,50 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import StepForm from '$lib/components/StepForm.svelte';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { closeModal, openModal } from '$lib/stores/modal.svelte';
+	import type { PageData } from './$types';
+	import BadgeSelect from '$lib/components/BadgeSelect.svelte';
+	import InputImage from '$lib/components/InputImage.svelte';
 	import Input from '$lib/components/Input.svelte';
-	import Button from '$lib/components/Button.svelte';
 
-	let formData = {
-		displayName: '',
-		username: '',
-		walletAddress: '',
-		email: '',
-		image: '',
-		website: '',
-		twitter: '',
-		bio: ''
+	const {
+		data
+	}: {
+		data: PageData;
+	} = $props();
+
+	let userInfo = $state({
+		displayName: 'nano',
+		walletAddress: ''
+	});
+	let profilePic: File[] = $state([]);
+	let skills: (string | number)[] = $state([]);
+	let loading = $state(false);
+	let isSponsorRegistration = $state(false);
+
+	const onFormSubmit: SubmitFunction = async ({ formData }) => {
+		loading = true;
+
+		Object.entries(userInfo).map(([key, value]) => formData.append(key, value));
+
+		if (profilePic.length > 0) {
+			formData.append('image', profilePic[0]);
+		}
+
+		skills.forEach((skill) => {
+			formData.append('skills[]', skill.toString());
+		});
+
+		return ({ result }) => {
+			if (result.type === 'success') {
+				closeModal();
+				return goto('/app');
+			}
+
+			loading = false;
+		};
 	};
 
 	onMount(() => {
@@ -23,81 +55,96 @@
 			return goto('/login');
 		}
 
-		formData.walletAddress = walletAddress;
+		userInfo.walletAddress = walletAddress;
+
+		openModal(registrationModal, { dismissible: false });
 	});
 </script>
 
-<form
-	method="POST"
-	action="?/register"
-	class="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-md"
->
-	<h2 class="text-2xl font-bold mb-6 text-center">User Information</h2>
+{#snippet stepOne()}
+	<div class="w-full flex flex-col gap-6 mb-12">
+		<div>
+			<p class="text-sm text-gray-400">Welcome</p>
+			<h2 class="text-xl md:text-2xl">What would you use 2077 Bounty for?</h2>
+		</div>
+		<div class="flex flex-col gap-2 p-1">
+			<button
+				onclick={() => (isSponsorRegistration = false)}
+				class="w-full h-full flex gap-2 p-3 outline outline-1 rounded-lg items-center transition-all"
+				class:outline-2={!isSponsorRegistration}
+				class:outline-1={isSponsorRegistration}
+				class:outline-black={!isSponsorRegistration}
+				class:outline-gray-200={isSponsorRegistration}
+			>
+				<div class="bg-secondary w-8 h-8 rounded-full p-2 flex-shrink-0">
+					<div
+						class="h-full w-full bg-gray-300 rounded-full transition-all"
+						class:opacity-0={isSponsorRegistration}
+					></div>
+				</div>
+				<p class="text-left text-sm md:text-base">Doing the work an collecting some sweet ETH</p>
+			</button>
+			<button
+				onclick={() => (isSponsorRegistration = true)}
+				class="w-full h-full flex gap-2 p-3 outline outline-1 rounded-lg items-center transition-all"
+				class:outline-2={isSponsorRegistration}
+				class:outline-1={!isSponsorRegistration}
+				class:outline-black={isSponsorRegistration}
+				class:outline-gray-200={!isSponsorRegistration}
+			>
+				<div class="bg-secondary w-8 h-8 rounded-full p-2 flex-shrink-0">
+					<div
+						class="h-full w-full bg-gray-300 rounded-full transition-all"
+						class:opacity-0={!isSponsorRegistration}
+					></div>
+				</div>
+				<p class="text-left text-sm md:text-base flex-wrap">
+					I have some assignments that need to be taken care of
+				</p>
+			</button>
+		</div>
+	</div>
+{/snippet}
 
-	<Input
-		type="text"
-		id="walletAddress"
-		name="walletAddress"
-		bind:value={formData.walletAddress}
-		required
-		class="hidden"
+{#snippet stepTwo()}
+	<div class="w-full flex flex-col gap-6 mb-12 max-h-full">
+		<div>
+			<p class="text-sm text-gray-400">Welcome</p>
+			<h2 class="text-xl md:text-2xl">What are your most valueable skills?</h2>
+		</div>
+
+		<BadgeSelect options={data.skills} onchange={(selectedSkills) => (skills = selectedSkills)} />
+	</div>
+{/snippet}
+
+{#snippet stepThree()}
+	<div class="w-full flex flex-col gap-6 mb-12 max-h-full">
+		<div>
+			<p class="text-sm text-gray-400">Welcome</p>
+			<h2 class="text-xl md:text-2xl">We’d like you to stand out, how does this look?</h2>
+		</div>
+
+		<div class="flex flex-col gap-4 items-center justify-center">
+			<InputImage
+				name="image"
+				image="/images/placeholder-profile-image.webp"
+				bind:value={profilePic}
+			/>
+			<Input
+				bind:value={userInfo.displayName}
+				placeholder="Your name"
+				class="text-2xl text-black font-semibold"
+			/>
+		</div>
+	</div>
+{/snippet}
+
+{#snippet registrationModal()}
+	<StepForm
+		steps={[stepOne, stepTwo, stepThree]}
+		action="?/register"
+		onsubmit={onFormSubmit}
+		enctype="multipart/form-data"
+		{loading}
 	/>
-
-	<div class="mb-4">
-		<label for="displayName" class="block mb-2 font-medium text-gray-700">Display Name</label>
-		<Input
-			type="text"
-			id="displayName"
-			name="displayName"
-			bind:value={formData.displayName}
-			required
-			class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-		/>
-	</div>
-
-	<div class="mb-4">
-		<label for="email" class="block mb-2 font-medium text-gray-700">Email</label>
-		<Input type="email" id="email" name="email" bind:value={formData.email} required />
-	</div>
-
-	<div class="mb-4">
-		<label for="image" class="block mb-2 font-medium text-gray-700">Image URL (optional)</label>
-		<Input
-			type="url"
-			id="image"
-			name="image"
-			bind:value={formData.image}
-			class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-		/>
-	</div>
-
-	<div class="mb-4">
-		<label for="website" class="block mb-2 font-medium text-gray-700">Website (optional)</label>
-		<Input
-			type="url"
-			id="website"
-			name="website"
-			bind:value={formData.website}
-			class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-		/>
-	</div>
-
-	<div class="mb-4">
-		<label for="twitter" class="block mb-2 font-medium text-gray-700">Twitter</label>
-		<Input type="text" id="twitter" bind:value={formData.twitter} required />
-	</div>
-
-	<div class="mb-6">
-		<label for="bio" class="block mb-2 font-medium text-gray-700">Bio</label>
-		<textarea
-			id="bio"
-			name="bio"
-			bind:value={formData.bio}
-			required
-			rows="4"
-			class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-		></textarea>
-	</div>
-
-	<Button type="submit">Submit</Button>
-</form>
+{/snippet}

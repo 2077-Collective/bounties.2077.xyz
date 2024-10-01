@@ -1,12 +1,17 @@
 import { eq, inArray } from 'drizzle-orm';
-import { db } from '.';
-import { sponsors, users } from '$lib/types/schema';
+import { db, type Transaction } from '.';
+import { sponsors, users, userSkills } from '$lib/types/schema';
 import type { Account } from '$lib/types';
 import type { InsertUser, UpdateUser, SelectUser } from '$lib/types';
+import { withTransaction } from './utils';
 
-export async function createNewUser(user: InsertUser) {
-	const createdUsers = await db.insert(users).values(user).returning();
-	return createdUsers[0];
+export async function createNewUser(user: InsertUser, skills: number[]) {
+	return withTransaction(async (tx) => {
+		const [newUser] = await tx.insert(users).values(user).returning();
+		await batchCreateUserSkills(newUser.id, skills, tx);
+
+		return newUser;
+	});
 }
 
 export async function getUsers(ids: number[]) {
@@ -56,4 +61,17 @@ export async function getUserIdByWalletAddress(walletAddress: string): Promise<n
 
 export async function updateUserById(id: number, user: UpdateUser) {
 	return db.update(users).set(user).where(eq(users.id, id));
+}
+
+async function batchCreateUserSkills(userId: number, skillIds: number[], tx?: Transaction) {
+	if (skillIds.length === 0) {
+		return;
+	}
+
+	return withTransaction(async (tx) => {
+		return tx
+			.insert(userSkills)
+			.values(skillIds.map((skillId) => ({ userId, skillId })))
+			.returning();
+	}, tx);
 }

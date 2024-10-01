@@ -20,7 +20,7 @@ export const sponsors = pgTable('sponsors', {
 		.references(() => users.id)
 		.notNull(),
 	// TODO: email should be unique
-	email: text('email').notNull(),
+	email: text('email').notNull().unique(),
 	website: text('website').notNull(),
 	twitter: text('twitter').notNull(),
 	image: text('image').notNull(),
@@ -55,11 +55,11 @@ export const users = pgTable('users', {
 	displayName: text('display_name').notNull(),
 	// TODO: wallet address can be null in a future where we have social login
 	walletAddress: text('wallet_address').unique().notNull(),
-	email: text('email').notNull().unique(),
+	email: text('email').unique(),
 	image: text('image'),
 	website: text('website'),
 	twitter: text('twitter'),
-	bio: text('bio').notNull(),
+	bio: text('bio'),
 	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
