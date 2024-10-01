@@ -43,6 +43,20 @@
 			"when": 1727391172933,
 			"tag": "0005_powerful_reaper",
 			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "7",
+			"when": 1727801384765,
+			"tag": "0006_heavy_sharon_carter",
+			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "7",
+			"when": 1727801739064,
+			"tag": "0007_exotic_adam_warlock",
+			"breakpoints": true
 		}
 	]
 }

@@ -5,9 +5,10 @@
 	interface InputImageProps extends ProfileImageProps {
 		edit?: boolean;
 		name?: string;
+		value?: File[];
 	}
 
-	const { image, name, size = '90px' }: InputImageProps = $props();
+	let { image, name, size = '90px', value = $bindable([]) }: InputImageProps = $props();
 	let input: HTMLInputElement | null = $state(null);
 	let tempImage = $state('');
 
@@ -15,7 +16,10 @@
 		const file = input?.files?.[0];
 
 		if (file) {
+			// Update the local image preview with the file URL
 			tempImage = URL.createObjectURL(file);
+			// Update the value with the selected file
+			value = [file];
 		}
 	};
 </script>
@@ -38,6 +42,7 @@
 	</div>
 </button>
 
+<!-- Do not bind value, only bind this reference to the input -->
 <input
 	type="file"
 	{name}

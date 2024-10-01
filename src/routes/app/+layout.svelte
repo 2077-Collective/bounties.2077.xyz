@@ -4,6 +4,7 @@
 	import { type Snippet } from 'svelte';
 	import { setAccount } from '$lib/stores/account.svelte';
 	import type { PageData } from './$types';
+	import Modal from '$lib/components/Modal.svelte';
 
 	const {
 		data,
@@ -16,7 +17,8 @@
 	setAccount(data.account);
 </script>
 
-<div class="w-full h-full">
+<div class="w-full h-full relative">
+	<Modal />
 	<ShortcutsHandler />
 	<Header />
 	{@render children()}
