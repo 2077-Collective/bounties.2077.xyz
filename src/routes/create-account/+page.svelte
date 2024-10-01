@@ -16,7 +16,7 @@
 	} = $props();
 
 	let userInfo = $state({
-		displayName: 'nano',
+		displayName: '',
 		walletAddress: ''
 	});
 	let profilePic: File[] = $state([]);
