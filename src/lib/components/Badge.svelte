@@ -17,14 +17,20 @@
 	const {
 		variant = 'default',
 		class: className,
-		children
+		children,
+		onclick
 	}: {
 		variant?: Variant;
 		class?: string;
 		children: Snippet;
+		onclick?: () => void;
 	} = $props();
 </script>
 
-<div class={`${variantStyles[variant]} rounded-full px-2 py-1 text-sm w-fit ${className}`}>
+<button
+	{onclick}
+	class={`${variantStyles[variant]} rounded-full px-2 py-1 text-sm w-fit ${className}`}
+	type="button"
+>
 	{@render children()}
-</div>
+</button>
