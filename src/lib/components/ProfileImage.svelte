@@ -1,6 +1,6 @@
 <script lang="ts" module>
 	export interface ProfileImageProps {
-		image?: string;
+		image?: string | null;
 		size?: string;
 	}
 </script>

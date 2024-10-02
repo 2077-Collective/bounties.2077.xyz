@@ -57,6 +57,20 @@
 			"when": 1727801739064,
 			"tag": "0007_exotic_adam_warlock",
 			"breakpoints": true
+		},
+		{
+			"idx": 8,
+			"version": "7",
+			"when": 1727888517843,
+			"tag": "0008_secret_doctor_octopus",
+			"breakpoints": true
+		},
+		{
+			"idx": 9,
+			"version": "7",
+			"when": 1727889248194,
+			"tag": "0009_gorgeous_sabretooth",
+			"breakpoints": true
 		}
 	]
 }
