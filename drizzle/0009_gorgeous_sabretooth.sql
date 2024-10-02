@@ -1,0 +1,1 @@
+ALTER TABLE "user_bookmarks" ADD COLUMN "created_at" timestamp (3) DEFAULT now() NOT NULL;

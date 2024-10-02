@@ -40,16 +40,45 @@ export type EnhancedBounty = SelectBounty & {
 	submissions: SelectSubmission[];
 	rewards: SelectReward[];
 };
+export type EnhancedBountyListItem = SelectBounty & {
+	rewards: EnhancedReward[];
+	sponsor: SelectSponsor;
+	bountySkills: {
+		bountyId: number;
+		skillId: number;
+		skill: SelectSkill;
+	}[];
+};
 
 export const InsertRewardSchema = createInsertSchema(rewards);
 export type SelectReward = typeof rewards.$inferSelect;
 export type InsertReward = typeof rewards.$inferInsert;
+export type EnhancedReward = SelectReward & {
+	token: SelectToken;
+};
 
 export const InsertUserSchema = createInsertSchema(users);
 export const UpdateUserSchema = InsertUserSchema.partial();
 export type SelectUser = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type UpdateUser = z.infer<typeof UpdateUserSchema>;
+export type UserPublicData = Omit<
+	SelectUser,
+	'walletAddress' | 'createdAt' | 'updatedAt' | 'email'
+>;
+export type EnhancedUserPublicData = UserPublicData & {
+	userSkills: {
+		userId: number;
+		skillId: number;
+		skill: SelectSkill;
+	}[];
+	amountRewarded: bigint;
+	winningSubmissionsCount: number;
+	bookmarks: {
+		bounty: EnhancedBountyListItem;
+	}[];
+	submissions: SelectSubmission[];
+};
 
 export const InsetCommentSchema = createInsertSchema(comments);
 export type SelectComment = typeof comments.$inferSelect;

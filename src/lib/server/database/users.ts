@@ -1,7 +1,7 @@
 import { eq, inArray } from 'drizzle-orm';
 import { db, type Transaction } from '.';
-import { sponsors, users, userSkills } from '$lib/types/schema';
-import type { Account } from '$lib/types';
+import { rewards, sponsors, submissions, users, userSkills } from '$lib/types/schema';
+import type { Account, EnhancedUserPublicData } from '$lib/types';
 import type { InsertUser, UpdateUser, SelectUser } from '$lib/types';
 import { withTransaction } from './utils';
 
@@ -16,6 +16,63 @@ export async function createNewUser(user: InsertUser, skills: number[]) {
 
 export async function getUsers(ids: number[]) {
 	return db.select().from(users).where(inArray(users.id, ids)).execute();
+}
+
+export async function getUserPublicDataById(
+	id: number,
+	tx?: Transaction
+): Promise<EnhancedUserPublicData | undefined> {
+	return withTransaction(async (tx) => {
+		const userData = tx.query.users.findFirst({
+			where: eq(users.id, id),
+			columns: {
+				walletAddress: false,
+				createdAt: false,
+				updatedAt: false
+			},
+			with: {
+				userSkills: {
+					with: {
+						skill: true
+					}
+				},
+				bookmarks: {
+					with: {
+						bounty: {
+							with: {
+								sponsor: true,
+								bountySkills: {
+									with: {
+										skill: true
+									}
+								},
+								rewards: {
+									with: {
+										token: true
+									}
+								}
+							}
+						}
+					}
+				},
+				submissions: true
+			}
+		});
+
+		const [user, winningSubmissions, rewards] = await Promise.all([
+			userData,
+			getUserWinningSubmissions(id),
+			getRewardsByUserId(id)
+		]);
+
+		if (!user) return undefined;
+
+		return {
+			...user,
+			winningSubmissionsCount: winningSubmissions.length,
+			amountRewarded: rewards.reduce((acc, reward) => acc + reward.amount, 0n)
+		};
+	}, tx);
 }
 
 export async function getUserById(id: number) {
@@ -74,4 +131,16 @@ async function batchCreateUserSkills(userId: number, skillIds: number[], tx?: Tr
 			.values(skillIds.map((skillId) => ({ userId, skillId })))
 			.returning();
 	}, tx);
+}
+
+async function getUserWinningSubmissions(id: number) {
+	return db.query.submissions.findMany({
+		where: eq(submissions.userId, id)
+	});
+}
+
+async function getRewardsByUserId(id: number) {
+	return db.query.rewards.findMany({
+		where: eq(rewards.winner, id)
+	});
 }

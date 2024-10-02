@@ -37,6 +37,7 @@ export async function updateSponsorById(id: number, sponsor: z.infer<typeof Upda
 	return updatedSponsor[0];
 }
 
+// TODO: should include total amount awarded and top contributor to EnhancedSponsorPublicData type
 export async function getSponsorPublicProfile(id: number) {
 	const sponsorPromise = db.query.sponsors.findFirst({
 		with: {

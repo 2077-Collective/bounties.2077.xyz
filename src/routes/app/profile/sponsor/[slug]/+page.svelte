@@ -6,11 +6,7 @@
 	import { formatRelativeDate } from '$lib/utils';
 	import Clock from 'lucide-svelte/icons/clock';
 	import Badge from '$lib/components/Badge.svelte';
-
-	interface ProfileCard {
-		title: string;
-		value?: string;
-	}
+	import ProfileCard, { type ProfileCardProps } from '$lib/components/ProfileCard.svelte';
 
 	const {
 		data: sponsor
@@ -18,7 +14,7 @@
 		data: PageData;
 	} = $props();
 
-	const profileCards: ProfileCard[] = $derived([
+	const profileCards: ProfileCardProps[] = $derived([
 		{
 			title: 'Bounties',
 			value: sponsor.bounties?.length ? sponsor.bounties.length.toString() : undefined
@@ -69,13 +65,7 @@
 
 	<div class="flex gap-2">
 		{#each profileCards as card}
-			<div class="flex gap-3 grow border border-gray rounded-lg p-4">
-				<div class="w-12 h-12 rounded-lg bg-gray-100"></div>
-				<div>
-					<p class="font-bold text-xl">{card.value || '-'}</p>
-					<p class="text-sm">{card.title}</p>
-				</div>
-			</div>
+			<ProfileCard value={card.value} title={card.title} />
 		{/each}
 	</div>
 

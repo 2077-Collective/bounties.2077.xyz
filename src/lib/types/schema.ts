@@ -67,7 +67,9 @@ export const users = pgTable('users', {
 export const userRelations = relations(users, ({ many }) => ({
 	// TODO: do we want a many to one relationship or one to one?
 	sponsors: many(sponsors),
-	userSkills: many(userSkills)
+	userSkills: many(userSkills),
+	bookmarks: many(userBookmarks),
+	submissions: many(submissions)
 }));
 
 export const userSkills = pgTable(
@@ -96,6 +98,44 @@ export const userSkillsRelations = relations(userSkills, ({ one }) => ({
 	})
 }));
 
+export const userBookmarks = pgTable(
+	'user_bookmarks',
+	{
+		userId: integer('user_id')
+			.references(() => users.id)
+			.notNull(),
+		bountyId: integer('bounty_id')
+			.references(() => bounties.id)
+			.notNull(),
+		createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow()
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.userId, t.bountyId] })
+	})
+);
+
+export const userBookmarksRelations = relations(userBookmarks, ({ one }) => ({
+	user: one(users, {
+		fields: [userBookmarks.userId],
+		references: [users.id]
+	}),
+	bounty: one(bounties, {
+		fields: [userBookmarks.bountyId],
+		references: [bounties.id]
+	})
+}));
+
+export const bookmarkRelations = relations(userBookmarks, ({ one }) => ({
+	user: one(users, {
+		fields: [userBookmarks.userId],
+		references: [users.id]
+	}),
+	bounty: one(bounties, {
+		fields: [userBookmarks.bountyId],
+		references: [bounties.id]
+	})
+}));
+
 export const bounties = pgTable('bounties', {
 	id: serial('id').primaryKey().unique(),
 	sponsorId: serial('sponsor_id')
@@ -120,7 +160,8 @@ export const bountyRelations = relations(bounties, ({ many, one }) => ({
 	}),
 	comments: many(comments),
 	submissions: many(submissions),
-	rewards: many(rewards)
+	rewards: many(rewards),
+	bookmars: many(userBookmarks)
 }));
 
 export const bountySkills = pgTable(
