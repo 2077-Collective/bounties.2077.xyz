@@ -17,7 +17,7 @@
 
 {#snippet header()}
 	<div class="mb-4">
-		<h3 class="font-bold text-xl mb-1">Connect a wallet</h3>
+		<h3 class="font-semibold text-xl mb-1">Connect a wallet</h3>
 		<p class="text-gray-400 text-sm">Log in or Sign up</p>
 	</div>
 {/snippet}

@@ -39,7 +39,7 @@
 				<div class="flex gap-3 items-center">
 					<BountyStatusBadge {bounty} />
 
-					<p class="font-thin">
+					<p>
 						Published {formatDistanceStrict(bounty.createdAt, new Date(), { addSuffix: true })}
 					</p>
 
@@ -60,14 +60,14 @@
 				</div>
 			</div>
 
-			<div class="leading-7 font-thin">
+			<div class="leading-7">
 				{bounty.description}
 			</div>
 		</div>
 
 		<hr />
 
-		<div class="flex flex-col gap-10">
+		<div class="flex flex-col gap-10" id="comments">
 			<h2 class="text-3xl">Comments</h2>
 
 			{#if account}
@@ -98,11 +98,11 @@
 						<div class="flex flex-col flex-grow gap-1">
 							<div class="flex gap-2">
 								<p>{comment.user.displayName}</p>
-								<p class="text-gray-500 font-thin leading-6">
+								<p class="text-gray-500 leading-6">
 									{formatDistanceStrict(comment.createdAt, new Date(), { addSuffix: true })}
 								</p>
 							</div>
-							<p class="font-thin">{comment.content}</p>
+							<p>{comment.content}</p>
 						</div>
 					</div>
 				{/each}
@@ -115,7 +115,7 @@
 			<ProfileImage image={bounty.sponsor.image} size="48px" />
 			<div>
 				<p>{bounty.sponsor.displayName}</p>
-				<p class="text-sm text-thin text-gray-500">Sponsor</p>
+				<p class="text-sm text-gray-500">Sponsor</p>
 			</div>
 		</div>
 
@@ -147,7 +147,7 @@
 									{reward.amount}
 									{reward.token.symbol}
 								</p>
-								<p class="text-gray-500 text-sm font-thin">
+								<p class="text-gray-500 text-sm">
 									{reward.rank === 1
 										? '1st Place'
 										: reward.rank === 2
@@ -174,7 +174,7 @@
 							{bounty.rewards[0].amount}
 							{bounty.rewards[0].token.symbol}
 						</p>
-						<p class="text-gray-500 font-thin text-sm">Winner takes all</p>
+						<p class="text-gray-500 text-sm">Winner takes all</p>
 					</div>
 				</div>
 			{/if}
