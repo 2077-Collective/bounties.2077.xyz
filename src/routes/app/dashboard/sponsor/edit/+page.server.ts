@@ -3,9 +3,7 @@ import type { Actions } from './$types';
 import { updateSponsorById } from '$lib/server/database/sponsors';
 import { fail } from '@sveltejs/kit';
 import { z } from 'zod';
-import { put } from '@vercel/blob';
-import { nanoid } from 'nanoid';
-import { BLOB_READ_WRITE_TOKEN } from '$env/static/private';
+import { uploadImage } from '$lib/server/services/upload-files';
 
 const UpdateSponsorFormSchema = UpdateSponsorSchema.omit({ image: true }).extend({
 	image: z.instanceof(File)
@@ -21,18 +19,7 @@ export const actions: Actions = {
 		const sponsorForm = UpdateSponsorFormSchema.parse(formData);
 
 		let image: string | undefined;
-		if (sponsorForm.image.size > 0) {
-			if (sponsorForm.image.size > 4 * 1024 * 1024) {
-				return fail(400, { message: 'Image too large' });
-			}
-
-			const { url } = await put(nanoid(10), sponsorForm.image, {
-				access: 'public',
-				token: BLOB_READ_WRITE_TOKEN
-			});
-
-			image = url;
-		}
+		if (sponsorForm.image.size > 0) image = await uploadImage(sponsorForm.image);
 
 		const updatedSponsor = await updateSponsorById(sponsorId, { ...sponsorForm, image });
 

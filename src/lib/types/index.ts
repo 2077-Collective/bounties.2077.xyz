@@ -14,7 +14,7 @@ import { createInsertSchema } from 'drizzle-zod';
 import { z } from 'zod';
 
 export interface Account {
-	users: SelectUser;
+	users: EnhancedUser;
 	sponsors: SelectSponsor | null;
 }
 
@@ -63,6 +63,13 @@ export const UpdateUserSchema = InsertUserSchema.partial();
 export type SelectUser = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 export type UpdateUser = z.infer<typeof UpdateUserSchema>;
+export type EnhancedUser = SelectUser & {
+	userSkills: {
+		userId: number;
+		skillId: number;
+		skill: SelectSkill;
+	}[];
+};
 export type UserPublicData = Omit<
 	SelectUser,
 	'walletAddress' | 'createdAt' | 'updatedAt' | 'email'
