@@ -27,6 +27,7 @@
 	} = $props();
 </script>
 
+
 <button
 	{onclick}
 	class={`${variantStyles[variant]} rounded-full px-2 py-1 text-sm w-fit ${className}`}

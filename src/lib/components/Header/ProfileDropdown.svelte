@@ -7,6 +7,7 @@
 	const account = getAccount();
 </script>
 
+<!-- TODO: When implementing switch profile functions, make sure to update locals on the API -->
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		<!-- TODO: Review this logic when implementing user profile -->

@@ -36,9 +36,10 @@ export type EnhancedBounty = SelectBounty & {
 		skillId: number;
 		skill: SelectSkill;
 	}[];
-	comments: SelectComment[];
+	comments: (SelectComment & { user: SelectUser })[];
 	submissions: SelectSubmission[];
-	rewards: SelectReward[];
+	rewards: (SelectReward & { token: SelectToken })[];
+	sponsor: SelectSponsor;
 };
 export type EnhancedBountyListItem = SelectBounty & {
 	rewards: EnhancedReward[];
