@@ -1,12 +1,17 @@
-import { getUserById } from '$lib/server/database/users';
-import { error, type LoadEvent } from '@sveltejs/kit';
+import { getUserPublicDataById } from '$lib/server/database/users';
+import { error, redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-export async function load({ params }: LoadEvent) {
-	const userId = params.slug;
+export const load: PageServerLoad = async ({ params }) => {
+	const userId = parseInt(params.slug);
 
-	if (!userId) return error(400, { message: 'No user ID provided' });
+	if (isNaN(userId)) error(400, { message: 'Invalid user ID' });
 
-	const user = await getUserById(parseInt(userId));
+	const user = await getUserPublicDataById(userId);
 
-	return user;
-}
+	if (!user) throw redirect(307, '/404');
+
+	return {
+		user
+	};
+};

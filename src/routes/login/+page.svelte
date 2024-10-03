@@ -1,25 +1,42 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { closeModal, openModal } from '$lib/stores/modal.svelte';
 	import { Auth, type WalletLoginResponse } from '@2077collective/persona';
+	import { onMount } from 'svelte';
 
 	function handleLogin(user: WalletLoginResponse) {
 		localStorage.setItem('walletAddress', user.address);
+		closeModal();
 		goto('/app');
 	}
+
+	onMount(() => {
+		openModal(auth);
+	});
 </script>
 
 {#snippet header()}
-	<h3 class="font-bold text-xl">Login or sign up</h3>
+	<div class="mb-4">
+		<h3 class="font-bold text-xl mb-1">Connect a wallet</h3>
+		<p class="text-gray-400 text-sm">Log in or Sign up</p>
+	</div>
 {/snippet}
 
-<div class="flex flex-col items-center justify-center h-full gap-8">
-	<h1 class="font-bold text-3xl">2077 Bounties</h1>
-	<Auth
-		{header}
-		walletLoginCallback={handleLogin}
-		enableSocial={false}
-		signatureEndpoint="/login"
-		authenticationEndpoint="/login"
-		spinnerSize="24px"
-	/>
-</div>
+{#snippet footer()}
+	<p class="text-sm text-gray-400 mt-4 text-center leading-6">
+		By connecting a wallet you agree to BountyHunter’s Terms of Service and Privacy Policy.
+	</p>
+{/snippet}
+
+{#snippet auth()}
+	<div class="w-full md:max-w-sm md:min-w-96 flex items-center justify-center">
+		<Auth
+			{header}
+			{footer}
+			walletLoginCallback={handleLogin}
+			enableSocial={false}
+			signatureEndpoint="/login"
+			authenticationEndpoint="/login"
+		/>
+	</div>
+{/snippet}
