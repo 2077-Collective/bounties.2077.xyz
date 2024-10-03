@@ -1,4 +1,15 @@
-<script lang="ts" generics="T">
+<script lang="ts" module>
+	/* eslint-disable */
+	// We're ignoring eslint in this file because it doesn't have support for generics in svelte files yet
+	interface Bounty {
+		draft: boolean;
+		startDate: string;
+		endDate: string;
+		submissions?: SelectSubmission[];
+	}
+</script>
+
+<script lang="ts" generics="TBounty extends Bounty">
 	import { SubmissionState, type SelectSubmission } from '$lib/types';
 	import Badge, { type Variant as BadgeVariant } from './Badge.svelte';
 
@@ -11,17 +22,10 @@
 		closed: { variant: 'default', label: 'Closed' }
 	};
 
-	interface Bounty {
-		draft: boolean;
-		startDate: string;
-		endDate: string;
-		submissions?: SelectSubmission[];
-	}
-
 	const {
 		bounty
 	}: {
-		bounty: T extends Bounty ? T : Bounty;
+		bounty: TBounty;
 	} = $props();
 
 	const status: BountyStatus = $derived.by(() => {

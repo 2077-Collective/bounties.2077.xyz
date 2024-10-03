@@ -1,7 +1,7 @@
 import type { Account } from '$lib/types';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { JWTSigner } from '@2077collective/persona';
-import { getUserById } from '$lib/server/database/users';
+import { getAccountByUserId } from '$lib/server/database/users';
 import { JWT_SECRET, NODE_ENV } from '$env/static/private';
 
 export const getAccount = async (jwt: string): Promise<Account | null> => {
@@ -11,7 +11,7 @@ export const getAccount = async (jwt: string): Promise<Account | null> => {
 		return null;
 	}
 
-	const user = await getUserById(
+	const user = await getAccountByUserId(
 		typeof payload === 'number' ? payload : parseInt(payload.data as string)
 	);
 

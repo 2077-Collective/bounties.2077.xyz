@@ -15,3 +15,9 @@ export function updateAccountSponsor(sponsor: Account['sponsors']) {
 
 	accountStore.sponsors = sponsor;
 }
+
+export function updateAccountUser(user: Account['users']) {
+	if (!accountStore) throw new Error('Account not found');
+
+	accountStore.users = user;
+}
