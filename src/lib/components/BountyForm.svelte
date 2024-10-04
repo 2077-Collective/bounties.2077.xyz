@@ -9,7 +9,7 @@
 	import { Trash2 } from 'lucide-svelte';
 	import Input from '$lib/components/Input.svelte';
 	import Button from '$lib/components/Button.svelte';
-	import TextArea from '$lib/components/TextArea.svelte';
+	import MarkdownEditor from './MarkdownEditor.svelte';
 
 	const {
 		bounty,
@@ -93,13 +93,7 @@
 
 			<div class="flex flex-col gap-2">
 				<label for="description" class="block text-sm font-medium text-gray-700">Briefing</label>
-				<TextArea
-					id="description"
-					name="description"
-					required
-					rows="4"
-					value={bounty?.description}
-				/>
+				<MarkdownEditor name="description" value={bounty?.description} />
 			</div>
 
 			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">

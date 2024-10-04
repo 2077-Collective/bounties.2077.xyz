@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { Markdown } from 'carta-md';
+	import { carta } from '$lib/utils/carta';
 	import BountyStatusBadge from '$lib/components/BountyStatusBadge.svelte';
 	import type { PageData } from './$types';
 	import LinkButton from '$lib/components/LinkButton.svelte';
@@ -13,6 +15,7 @@
 	import { formatDistanceStrict } from 'date-fns/formatDistanceStrict';
 	import Badge from '$lib/components/Badge.svelte';
 	import { formatDate } from 'date-fns';
+	import '$lib/styles/carta-md/math-stack-exchange.css';
 
 	const { data }: { data: PageData } = $props();
 	let bounty = $state(data.bounty);
@@ -61,7 +64,7 @@
 			</div>
 
 			<div class="leading-7">
-				{bounty.description}
+				<Markdown {carta} value={bounty.description} theme="github" />
 			</div>
 		</div>
 
