@@ -16,15 +16,19 @@ export async function uploadImage(image: File): Promise<string> {
 	return url;
 }
 
-export async function uploadAnyFile(file: File): Promise<string> {
-	if (file.size > 4 * 1024 * 1024) {
+export async function uploadAnyFile(blob: Blob): Promise<string> {
+	if (blob.size > 4 * 1024 * 1024) {
 		throw new Error('Image too large');
 	}
 
-	const { url } = await put(nanoid(10), file, {
+	const { url } = await put(nanoid(10), blob, {
 		access: 'public',
 		token: BLOB_READ_WRITE_TOKEN
 	});
 
 	return url;
+}
+
+export async function batchUploadAnyFile(blobs: Blob[]): Promise<string[]> {
+	return Promise.all(blobs.map(uploadAnyFile));
 }

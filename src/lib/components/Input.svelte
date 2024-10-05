@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cn } from '$lib/utils';
 	import type { Snippet } from 'svelte';
 
 	const Variant = {
@@ -38,7 +39,7 @@
 
 {#if icon}
 	<div
-		class={`flex h-[48px] flex-grow items-center gap-2  border border-gray-300 bg-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${className} ${Variant[variant]}`}
+		class={`flex h-[48px] flex-grow items-center gap-2  border border-gray-300 bg-white rounded-lg focus:outline-none ${className} ${Variant[variant]}`}
 	>
 		{@render icon()}
 		<input
@@ -66,6 +67,9 @@
 		{placeholder}
 		{min}
 		{disabled}
-		class={`${disabled ? 'text-gray-400 bg-white' : 'text-gray-700'} flex-grow ${Variant[variant]} border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
+		class={cn(
+			`${disabled ? 'text-gray-400 bg-white' : 'text-gray-700'} flex-grow ${Variant[variant]} border border-gray-300 rounded-lg`,
+			className
+		)}
 	/>
 {/if}

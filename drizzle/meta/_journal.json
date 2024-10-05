@@ -71,6 +71,13 @@
 			"when": 1727889248194,
 			"tag": "0009_gorgeous_sabretooth",
 			"breakpoints": true
+		},
+		{
+			"idx": 10,
+			"version": "7",
+			"when": 1728083537823,
+			"tag": "0010_blushing_ares",
+			"breakpoints": true
 		}
 	]
 }

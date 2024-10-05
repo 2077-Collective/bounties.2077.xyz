@@ -27,5 +27,5 @@
 	{required}
 	{placeholder}
 	{rows}
-	class={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 ${className}`}
+	class={`w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none text-gray-700 ${className}`}
 ></textarea>

@@ -1,28 +1,77 @@
-import { eq } from 'drizzle-orm';
-import { db } from '.';
-import { submissions } from '$lib/types/schema';
-import type { InsertSubmission, UpdateSubmission } from '$lib/types';
+import { and, eq } from 'drizzle-orm';
+import { db, type Transaction } from '.';
+import { submissionLinks, submissions } from '$lib/types/schema';
+import type { EnhancedSubmission, InsertSubmission, UpdateSubmission } from '$lib/types';
+import { withTransaction } from './utils';
 
 // TODO: shouldn't allow new submissions if bounty is closed
-export function createNewSubmission(submission: InsertSubmission) {
-	return db.insert(submissions).values(submission).returning();
+export function createNewSubmission(
+	submission: InsertSubmission,
+	fileLinks: string[],
+	links: string[],
+	tx?: Transaction
+) {
+	return withTransaction(async (tx) => {
+		const [newSubmission] = await tx.insert(submissions).values([submission]).returning();
+		await batchCreateSubmissionLinks(newSubmission.id, fileLinks, links, tx);
+		return newSubmission;
+	}, tx);
+}
+
+export async function batchCreateSubmissionLinks(
+	submissionId: number,
+	filesLinks: string[],
+	links: string[],
+	tx?: Transaction
+) {
+	return withTransaction(
+		async (tx) =>
+			tx
+				.insert(submissionLinks)
+				.values([
+					...filesLinks.map((link) => ({ link, submissionId, isFile: true })),
+					...links.map((link) => ({ link, submissionId, isFile: false }))
+				])
+				.returning(),
+		tx
+	);
 }
 
 export async function getSubmissionsFromBountyId(bountyId: number) {
 	return db.select().from(submissions).where(eq(submissions.bountyId, bountyId)).execute();
 }
 
-export async function getSubmissionById(id: number) {
-	const submission = await db
-		.select()
-		.from(submissions)
-		.where(eq(submissions.id, id))
-		.limit(1)
-		.execute();
+export async function getSubmissionByUserIdAndBountyId(
+	userId: number,
+	bountyId: number,
+	tx?: Transaction
+): Promise<EnhancedSubmission | undefined> {
+	return withTransaction(
+		async (tx) =>
+			tx.query.submissions.findFirst({
+				where: and(eq(submissions.userId, userId), eq(submissions.bountyId, bountyId)),
+				with: {
+					submissionLinks: true
+				}
+			}),
+		tx
+	);
+}
 
-	if (submission.length === 0) return null;
-
-	return submission[0];
+export async function getSubmissionById(
+	id: number,
+	tx?: Transaction
+): Promise<EnhancedSubmission | undefined> {
+	return withTransaction(
+		async (tx) =>
+			tx.query.submissions.findFirst({
+				where: eq(submissions.id, id),
+				with: {
+					submissionLinks: true
+				}
+			}),
+		tx
+	);
 }
 
 export async function getSubmissionsByUserId(userId: number) {

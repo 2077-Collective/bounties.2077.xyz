@@ -118,89 +118,31 @@
 					title="Rewards"
 					active={bounty && bounty.rewards.length > 1 ? 1 : 0}
 					disabled={!!bounty}
-				>
-					{#snippet winnerTakesAll()}
-						<div class="flex flex-col gap-6 w-full">
-							<div class="flex flex-col gap-2">
-								<label for="paymentChain" class="block text-sm font-medium text-gray-700">
-									Payment network
-								</label>
-								<Select
-									options={chains.map((chain) => ({ label: chain.name, value: chain.id }))}
-									onchange={(option) => {
-										if (option) {
-											paymentChain = Number(option.value);
-										}
-									}}
-									value={selectedChain
-										? { label: selectedChain.name, value: selectedChain.id }
-										: undefined}
-									name="paymentChain"
-									id="paymentChain"
-									disabled={!!bounty}
-								/>
-							</div>
-							<div class="flex gap-6">
-								<div class="w-full flex flex-col gap-2">
-									<label for="tokenId" class="block text-sm font-medium text-gray-700"
-										>Currency</label
-									>
-									<Select
-										options={availableTokens.map((token) => ({
-											label: token.symbol,
-											value: token.id
-										}))}
-										onchange={(option) => {
-											if (option) {
-												tokenId = Number(option.value);
-											}
-										}}
-										value={selectedToken
-											? { label: selectedToken.symbol, value: selectedToken.id }
-											: undefined}
-										name="tokenId"
-										id="tokenId"
-										disabled={!!bounty}
-									/>
-								</div>
-								<div class="w-full flex flex-col gap-2">
-									<label for="reward" class="block text-sm font-medium text-gray-700">Amount</label>
-									<Input
-										type="number"
-										id="reward"
-										name="reward"
-										bind:value={rewards[0].amount}
-										required
-										disabled={!!bounty}
-									/>
-								</div>
-							</div>
+					contents={[winnerTakesAll, multipleWinners]}
+				/>
+				{#snippet winnerTakesAll()}
+					<div class="flex flex-col gap-6 w-full">
+						<div class="flex flex-col gap-2">
+							<label for="paymentChain" class="block text-sm font-medium text-gray-700">
+								Payment network
+							</label>
+							<Select
+								options={chains.map((chain) => ({ label: chain.name, value: chain.id }))}
+								onchange={(option) => {
+									if (option) {
+										paymentChain = Number(option.value);
+									}
+								}}
+								value={selectedChain
+									? { label: selectedChain.name, value: selectedChain.id }
+									: undefined}
+								name="paymentChain"
+								id="paymentChain"
+								disabled={!!bounty}
+							/>
 						</div>
-					{/snippet}
-
-					{#snippet multipleWinners()}
-						<div class="flex flex-col gap-6 w-full">
-							<div class="flex flex-col gap-2">
-								<label for="paymentChain" class="block text-sm font-medium text-gray-700"
-									>Payment network</label
-								>
-								<Select
-									options={chains.map((chain) => ({ label: chain.name, value: chain.id }))}
-									onchange={(option) => {
-										if (option) {
-											paymentChain = Number(option.value);
-										}
-									}}
-									name="paymentChain"
-									id="paymentChain"
-									disabled={!!bounty}
-									value={selectedChain
-										? { label: selectedChain.name, value: selectedChain.id }
-										: undefined}
-								/>
-							</div>
-
-							<div class="flex flex-col gap-2">
+						<div class="flex gap-6">
+							<div class="w-full flex flex-col gap-2">
 								<label for="tokenId" class="block text-sm font-medium text-gray-700">Currency</label
 								>
 								<Select
@@ -213,67 +155,123 @@
 											tokenId = Number(option.value);
 										}
 									}}
-									name="tokenId"
-									id="tokenId"
-									disabled={!!bounty}
 									value={selectedToken
 										? { label: selectedToken.symbol, value: selectedToken.id }
 										: undefined}
+									name="tokenId"
+									id="tokenId"
+									disabled={!!bounty}
 								/>
 							</div>
-
-							<div class="flex flex-col border border-gray-200 px-4 rounded-md">
-								{#each rewards as reward, index (reward.rank)}
-									<div
-										class="flex gap-4 items-end justify-between items-center py-4"
-										class:border-b={index !== rewards.length - 1}
-									>
-										<p class="block text-sm font-medium">
-											{index === 0
-												? '1st'
-												: index === 1
-													? '2nd'
-													: index === 2
-														? '3rd'
-														: `${index + 1}th`} Place
-										</p>
-
-										<div class="w-1/2 flex gap-2">
-											<Input
-												type="number"
-												bind:value={reward.amount}
-												class="text-right"
-												required
-												disabled={!!bounty}
-											/>
-											<Button
-												type="button"
-												onclick={() => removeReward(index)}
-												disabled={rewards.length === 1 || !!bounty}
-												variant="secondary"
-											>
-												<Trash2 size={16} />
-											</Button>
-										</div>
-									</div>
-								{/each}
-							</div>
-
-							<div class="flex justify-between">
-								<Button type="button" onclick={addReward} variant="secondary" disabled={!!bounty}>
-									Add Tier
-								</Button>
-								<p class="text-sm text-gray-400">
-									Total bounty amount:
-									<span class="font-semibold">
-										{rewards.reduce((acc, reward) => acc + parseInt(reward.amount), 0)}
-										{tokenId ? ` ${tokens.find((token) => token.id === tokenId)?.symbol}` : ''}
-									</span>
-								</p>
+							<div class="w-full flex flex-col gap-2">
+								<label for="reward" class="block text-sm font-medium text-gray-700">Amount</label>
+								<Input
+									type="number"
+									id="reward"
+									name="reward"
+									bind:value={rewards[0].amount}
+									required
+									disabled={!!bounty}
+								/>
 							</div>
 						</div>
-					{/snippet}
-				</TabCard>
+					</div>
+				{/snippet}
+
+				{#snippet multipleWinners()}
+					<div class="flex flex-col gap-6 w-full">
+						<div class="flex flex-col gap-2">
+							<label for="paymentChain" class="block text-sm font-medium text-gray-700"
+								>Payment network</label
+							>
+							<Select
+								options={chains.map((chain) => ({ label: chain.name, value: chain.id }))}
+								onchange={(option) => {
+									if (option) {
+										paymentChain = Number(option.value);
+									}
+								}}
+								name="paymentChain"
+								id="paymentChain"
+								disabled={!!bounty}
+								value={selectedChain
+									? { label: selectedChain.name, value: selectedChain.id }
+									: undefined}
+							/>
+						</div>
+
+						<div class="flex flex-col gap-2">
+							<label for="tokenId" class="block text-sm font-medium text-gray-700">Currency</label>
+							<Select
+								options={availableTokens.map((token) => ({
+									label: token.symbol,
+									value: token.id
+								}))}
+								onchange={(option) => {
+									if (option) {
+										tokenId = Number(option.value);
+									}
+								}}
+								name="tokenId"
+								id="tokenId"
+								disabled={!!bounty}
+								value={selectedToken
+									? { label: selectedToken.symbol, value: selectedToken.id }
+									: undefined}
+							/>
+						</div>
+
+						<div class="flex flex-col border border-gray-200 px-4 rounded-md">
+							{#each rewards as reward, index (reward.rank)}
+								<div
+									class="flex gap-4 items-end justify-between items-center py-4"
+									class:border-b={index !== rewards.length - 1}
+								>
+									<p class="block text-sm font-medium">
+										{index === 0
+											? '1st'
+											: index === 1
+												? '2nd'
+												: index === 2
+													? '3rd'
+													: `${index + 1}th`} Place
+									</p>
+
+									<div class="w-1/2 flex gap-2">
+										<Input
+											type="number"
+											bind:value={reward.amount}
+											class="text-right"
+											required
+											disabled={!!bounty}
+										/>
+										<Button
+											type="button"
+											onclick={() => removeReward(index)}
+											disabled={rewards.length === 1 || !!bounty}
+											variant="secondary"
+										>
+											<Trash2 size={16} />
+										</Button>
+									</div>
+								</div>
+							{/each}
+						</div>
+
+						<div class="flex justify-between">
+							<Button type="button" onclick={addReward} variant="secondary" disabled={!!bounty}>
+								Add Tier
+							</Button>
+							<p class="text-sm text-gray-400">
+								Total bounty amount:
+								<span class="font-semibold">
+									{rewards.reduce((acc, reward) => acc + parseInt(reward.amount), 0)}
+									{tokenId ? ` ${tokens.find((token) => token.id === tokenId)?.symbol}` : ''}
+								</span>
+							</p>
+						</div>
+					</div>
+				{/snippet}
 			</div>
 
 			<div>

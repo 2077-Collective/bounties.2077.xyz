@@ -5,6 +5,7 @@ import {
 	rewards,
 	skills,
 	sponsors,
+	submissionLinks,
 	submissions,
 	tokens,
 	users,
@@ -102,6 +103,12 @@ export const SubmissionState = {
 	Accepted: 1,
 	Rejected: 2
 } as const;
+export type EnhancedSubmission = SelectSubmission & {
+	submissionLinks: SelectSubmissionLink[];
+};
+
+export const InsertSubmissionLink = createInsertSchema(submissionLinks);
+export type SelectSubmissionLink = typeof submissionLinks.$inferSelect;
 
 export const InsertSkillSchema = createInsertSchema(skills);
 export type SelectSkill = typeof skills.$inferSelect;
