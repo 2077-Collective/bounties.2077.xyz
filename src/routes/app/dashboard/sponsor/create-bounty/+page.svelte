@@ -24,7 +24,7 @@
 			formData.append(`tokenId`, tokenId?.toString() ?? '');
 
 			return async ({ result }) => {
-				if (result.type === 'success') goto('/app/sponsor/bounties');
+				if (result.type === 'success') goto('/app/dashboard/sponsor/bounties');
 			};
 		};
 	}
