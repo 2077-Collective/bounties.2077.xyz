@@ -7,6 +7,7 @@
 	import type { PageData } from './$types';
 	import Tabs from '$lib/components/Tabs.svelte';
 	import BountyList from '$lib/components/BountyList.svelte';
+	import LinkButton from '$lib/components/LinkButton.svelte';
 
 	const {
 		data
@@ -35,7 +36,9 @@
 			<div class="flex flex-col gap-3 md:flex-row items-center md:justify-between md:items-end">
 				<ProfileImage image={data.user.image} size="144px" />
 				{#if data.user.id === data.account?.users?.id}
-					<Button variant="secondary">Edit profile</Button>
+					<LinkButton href="/app/dashboard/sponsor/edit" variant="secondary">
+						Edit profile
+					</LinkButton>
 				{/if}
 			</div>
 
