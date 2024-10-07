@@ -10,18 +10,20 @@
 		requiredSkills: number[],
 		_: number | null,
 		tokenId: number | null,
-		rewards: { rank: number; amount: string }[]
+		rewards: { rank: number; amount: string }[],
+		draft: boolean
 	): SubmitFunction {
 		return ({ formData }) => {
 			requiredSkills.forEach((skillId) => {
-				formData.append(`skills[]`, skillId.toString());
+				formData.append('skills[]', skillId.toString());
 			});
 
 			rewards.forEach((reward) => {
-				formData.append(`rewards[]`, reward.amount.toString());
+				formData.append('rewards[]', reward.amount.toString());
 			});
 
-			formData.append(`tokenId`, tokenId?.toString() ?? '');
+			formData.append('tokenId', tokenId?.toString() ?? '');
+			formData.append('draft', draft.toString());
 
 			return async ({ result }) => {
 				if (result.type === 'success') goto('/app/dashboard/sponsor/bounties');

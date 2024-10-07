@@ -1,3 +1,7 @@
+<!--
+TODO
+    - If user is not logged in, when click Submit entry re-direct to login page and send them back to the bounty page after login
+-->
 <script lang="ts">
 	import { Markdown } from 'carta-md';
 	import { carta } from '$lib/utils/carta';

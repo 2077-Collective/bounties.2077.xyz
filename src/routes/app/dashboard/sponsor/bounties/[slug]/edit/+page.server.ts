@@ -41,6 +41,7 @@ export const actions: Actions = {
 
 		const bountyForm = UpdateBountySchema.parse({
 			...rawData,
+			draft: rawData.draft === 'true',
 			sponsorId,
 			skills
 		});
