@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { getAccount } from '$lib/stores/account.svelte';
 	import { cn } from '$lib/utils';
 
 	interface AccountMenuLinks {
@@ -22,9 +23,9 @@
 	];
 </script>
 
-<div class="px-32">
+<div class="">
 	<div class="gap-3 border-b border-light py-10 flex flex-col gap-2">
-		<h1 class="text-3xl font-600">2077 Collective</h1>
+		<h1 class="text-3xl font-600">{getAccount()?.sponsors?.displayName}</h1>
 		<p class="text-foreground/60">Manage your account and bounties</p>
 	</div>
 

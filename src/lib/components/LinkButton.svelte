@@ -4,7 +4,8 @@
 	const Variant = {
 		primary: 'bg-black text-white px-3 py-2',
 		secondary: 'bg-gray-100 text-black hover:bg-gray-300 px-3 py-2',
-		transparent: 'text-black underline'
+		transparent: 'text-black underline',
+		plain: 'text-black'
 	} as const;
 
 	const {

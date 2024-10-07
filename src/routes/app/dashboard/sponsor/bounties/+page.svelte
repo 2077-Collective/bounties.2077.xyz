@@ -50,14 +50,14 @@
 	<div class="space-y-6">
 		{#each filteredBounties as bounty}
 			<div class="flex justify-between gap-2">
-				<div class="bg-white rounded-lg flex flex-col gap-2 w-3/4">
+				<div class="bg-white rounded-lg flex flex-col gap-4 w-3/4">
 					<div class="flex flex-col gap-2">
 						<div class="flex gap-2">
-							<h2 class="text-lg">{bounty.title}</h2>
+							<h2 class="text-lg font-medium">{bounty.title}</h2>
 							<BountyStatusBadge {bounty} />
 						</div>
 
-						<div class="text-sm text-gray">
+						<div class="text-sm text-gray-600">
 							{bounty.excerpt}
 						</div>
 					</div>
@@ -74,17 +74,17 @@
 				</div>
 
 				<div class="w-1/4 flex flex-col items-end">
-					<LinkButton href={`/app/bounty/${bounty.id}`} variant="transparent">
+					<LinkButton href={`/app/bounty/${bounty.id}`} variant="plain">
 						<ExternalLink class="w-4 h-4 mr-2" />
 						Open bounty page
 					</LinkButton>
 
-					<LinkButton href={getLink(`/bounties/${bounty.id}/edit`)} variant="transparent">
+					<LinkButton href={getLink(`/bounties/${bounty.id}/edit`)} variant="plain">
 						<Pencil class="w-4 h-4 mr-2" />
 						Edit bounty
 					</LinkButton>
 
-					<LinkButton href={getLink(`/bounty/${bounty.id}/submissions`)} variant="transparent">
+					<LinkButton href={getLink(`/bounty/${bounty.id}/submissions`)} variant="plain">
 						<Inbox class="w-4 h-4 mr-2" />
 						View submissions
 						{#if getSubmissionCount(bounty) > 0}
