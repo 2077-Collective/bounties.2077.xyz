@@ -261,13 +261,29 @@ export const submissions = pgTable('submissions', {
 		.references(() => users.id)
 		.notNull(),
 	state: smallint('state').notNull().default(0),
-	link: text('link').notNull(),
-	details: text('description').notNull(),
+	details: text('details').notNull(),
+	recipientWallet: text('recipient_wallet').notNull(),
 	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
-export const submissionRelations = relations(submissions, ({ one }) => ({
+export const submissionLinks = pgTable('submission_links', {
+	id: serial('id').primaryKey().unique(),
+	submissionId: integer('submission_id')
+		.references(() => submissions.id)
+		.notNull(),
+	link: text('link').notNull(),
+	isFile: boolean('is_file').notNull()
+});
+
+export const submissionLinksRelations = relations(submissionLinks, ({ one }) => ({
+	submission: one(submissions, {
+		fields: [submissionLinks.submissionId],
+		references: [submissions.id]
+	})
+}));
+
+export const submissionRelations = relations(submissions, ({ one, many }) => ({
 	bounty: one(bounties, {
 		fields: [submissions.bountyId],
 		references: [bounties.id]
@@ -275,7 +291,8 @@ export const submissionRelations = relations(submissions, ({ one }) => ({
 	user: one(users, {
 		fields: [submissions.userId],
 		references: [users.id]
-	})
+	}),
+	submissionLinks: many(submissionLinks)
 }));
 
 export const comments = pgTable('comments', {

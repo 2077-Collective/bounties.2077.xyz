@@ -10,6 +10,7 @@ html {
 body {
 	/* @apply bg-background text-foreground; */
 	font-family: 'Inter Variable', sans-serif;
+	color: #18181b;
 }
 
 @layer base {

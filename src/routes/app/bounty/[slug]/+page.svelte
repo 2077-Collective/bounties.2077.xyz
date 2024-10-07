@@ -4,7 +4,16 @@
 	import BountyStatusBadge from '$lib/components/BountyStatusBadge.svelte';
 	import type { PageData } from './$types';
 	import LinkButton from '$lib/components/LinkButton.svelte';
-	import { Plus, Clock, Tag, Trophy, BookmarkIcon, MessageSquare, Share } from 'lucide-svelte';
+	import {
+		Plus,
+		Clock,
+		Tag,
+		Trophy,
+		BookmarkIcon,
+		MessageSquare,
+		Share,
+		CircleCheck
+	} from 'lucide-svelte';
 	import Button from '$lib/components/Button.svelte';
 	import { getAccount } from '$lib/stores/account.svelte';
 	import TextArea from '$lib/components/TextArea.svelte';
@@ -16,9 +25,13 @@
 	import Badge from '$lib/components/Badge.svelte';
 	import { formatDate } from 'date-fns';
 	import '$lib/styles/carta-md/math-stack-exchange.css';
+	import SubmissionForm from '$lib/components/SubmissionForm.svelte';
+	import { closeModal, openModal } from '$lib/stores/modal.svelte';
+	import type { EnhancedSubmission } from '$lib/types';
 
 	const { data }: { data: PageData } = $props();
 	let bounty = $state(data.bounty);
+	let userHasSubmitted = $state(!!data.userSubmission);
 	const account = getAccount();
 
 	const handleCommentSubmit: SubmitFunction = ({ formElement }) => {
@@ -31,6 +44,12 @@
 				}
 			}
 		};
+	};
+
+	const onSubmissionSuccess = (submission: EnhancedSubmission) => {
+		userHasSubmitted = true;
+		data.userSubmission = submission;
+		closeModal();
 	};
 </script>
 
@@ -100,7 +119,7 @@
 
 						<div class="flex flex-col flex-grow gap-1">
 							<div class="flex gap-2">
-								<p>{comment.user.displayName}</p>
+								<p class="font-semibold">{comment.user.displayName}</p>
 								<p class="text-gray-500 leading-6">
 									{formatDistanceStrict(comment.createdAt, new Date(), { addSuffix: true })}
 								</p>
@@ -207,9 +226,31 @@
 			</div>
 		</div>
 
-		<button class="w-full bg-black text-white rounded-lg flex items-center justify-center py-3">
-			<Plus class="w-4 h-4 mr-2" />
-			Submit entry
-		</button>
+		{#if userHasSubmitted}
+			<div class="flex flex-col justify-center items-center gap-2 p-4 rounded-lg bg-lime-100">
+				<CircleCheck class="w-5 h-5 text-green-700" />
+				<div class="text-center">
+					<p class="text-medium">Entry submitted</p>
+					<Button variant="transparent" class="underline text-sm">View your submission</Button>
+				</div>
+			</div>
+		{:else}
+			<button
+				class="w-full bg-black text-white rounded-lg flex items-center justify-center py-3"
+				onclick={() => openModal(submissionForm)}
+			>
+				<Plus class="w-4 h-4 mr-2" />
+				Submit entry
+			</button>
+		{/if}
 	</Card>
 </div>
+
+{#snippet submissionForm()}
+	<SubmissionForm
+		bountyTitle={bounty.title}
+		rewards={bounty.rewards}
+		bountyId={bounty.id}
+		onsuccess={onSubmissionSuccess}
+	/>
+{/snippet}
