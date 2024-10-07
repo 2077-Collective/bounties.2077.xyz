@@ -32,6 +32,7 @@ TODO
 	import SubmissionForm from '$lib/components/SubmissionForm.svelte';
 	import { closeModal, openModal } from '$lib/stores/modal.svelte';
 	import type { EnhancedSubmission } from '$lib/types';
+	import { goto } from '$app/navigation';
 
 	const { data }: { data: PageData } = $props();
 	let bounty = $state(data.bounty);
@@ -48,6 +49,11 @@ TODO
 				}
 			}
 		};
+	};
+
+	const handleSubmissionClick = () => {
+		if (account) openModal(submissionForm);
+		else goto('/login');
 	};
 
 	const onSubmissionSuccess = (submission: EnhancedSubmission) => {
@@ -241,10 +247,10 @@ TODO
 		{:else}
 			<button
 				class="w-full bg-black text-white rounded-lg flex items-center justify-center py-3"
-				onclick={() => openModal(submissionForm)}
+				onclick={handleSubmissionClick}
 			>
 				<Plus class="w-4 h-4 mr-2" />
-				Submit entry
+				{account ? 'Submit entry' : 'Login to submit entry'}
 			</button>
 		{/if}
 	</Card>
