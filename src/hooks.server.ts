@@ -18,30 +18,25 @@ export const getAccount = async (jwt: string): Promise<Account | null> => {
 	return user;
 };
 
-const skipAuth = ['/login', '/', '/create-account', '/waitlist'];
+// All the paths and subpaths that require authentication
+// If /app is present, authentication would be required for all paths starting with /app
+const requireAuthPaths = ['/app/dashboard'];
 
-// Check if user is sponsor if not, redirect to create sponsor acocunt
 export const handle: Handle = async ({ event, resolve }) => {
-	// TODO: switch to production
 	if (NODE_ENV === 'production' && event.route.id !== '/waitlist') {
 		throw redirect(307, '/waitlist');
 	}
 
-	if (event.route.id && skipAuth.includes(event.route.id)) {
-		return resolve(event);
-	}
-
 	const jwt = event.cookies.get('jwt');
-	if (!jwt) {
-		throw redirect(307, '/login');
-	}
-
-	const account = await getAccount(jwt);
-	if (!account) {
-		throw redirect(307, '/create-account');
-	}
-
+	const account = jwt ? await getAccount(jwt) : null;
 	event.locals.account = account;
+
+	console.log('event.route.id', event.route.id);
+	console.log('includes');
+	const pathRequiresAuth =
+		event.route.id && requireAuthPaths.find((path) => event.route.id?.includes(path));
+	if (!pathRequiresAuth) return resolve(event);
+	else if (pathRequiresAuth && !event.locals.account) throw redirect(307, '/login');
 
 	return resolve(event);
 };

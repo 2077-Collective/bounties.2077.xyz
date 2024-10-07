@@ -9,6 +9,7 @@
 	import Button from '$lib/components/Button.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 
 	const {
 		data
@@ -39,12 +40,16 @@
 				}
 			}
 
+			if (result.type === 'redirect') {
+				goto(result.location);
+			}
+
 			loading = false;
 		};
 	};
 </script>
 
-<div class="flex flex-col gap-6 max-w-screen-sm">
+<div class="flex flex-col gap-6ermax-w-screen-sm">
 	<div class="border-b border-gray pb-6">
 		<h3 class="text-lg">Sponsor profile</h3>
 		<div class="flex justify-between">
