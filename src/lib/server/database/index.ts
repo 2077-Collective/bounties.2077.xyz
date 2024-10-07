@@ -17,9 +17,13 @@ export const db = (() => {
 	const databaseConnectionUrl = process.env.DATABASE_URL || '';
 	const nodeEnv = process.env.NODE_ENV || 'development';
 
+	console.log('databaseConnectionUrl', databaseConnectionUrl);
+	console.log('nodeEnv', nodeEnv);
+
 	if (nodeEnv === 'development' || nodeEnv === 'test') {
 		return postgresDb(databaseConnectionUrl);
 	} else {
+		console.log('Using neon');
 		const pool = new Pool({ connectionString: databaseConnectionUrl });
 		neonConfig.webSocketConstructor = ws;
 		return drizzleNeon<typeof schema>(pool, { schema });
