@@ -31,8 +31,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const account = jwt ? await getAccount(jwt) : null;
 	event.locals.account = account;
 
-	console.log('event.route.id', event.route.id);
-	console.log('includes');
 	const pathRequiresAuth =
 		event.route.id && requireAuthPaths.find((path) => event.route.id?.includes(path));
 	if (!pathRequiresAuth) return resolve(event);
