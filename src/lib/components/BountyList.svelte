@@ -15,7 +15,7 @@
 
 <div class="flex flex-col gap-3">
 	{#each bountyList as bounty}
-		<a href={`app/bounty/${bounty.id}`}>
+		<a href={`/app/bounty/${bounty.id}`}>
 			<div class="flex flex-col md:flex-row gap-6 p-6 border rounded-lg">
 				<div class="flex-shrink-0">
 					<ProfileImage size="64px" image={bounty.sponsor.image} />

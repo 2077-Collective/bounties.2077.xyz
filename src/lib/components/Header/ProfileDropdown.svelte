@@ -11,42 +11,37 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		<!-- TODO: Review this logic when implementing user profile -->
-		<ProfileImage image={account?.sponsors?.image} />
+		<ProfileImage image={account?.users?.image} />
 	</DropdownMenu.Trigger>
 
 	<DropdownMenu.Content class="w-56">
 		<DropdownMenu.Group>
-			<DropdownMenu.Item>
-				<RefreshCcw class="mr-2 h-4 w-4" />
-				<span>Switch Account</span>
-			</DropdownMenu.Item>
-		</DropdownMenu.Group>
-
-		<DropdownMenu.Separator />
-
-		<DropdownMenu.Group>
-			<DropdownMenu.Item class="cursor-pointer" href="/app/sponsor">
+			<DropdownMenu.Item class="cursor-pointer" href={`/app/profile/user/${account?.users.id}`}>
 				<User class="mr-2 h-4 w-4" />
 				<span>Profile</span>
 				<DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
 			</DropdownMenu.Item>
 
-			<DropdownMenu.Item class="cursor-pointer">
-				<LayoutDashboard class="mr-2 h-4 w-4" />
-				<span>Bounty dashboard</span>
-				<DropdownMenu.Shortcut>⌘D</DropdownMenu.Shortcut>
-			</DropdownMenu.Item>
+			{#if account?.sponsors}
+				<DropdownMenu.Separator />
+				<DropdownMenu.Item class="cursor-pointer" href="/app/dashboard/sponsor/bounties">
+					<LayoutDashboard class="mr-2 h-4 w-4" />
+					<span>Sponsor dashboard</span>
+					<DropdownMenu.Shortcut>⇧⌘D</DropdownMenu.Shortcut>
+				</DropdownMenu.Item>
 
-			<DropdownMenu.Item class="cursor-pointer">
-				<CirclePlus class="mr-2 h-4 w-4" />
-				<span>Create bounty</span>
-				<DropdownMenu.Shortcut>⇧⌘B</DropdownMenu.Shortcut>
-			</DropdownMenu.Item>
+				<DropdownMenu.Item class="cursor-pointer" href="/app/dashboard/sponsor/create-bounty">
+					<CirclePlus class="mr-2 h-4 w-4" />
+					<span>Create bounty</span>
+					<DropdownMenu.Shortcut>⇧⌘B</DropdownMenu.Shortcut>
+				</DropdownMenu.Item>
+				<DropdownMenu.Separator />
+			{/if}
 
-			<DropdownMenu.Item class="cursor-pointer">
+			<DropdownMenu.Item class="cursor-pointer" href="/app/dashboard/user/edit">
 				<Settings class="mr-2 h-4 w-4" />
 				<span>Settings</span>
-				<DropdownMenu.Shortcut>⌘,</DropdownMenu.Shortcut>
+				<DropdownMenu.Shortcut>⇧⌘,</DropdownMenu.Shortcut>
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 
