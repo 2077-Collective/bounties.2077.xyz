@@ -38,11 +38,6 @@
 					bounty.bountySkills.some((bountySkill) => bountySkill.skill.id === skill)
 				);
 			})
-			.filter((bounty) => {
-				if (selectedStatus === 'open') return bounty.status === 'open';
-				if (selectedStatus === 'closed') return bounty.status === 'closed';
-				return true;
-			})
 	);
 </script>
 
