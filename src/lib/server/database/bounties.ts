@@ -25,8 +25,34 @@ export async function createNewBounty(
 	}, tx);
 }
 
-export async function getBounties() {
-	return db.select().from(bounties).orderBy(desc(bounties.createdAt));
+// TODO: consider removing comments, skills, submission,
+export async function getBounties(tx?: Transaction): Promise<EnhancedBounty[]> {
+	return withTransaction(async (tx) => {
+		return tx.query.bounties.findMany({
+			orderBy: desc(bounties.createdAt),
+			where: eq(bounties.draft, false),
+			with: {
+				sponsor: true,
+				bountySkills: {
+					with: {
+						skill: true
+					}
+				},
+				comments: {
+					with: {
+						user: true
+					},
+					orderBy: desc(comments.createdAt)
+				},
+				submissions: true,
+				rewards: {
+					with: {
+						token: true
+					}
+				}
+			}
+		});
+	}, tx);
 }
 
 export async function getBountyById(id: number): Promise<EnhancedBounty | undefined> {

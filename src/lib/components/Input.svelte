@@ -20,7 +20,8 @@
 		disabled = false,
 		variant = 'regular',
 		icon,
-		button
+		button,
+		onchange
 	}: {
 		value?: string;
 		class?: string;
@@ -32,6 +33,7 @@
 		min?: string;
 		disabled?: boolean;
 		variant?: keyof typeof Variant;
+		onchange?: (e: InputEvent) => void;
 		icon?: Snippet;
 		button?: Snippet;
 	} = $props();
@@ -39,7 +41,10 @@
 
 {#if icon}
 	<div
-		class={`flex h-[48px] flex-grow items-center gap-2  border border-gray-300 bg-white rounded-lg focus:outline-none ${className} ${Variant[variant]}`}
+		class={cn(
+			`flex h-[48px] flex-grow items-center gap-2  border border-gray-300 bg-white rounded-lg focus:outline-none ${Variant[variant]}`,
+			className
+		)}
 	>
 		{@render icon()}
 		<input
@@ -50,6 +55,7 @@
 			{required}
 			{placeholder}
 			{min}
+			{onchange}
 			{disabled}
 			class="flex-grow focus:outline-none placeholder-gray disabled:text-gray disabled:bg-white"
 		/>
@@ -67,6 +73,7 @@
 		{placeholder}
 		{min}
 		{disabled}
+		{onchange}
 		class={cn(
 			`${disabled ? 'text-gray-400 bg-white' : 'text-gray-700'} flex-grow ${Variant[variant]} border border-gray-300 rounded-lg`,
 			className

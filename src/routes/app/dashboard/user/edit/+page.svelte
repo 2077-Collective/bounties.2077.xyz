@@ -49,7 +49,7 @@
 	};
 </script>
 
-<div class="flex flex-col gap-6ermax-w-screen-sm">
+<div class="flex flex-col gap-6 max-w-screen-sm">
 	<div class="border-b border-gray pb-6">
 		<h3 class="text-lg">Sponsor profile</h3>
 		<div class="flex justify-between">

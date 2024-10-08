@@ -42,7 +42,7 @@
 
 <div class="max-w-screen-sm">
 	<div class="border-b border-gray pb-6">
-		<h3>Sponsor profile</h3>
+		<h3 class="text-lg">Sponsor profile</h3>
 		<div class="flex justify-between">
 			<p class="text-gray-400 text-sm">Provide as much or as little information as you like.</p>
 			<a href={`/app/profile/sponsor/${account?.sponsors?.id}`} class="text-sm flex gap-1">
@@ -60,20 +60,20 @@
 		<InputImage name="image" image={account?.sponsors?.image} />
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-col gap-2">
-				<label for="displayName">Organisation</label>
+				<label for="displayName" class="text-sm">Organisation</label>
 				<Input name="displayName" bind:value={sponsorInfo.displayName} />
 				<p class="text-sm text-gray-400">This is your public display name.</p>
 			</div>
 			<div class="flex flex-col gap-2">
-				<label for="website">Website</label>
+				<label for="website" class="text-sm">Website</label>
 				<Input name="website" bind:value={sponsorInfo.website} />
 			</div>
 			<div class="flex flex-col gap-2">
-				<label for="twitter">X (Twitter)</label>
+				<label for="twitter" class="text-sm">X (Twitter)</label>
 				<Input name="twitter" bind:value={sponsorInfo.twitter} />
 			</div>
 			<div class="flex flex-col gap-2">
-				<label for="bio">About</label>
+				<label for="bio" class="text-sm">About</label>
 				<TextArea name="bio" bind:value={sponsorInfo.bio} />
 			</div>
 		</div>
