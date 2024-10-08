@@ -54,23 +54,6 @@
 				</Input>
 				<DatePicker bind:value={endDateRange} placeholder="End date" />
 				<SkillsPicker skills={data.skills} bind:value={selectedSkills} />
-				<Select.Root portal={null}>
-					<Select.Trigger>
-						<div class="flex items-center">
-							<CirclePlus class="mr-2 h-4 w-4" />
-							<Select.Value placeholder="Sort by" />
-						</div>
-					</Select.Trigger>
-					<Select.Content>
-						<Select.Group>
-							<Select.Label>Fruits</Select.Label>
-							{#each statuses as status}
-								<Select.Item value={status.value} label={status.label}>{status.label}</Select.Item>
-							{/each}
-						</Select.Group>
-					</Select.Content>
-					<Select.Input name="favoriteFruit" />
-				</Select.Root>
 			</div>
 			<BountyList bountyList={filteredBounties} />
 		</div>
