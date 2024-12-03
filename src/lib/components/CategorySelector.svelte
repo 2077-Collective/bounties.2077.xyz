@@ -1,25 +1,29 @@
+<script lang="ts" module>
+	export interface Category {
+		id: string | number;
+		name: string;
+	}
+</script>
+
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { X, ChevronDown } from 'lucide-svelte';
 
-	interface Category {
-		id: string | number;
-		name: string;
-	}
-
 	const {
 		name,
 		availableCategories,
-		onchange
+		onchange,
+		value = []
 	}: {
 		name: string;
 		availableCategories: Category[];
 		onchange: (categories: Category[]) => void;
+		value?: Category[];
 	} = $props();
 
 	let inputElement: HTMLInputElement;
 	let dropdownElement = $state<HTMLUListElement | null>(null);
-	let categories: Category[] = $state([]);
+	let categories: Category[] = $state(value);
 	let inputValue = $state('');
 	let filteredOptions: Category[] = $derived.by(() =>
 		availableCategories.filter(
@@ -131,7 +135,7 @@
 </script>
 
 <div class="relative">
-	<div class="flex flex-wrap items-center gap-2 p-2 border border-gray-300 rounded-md bg-white">
+	<div class="flex flex-wrap items-center gap-2 p-2 border border-gray-300 rounded-lg bg-white">
 		{#each categories as category (category.id)}
 			<span
 				class="flex items-center bg-gray-100 text-gray-800 text-sm font-medium px-2 py-1 rounded-full"

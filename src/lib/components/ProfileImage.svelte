@@ -1,5 +1,12 @@
+<script lang="ts" module>
+	export interface ProfileImageProps {
+		image?: string | null;
+		size?: string;
+	}
+</script>
+
 <script lang="ts">
-	const { image, size = '36px' }: { image?: string; size?: string } = $props();
+	const { image, size = '36px' }: ProfileImageProps = $props();
 </script>
 
 <img

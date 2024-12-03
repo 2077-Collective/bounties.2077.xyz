@@ -1,7 +1,7 @@
 # This database is used for local development and testing purposes only.
 services:
   db:
-    image: postgres:latest
+    image: postgres:16
     restart: always
     environment:
       POSTGRES_DB: 'bounties'
@@ -13,7 +13,7 @@ services:
       - '5432:5432'
 
   db-test:
-    image: postgres:latest
+    image: postgres:16
     restart: always
     environment:
       POSTGRES_DB: 'test_bounties'

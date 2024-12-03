@@ -47,6 +47,7 @@ async function seedSkills() {
 	];
 
 	await batchCreateSkills(skills);
+	console.log('Skills created');
 }
 
 async function seedChains() {
@@ -58,6 +59,7 @@ async function seedChains() {
 	];
 
 	await batchCreateChains(chains);
+	console.log('Chains created');
 }
 
 async function seedTokens() {
@@ -200,6 +202,7 @@ async function seedTokens() {
 	];
 
 	await batchCreateTokens(tokens);
+	console.log('Tokens created');
 }
 
 export async function globalSeeder() {
@@ -208,4 +211,4 @@ export async function globalSeeder() {
 	await seedTokens();
 }
 
-globalSeeder().catch(console.error);
+globalSeeder();

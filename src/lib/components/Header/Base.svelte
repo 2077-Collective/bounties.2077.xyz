@@ -3,6 +3,7 @@
 	import Logo from '$lib/components/icons/Logo.svelte';
 	import ProfileDropdown from './ProfileDropdown.svelte';
 	import MobileNav from './MobileNav.svelte';
+	import { getAccount } from '$lib/stores/account.svelte';
 </script>
 
 <nav class="border-b border-gray-light">
@@ -24,14 +25,29 @@
 
 			<div>
 				<div class="md:flex md:gap-2">
-					<LinkButton
-						variant="transparent"
-						href="/app/sponsor/create-bounty"
-						class="hidden md:block"
-					>
-						Create a bounty
-					</LinkButton>
-					<ProfileDropdown />
+					{#if getAccount()?.sponsors}
+						<LinkButton
+							variant="transparent"
+							href="/app/dashboard/sponsor/create-bounty"
+							class="hidden md:block"
+						>
+							Create a bounty
+						</LinkButton>
+					{:else if getAccount()?.users}
+						<LinkButton
+							variant="transparent"
+							href="/app/create-sponsor-profile"
+							class="hidden md:block"
+						>
+							Become a sponsor
+						</LinkButton>
+					{/if}
+
+					{#if getAccount()?.users}
+						<ProfileDropdown />
+					{:else}
+						<LinkButton variant="primary" href="/login">Login</LinkButton>
+					{/if}
 				</div>
 			</div>
 		</div>

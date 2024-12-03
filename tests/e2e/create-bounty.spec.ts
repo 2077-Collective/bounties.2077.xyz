@@ -51,10 +51,7 @@ test.describe('Create Bounty Form', () => {
 		await cookiePage.click('button[type="submit"]');
 
 		await cookiePage.pause();
-
-		await expect(cookiePage).toHaveURL('/app/sponsor');
-
-		// TODO: uncomment this after list is implemented
-		// await expect(cookiePage.getByText('Test Bounty')).toBeVisible();
+		await expect(cookiePage).toHaveURL('/app/sponsor/bounties');
+		await expect(cookiePage.getByRole('heading', { name: 'Test Bounty' })).toBeVisible();
 	});
 });

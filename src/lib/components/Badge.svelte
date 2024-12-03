@@ -5,26 +5,32 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	const variantStyles: Record<Variant, string> = {
-		default: 'bg-gray-lighter text-gray-dark',
-		success: 'bg-green text-green-dark',
-		danger: 'bg-red-light text-red-dark',
-		warning: 'bg-eggshell-light text-eggshell-dark',
-		info: 'bg-black text-white',
+	const variantStyles = {
+		default: 'bg-black text-white',
+		success: 'bg-green-200 text-green-800',
+		warning: 'bg-yellow-200 text-yellow-800',
+		danger: 'bg-red-200 text-red-800',
+		info: 'bg-blue-200 text-blue-800',
 		transparent: 'border border-gray'
 	};
 
 	const {
 		variant = 'default',
 		class: className,
-		children
+		children,
+		onclick
 	}: {
 		variant?: Variant;
 		class?: string;
 		children: Snippet;
+		onclick?: () => void;
 	} = $props();
 </script>
 
-<div class={`${variantStyles[variant]} rounded-full px-2 py-1 text-sm w-fit ${className}`}>
+<button
+	{onclick}
+	class={`${variantStyles[variant]} rounded-full px-2 py-1 text-sm w-fit ${className}`}
+	type="button"
+>
 	{@render children()}
-</div>
+</button>

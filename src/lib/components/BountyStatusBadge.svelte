@@ -1,5 +1,16 @@
-<script lang="ts">
-	import { SubmissionState, type EnhancedBounty } from '$lib/types';
+<script lang="ts" module>
+	/* eslint-disable */
+	// We're ignoring eslint in this file because it doesn't have support for generics in svelte files yet
+	interface Bounty {
+		draft: boolean;
+		startDate: string;
+		endDate: string;
+		submissions?: SelectSubmission[];
+	}
+</script>
+
+<script lang="ts" generics="TBounty extends Bounty">
+	import { SubmissionState, type SelectSubmission } from '$lib/types';
 	import Badge, { type Variant as BadgeVariant } from './Badge.svelte';
 
 	type BountyStatus = 'draft' | 'open' | 'review' | 'closed';
@@ -14,7 +25,7 @@
 	const {
 		bounty
 	}: {
-		bounty: EnhancedBounty;
+		bounty: TBounty;
 	} = $props();
 
 	const status: BountyStatus = $derived.by(() => {
@@ -24,9 +35,9 @@
 		const startDate = new Date(bounty.startDate);
 		const endDate = new Date(bounty.endDate);
 
-		if (startDate > today && endDate > today && !bounty.draft) return 'open';
+		if (startDate <= today && endDate >= today && !bounty.draft) return 'open';
 
-		const hasUnreviewedSubmissions = bounty.submissions.some(
+		const hasUnreviewedSubmissions = bounty.submissions?.some(
 			(submission) => submission.state === SubmissionState.Unreviewed
 		);
 

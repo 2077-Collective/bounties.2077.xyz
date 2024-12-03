@@ -8,5 +8,10 @@ export async function createNewComment(comment: InsertComment) {
 }
 
 export async function getCommentsByBountyId(bountyId: number) {
-	return db.select().from(comments).where(eq(comments.bountyId, bountyId)).execute();
+	return db.query.comments.findMany({
+		with: {
+			user: true
+		},
+		where: eq(comments.bountyId, bountyId)
+	});
 }

@@ -1,12 +1,10 @@
-import { redirect } from '@sveltejs/kit';
+import { getBounties } from '$lib/server/database/bounties';
+import { getSkills } from '$lib/server/database/skills';
 import type { PageServerLoad } from './$types';
 
-const getRedirectPath = (jwt: string | undefined): '/login' | '/create-account' => {
-	return jwt ? '/create-account' : '/login';
-};
-
-export const load: PageServerLoad = async ({ locals, cookies }) => {
-	if (!locals.account) {
-		throw redirect(307, getRedirectPath(cookies.get('jwt')));
-	}
+export const load: PageServerLoad = async () => {
+	return {
+		bounties: await getBounties(),
+		skills: await getSkills()
+	};
 };

@@ -14,16 +14,18 @@ import { relations } from 'drizzle-orm';
 
 export const sponsors = pgTable('sponsors', {
 	id: serial('id').primaryKey().unique(),
+	// TODO: display name needs to be unique
 	displayName: text('display_name').notNull(),
 	userId: integer('user_id')
 		.references(() => users.id)
 		.notNull(),
-	email: text('email').notNull(),
+	// TODO: email should be unique
+	email: text('email').notNull().unique(),
 	website: text('website').notNull(),
 	twitter: text('twitter').notNull(),
 	image: text('image').notNull(),
 	bio: text('bio').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -53,19 +55,21 @@ export const users = pgTable('users', {
 	displayName: text('display_name').notNull(),
 	// TODO: wallet address can be null in a future where we have social login
 	walletAddress: text('wallet_address').unique().notNull(),
-	email: text('email').notNull().unique(),
+	email: text('email').unique(),
 	image: text('image'),
 	website: text('website'),
 	twitter: text('twitter'),
-	bio: text('bio').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	bio: text('bio'),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
 export const userRelations = relations(users, ({ many }) => ({
 	// TODO: do we want a many to one relationship or one to one?
 	sponsors: many(sponsors),
-	userSkills: many(userSkills)
+	userSkills: many(userSkills),
+	bookmarks: many(userBookmarks),
+	submissions: many(submissions)
 }));
 
 export const userSkills = pgTable(
@@ -94,6 +98,44 @@ export const userSkillsRelations = relations(userSkills, ({ one }) => ({
 	})
 }));
 
+export const userBookmarks = pgTable(
+	'user_bookmarks',
+	{
+		userId: integer('user_id')
+			.references(() => users.id)
+			.notNull(),
+		bountyId: integer('bounty_id')
+			.references(() => bounties.id)
+			.notNull(),
+		createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow()
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.userId, t.bountyId] })
+	})
+);
+
+export const userBookmarksRelations = relations(userBookmarks, ({ one }) => ({
+	user: one(users, {
+		fields: [userBookmarks.userId],
+		references: [users.id]
+	}),
+	bounty: one(bounties, {
+		fields: [userBookmarks.bountyId],
+		references: [bounties.id]
+	})
+}));
+
+export const bookmarkRelations = relations(userBookmarks, ({ one }) => ({
+	user: one(users, {
+		fields: [userBookmarks.userId],
+		references: [users.id]
+	}),
+	bounty: one(bounties, {
+		fields: [userBookmarks.bountyId],
+		references: [bounties.id]
+	})
+}));
+
 export const bounties = pgTable('bounties', {
 	id: serial('id').primaryKey().unique(),
 	sponsorId: serial('sponsor_id')
@@ -105,7 +147,7 @@ export const bounties = pgTable('bounties', {
 	endDate: date('end_date').notNull(),
 	excerpt: text('excerpt').notNull(),
 	approved: boolean('approved').notNull().default(false),
-	createdAt: date('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
 	draft: boolean('draft').notNull().default(true)
 });
@@ -118,7 +160,8 @@ export const bountyRelations = relations(bounties, ({ many, one }) => ({
 	}),
 	comments: many(comments),
 	submissions: many(submissions),
-	rewards: many(rewards)
+	rewards: many(rewards),
+	bookmars: many(userBookmarks)
 }));
 
 export const bountySkills = pgTable(
@@ -150,7 +193,7 @@ export const bountySkillsRelations = relations(bountySkills, ({ one }) => ({
 export const chains = pgTable('chains', {
 	id: integer('id').primaryKey().unique(),
 	name: text('name').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -164,7 +207,7 @@ export const tokens = pgTable('tokens', {
 	chainId: integer('chain_id')
 		.references(() => chains.id)
 		.notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -190,7 +233,7 @@ export const rewards = pgTable('rewards', {
 		.notNull(),
 	amount: bigint('amount', { mode: 'bigint' }).notNull(),
 	winner: integer('winner').references(() => submissions.id),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -218,13 +261,29 @@ export const submissions = pgTable('submissions', {
 		.references(() => users.id)
 		.notNull(),
 	state: smallint('state').notNull().default(0),
-	link: text('link').notNull(),
-	details: text('description').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	details: text('details').notNull(),
+	recipientWallet: text('recipient_wallet').notNull(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
-export const submissionRelations = relations(submissions, ({ one }) => ({
+export const submissionLinks = pgTable('submission_links', {
+	id: serial('id').primaryKey().unique(),
+	submissionId: integer('submission_id')
+		.references(() => submissions.id)
+		.notNull(),
+	link: text('link').notNull(),
+	isFile: boolean('is_file').notNull()
+});
+
+export const submissionLinksRelations = relations(submissionLinks, ({ one }) => ({
+	submission: one(submissions, {
+		fields: [submissionLinks.submissionId],
+		references: [submissions.id]
+	})
+}));
+
+export const submissionRelations = relations(submissions, ({ one, many }) => ({
 	bounty: one(bounties, {
 		fields: [submissions.bountyId],
 		references: [bounties.id]
@@ -232,7 +291,8 @@ export const submissionRelations = relations(submissions, ({ one }) => ({
 	user: one(users, {
 		fields: [submissions.userId],
 		references: [users.id]
-	})
+	}),
+	submissionLinks: many(submissionLinks)
 }));
 
 export const comments = pgTable('comments', {
@@ -244,7 +304,7 @@ export const comments = pgTable('comments', {
 		.references(() => users.id)
 		.notNull(),
 	content: text('content').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date())
 });
 
@@ -263,7 +323,7 @@ export const waitlist = pgTable('waitlist', {
 	id: serial('id').primaryKey().unique(),
 	email: text('email').notNull().unique(),
 	referralCode: text('referral_uuid').notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'date', precision: 3 }).notNull().defaultNow(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(() => new Date()),
 	inviteUsed: boolean('invite_used').notNull().default(false),
 	inviteSentAt: timestamp('invite_sent_at'),

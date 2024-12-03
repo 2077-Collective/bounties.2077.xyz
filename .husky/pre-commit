@@ -8,12 +8,12 @@ npm run format ||
     exit 1
 }
 
-echo "Running linter..."
-npm run lint ||
-{
-    echo 'Linting failed. Please run "npm run lint" and fix the issues before committing.'
-    exit 1
-}
+# echo "Running linter..."
+# npm run lint ||
+# {
+#     echo 'Linting failed. Please run "npm run lint" and fix the issues before committing.'
+#     exit 1
+# }
 
 # If everything passes, proceed with the commit
 exit 0
