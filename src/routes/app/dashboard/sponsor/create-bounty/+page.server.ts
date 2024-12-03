@@ -38,13 +38,17 @@ export const actions: Actions = {
 			// Parse skills and rewards arrays
 			const skills = formData.getAll('skills[]').map(String);
 			const rewards = formData.getAll('rewards[]').map(String);
+			const draft = formData.get('draft') === 'true';
 
 			const bountyForm = NewBountySchema.parse({
 				...rawData,
 				sponsorId,
 				skills,
-				rewards
+				rewards,
+				draft
 			});
+
+			console.log({ bountyForm });
 
 			const { rewards: parsedRewards, skills: parsedSkills, tokenId, ...bounty } = bountyForm;
 

@@ -11,7 +11,8 @@
 		action,
 		onsubmit,
 		enctype,
-		loading
+		loading,
+		showProgress = true
 	}: {
 		steps: Snippet[];
 		class?: string;
@@ -19,6 +20,7 @@
 		onsubmit: SubmitFunction;
 		enctype?: string;
 		loading?: boolean;
+		showProgress?: boolean;
 	} = $props();
 
 	let currentStep = $state(0);
@@ -49,12 +51,14 @@
 	use:enhance={onsubmit}
 	{enctype}
 >
-	<div class="h-1 w-full bg-accent rounded-lg">
-		<div
-			class="h-full bg-black rounded-lg transition-all"
-			style:width={`${((currentStep + 1) / steps.length) * 100}%`}
-		></div>
-	</div>
+	{#if showProgress}
+		<div class="h-1 w-full bg-accent rounded-lg">
+			<div
+				class="h-full bg-black rounded-lg transition-all"
+				style:width={`${((currentStep + 1) / steps.length) * 100}%`}
+			></div>
+		</div>
+	{/if}
 
 	<div class="w-full h-full items-center justify-center">
 		<div class="w-full bg-white-lg overflow-hidden flex">

@@ -33,6 +33,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	const pathRequiresAuth =
 		event.route.id && requireAuthPaths.find((path) => event.route.id?.includes(path));
+
 	if (!pathRequiresAuth) return resolve(event);
 	else if (pathRequiresAuth && !event.locals.account) throw redirect(307, '/login');
 

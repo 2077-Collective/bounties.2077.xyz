@@ -1,5 +1,11 @@
 <script lang="ts">
-	let formData = {
+	import Input from '$lib/components/Input.svelte';
+	import StepForm from '$lib/components/StepForm.svelte';
+	import TextArea from '$lib/components/TextArea.svelte';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import LinkButton from '$lib/components/LinkButton.svelte';
+
+	let sponsorInfo = {
 		displayName: '',
 		email: '',
 		website: '',
@@ -7,9 +13,123 @@
 		image: '',
 		bio: ''
 	};
+
+	let success = $state(false);
+
+	const onFormSubmit: SubmitFunction = async ({ formData }) => {
+		for (const [key, value] of Object.entries(sponsorInfo)) {
+			formData.set(key, value);
+		}
+
+		return ({ result }) => {
+			if (result.type === 'success') {
+				success = true;
+			}
+		};
+	};
 </script>
 
-<form
+<div class="relative w-full h-screen">
+	{#if success}
+		<div class="flex flex-col gap-12 items-center justify-center h-full">
+			<div class="flex flex-col gap-4 flex flex-col items-center justify-center max-w-xs">
+				<h2 class="text-4xl font-semibold">Thank you</h2>
+				<p class="text-center text-sm text-gray-400">
+					You are signed up and now you can fund a new bounty project.
+				</p>
+			</div>
+			<LinkButton href="/app/dashboard/sponsor/create-bounty" class="w-fit">
+				Add a New Bounty
+			</LinkButton>
+		</div>
+	{:else}
+		<div
+			class="max-w-2xl mx-auto border rounded-lg p-8 mt-8 md:mt-16 relative bg-background shadow-[0px_4px_6px_-2px_rgba(0,0,0,0.05)]"
+		>
+			<StepForm
+				steps={[stepOne, stepTwo]}
+				action="?/createSponsor"
+				onsubmit={onFormSubmit}
+				showProgress={false}
+			/>
+		</div>
+	{/if}
+</div>
+
+<!-- Blurred background -->
+<div
+	class="bottom-0 mx-auto left-0 right-0 max-w-6xl absolute w-screen h-4/6 rounded-full blur-3xl bg-gradient-to-t from-[#EBE2FF] to-white -z-10"
+></div>
+
+{#snippet stepOne()}
+	<div class="flex flex-col gap-4">
+		<div class="flex flex-col gap-4">
+			<div class="flex justify-between items-center">
+				<h2 class="text-lg">Sponsor details</h2>
+				<p class="text-sm text-gray-400">Step 1 of 2</p>
+			</div>
+			<p class="text-sm text-gray-400">
+				To maintain the quality of our platform we limit our bountyhunter community to the most
+				qualified sponsors.
+			</p>
+		</div>
+		<hr />
+		<div class="flex flex-col gap-2">
+			<label class="text-sm" for="displayName">Organization</label>
+			<Input name="displayName" />
+			<p class="text-xs text-gray-400">
+				This is the public sponsor name from where you will create bounties.
+			</p>
+		</div>
+
+		<!-- TODO: restrict textarea to 320 characters -->
+		<div class="flex flex-col gap-2">
+			<label class="text-sm" for="bio">Description</label>
+			<TextArea name="bio" bind:value={sponsorInfo.bio} />
+			<p class="text-xs text-gray-400">
+				Describe what the organisation does to give bounty hunters more context with who they are
+				working with. ({sponsorInfo.bio.length}/320)
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<label class="text-sm" for="website">Website</label>
+			<Input name="website" bind:value={sponsorInfo.website} />
+		</div>
+	</div>
+{/snippet}
+
+{#snippet stepTwo()}
+	<div class="flex flex-col gap-4">
+		<div class="flex flex-col gap-4">
+			<div class="flex justify-between items-center">
+				<h2 class="text-lg">How can we reach out?</h2>
+				<p class="text-sm text-gray-400">Step 2 of 2</p>
+			</div>
+			<p class="text-sm text-gray-400">
+				To maintain the quality of our platform bounties are verified by the community.
+			</p>
+		</div>
+		<hr />
+
+		<div class="flex flex-col gap-2">
+			<label class="text-sm" for="email">Email</label>
+			<Input name="email" bind:value={sponsorInfo.email} />
+			<p class="text-xs text-gray-400">
+				This address will not be shown on your profile by default.
+			</p>
+		</div>
+
+		<div class="flex flex-col gap-2">
+			<label class="text-sm" for="twitter">X (Twitter)</label>
+			<Input name="twitter" bind:value={sponsorInfo.twitter} />
+		</div>
+
+		<p>ACCEPT TOS?</p>
+	</div>
+{/snippet}
+
+<!-- <form
 	method="POST"
 	action="?/createSponsor"
 	class="max-w-lg mx-auto mt-8 p-6 bg-white rounded-lg shadow-md"
@@ -94,4 +214,4 @@
 	>
 		Submit
 	</button>
-</form>
+</form> -->

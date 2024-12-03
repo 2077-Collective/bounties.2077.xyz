@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { Header } from '$lib/components/Header/index';
-	import ShortcutsHandler from '$lib/components/ShortcutHandler.svelte';
 	import { type Snippet } from 'svelte';
 	import { setAccount } from '$lib/stores/account.svelte';
 	import type { PageData } from './$types';
-	import Modal from '$lib/components/Modal.svelte';
 	import { page } from '$app/stores';
 
 	const {
@@ -19,8 +17,6 @@
 </script>
 
 <div class="w-full h-full relative">
-	<Modal />
-	<ShortcutsHandler />
 	<Header />
 	<!-- This is defined here to avoid the global padding -->
 	{#if $page.route.id === '/app'}

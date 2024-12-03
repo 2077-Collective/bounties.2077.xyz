@@ -7,10 +7,6 @@ export const POST: RequestHandler = async (event) => {
 
 	if (!(file instanceof File)) throw error(400, { message: 'No file uploaded' });
 
-	console.log({
-		file
-	});
-
 	const url = await uploadAnyFile(file);
 
 	return json({ url });

@@ -2,12 +2,11 @@
 	import BountyList from '$lib/components/BountyList.svelte';
 	import Input from '$lib/components/Input.svelte';
 	import LinkButton from '$lib/components/LinkButton.svelte';
-	import { Search, CirclePlus } from 'lucide-svelte';
+	import { Search } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import DatePicker from '$lib/components/DatePicker.svelte';
 	import type { DateRange } from 'bits-ui';
 	import SkillsPicker from '$lib/components/SkillsPicker.svelte';
-	import * as Select from '$lib/components/ui/select/index.js';
 
 	const { data }: { data: PageData } = $props();
 	let searchTerm = $state('');
@@ -44,8 +43,8 @@
 <div class="min-h-screen py-12 flex flex-col gap-10">
 	<h2 class="text-3xl font-semibold text-gray-900">Bounties</h2>
 
-	<div class="flex gap-x-[72px]">
-		<div class="sm:px-0 flex flex-col gap-10">
+	<div class="flex gap-x-[72px] justify-between">
+		<div class="sm:px-0 flex flex-col gap-10 w-full">
 			<div class="flex gap-2">
 				<Input bind:value={searchTerm} placeholder="Search" class="h-[40px]">
 					{#snippet icon()}
@@ -58,7 +57,7 @@
 			<BountyList bountyList={filteredBounties} />
 		</div>
 
-		<div class="gradient h-80 rounded-lg p-6 flex flex-col justify-between">
+		<div class="gradient h-80 rounded-lg p-6 flex flex-col justify-between min-w-[282px]">
 			<div>
 				<p class="text-xl leading-7 font-semibold text-indigo-900">Anyone can create</p>
 				<p class="text-xl leading-7 font-semibold text-indigo-900 mb-2">bounties</p>

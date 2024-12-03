@@ -17,6 +17,8 @@ export const actions: Actions = {
 
 		locals.account = await getAccountByUserId(account.users.id);
 
-		throw redirect(303, '/app/sponsor');
+		return {
+			success: true
+		};
 	}
 };

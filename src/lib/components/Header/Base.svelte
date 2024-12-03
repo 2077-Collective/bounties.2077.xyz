@@ -28,7 +28,7 @@
 					{#if getAccount()?.sponsors}
 						<LinkButton
 							variant="transparent"
-							href="/app/sponsor/create-bounty"
+							href="/app/dashboard/sponsor/create-bounty"
 							class="hidden md:block"
 						>
 							Create a bounty
@@ -36,7 +36,7 @@
 					{:else if getAccount()?.users}
 						<LinkButton
 							variant="transparent"
-							href="/app/sponsor/create-bounty"
+							href="/app/create-sponsor-profile"
 							class="hidden md:block"
 						>
 							Become a sponsor

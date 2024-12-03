@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { getAccount } from '$lib/stores/account.svelte';
 	import { closeModal, openModal } from '$lib/stores/modal.svelte';
 	import { Auth, type WalletLoginResponse } from '@2077collective/persona';
 	import { onMount } from 'svelte';
@@ -7,7 +8,7 @@
 	function handleLogin(user: WalletLoginResponse) {
 		localStorage.setItem('walletAddress', user.address);
 		closeModal();
-		goto('/app');
+		goto(getAccount() ? '/app' : '/create-account');
 	}
 
 	onMount(() => {
